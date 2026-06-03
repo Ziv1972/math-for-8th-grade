@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן תרגול · ו' — מתמטיקה כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"systems",points:16,title:"מערכת משוואות — חיבור",
+   stem:'פתרו את המערכת: <span class="formula" dir="ltr">x + y = 10</span> , <span class="formula" dir="ltr">x − y = 4</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:7,points:8,hint:"חברו את שתי המשוואות (y מתבטל)",solution:'חיבור: 2x = 14 → <b>x = 7</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:3,points:8,hint:"הציבו x=7 באחת המשוואות",solution:'7 + y = 10 → <b>y = 3</b>'}
+   ]},
+  {id:"q2",topic:"systems",points:16,title:"מערכת משוואות — הצבה",
+   stem:'נתון: <span class="formula" dir="ltr">y = 3x</span> , <span class="formula" dir="ltr">x + y = 12</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:3,points:8,hint:"הציבו y=3x במשוואה השנייה: x + 3x = 12",solution:'x + 3x = 12 → 4x = 12 → <b>x = 3</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:9,points:8,hint:"y = 3x",solution:'y = 3·3 = <b>9</b>'}
+   ]},
+  {id:"q3",topic:"systems",points:14,title:"בעיה מילולית — קנייה",
+   stem:'עט ומחברת עולים יחד 12 ש"ח. המחברת יקרה ב-4 ש"ח מהעט.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו מחיר העט (בש"ח)?',type:"number",answer:4,points:8,hint:"אם העט x, המחברת x+4, וביחד: x + (x+4) = 12",solution:'x + (x+4) = 12 → 2x = 8 → <b>x = 4 ש"ח</b>'},
+     {id:"b",label:"(ב)",text:'מהו מחיר המחברת (בש"ח)?',type:"number",answer:8,points:6,hint:"מחברת = עט + 4",solution:'4 + 4 = <b>8 ש"ח</b>'}
+   ]},
+  {id:"q4",topic:"percent",points:12,title:"אחוז מערך",
+   stem:'חשבו: כמה זה <span class="formula" dir="ltr">20%</span> מתוך 150?',
+   parts:[
+     {id:"a",label:"",text:'התשובה:',type:"number",answer:30,points:12,hint:"0.20 · 150",solution:'0.20 · 150 = <b>30</b>'}
+   ]},
+  {id:"q5",topic:"percent",points:12,title:"הנחה",
+   stem:'מעיל עלה 80 ש"ח, וירד בהנחה של <span class="formula" dir="ltr">25%</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו המחיר החדש (בש"ח)?',type:"number",answer:60,points:12,hint:"80 · 0.75",solution:'80 · 0.75 = <b>60 ש"ח</b>'}
+   ]},
+  {id:"q6",topic:"pythagoras",points:14,title:"משפט פיתגורס",
+   stem:'במשולש ישר-זווית הניצבים הם <span class="formula" dir="ltr">3</span> ו-<span class="formula" dir="ltr">4</span> ס"מ.',
+   parts:[
+     {id:"a",label:"",text:'מהו אורך היתר (בס"מ)?',type:"number",answer:5,points:14,hint:"היתר = √(3² + 4²)",solution:'√(9 + 16) = √25 = <b>5 ס"מ</b>'}
+   ]},
+  {id:"q7",topic:"linear",points:16,title:"פונקציה קווית",
+   stem:'נתון הישר <span class="formula" dir="ltr">y = 2x − 6</span>.',
+   parts:[
+     {id:"a",label:"(א)",text:'באיזה x הישר חותך את ציר ה-x?',type:"number",answer:3,points:8,hint:"הציבו y=0: 2x − 6 = 0",solution:'2x = 6 → <b>x = 3</b>'},
+     {id:"b",label:"(ב)",text:'מהו ערך ה-y בחיתוך עם ציר ה-y?',type:"number",answer:-6,points:8,hint:"הציבו x=0",solution:'y = 2·0 − 6 = <b>−6</b>'}
+   ]}
+];
+MQExam.run({examId:"exam_l1a", title:"מבחן תרגול · ו'", kicker:"מתמטיקה · כיתה ח' · תרגול", EXAM});
+</script>
+</html>

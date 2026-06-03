@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן תרגול · י' — מתמטיקה כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"systems",points:14,title:"מערכת עם שברים",
+   stem:'פתרו: <span class="frac"><span class="num">x</span><span class="den">2</span></span> + <span class="frac"><span class="num">y</span><span class="den">3</span></span> = 4 , <span class="formula" dir="ltr">x − y = 3</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:6,points:7,hint:"הכפילו את המשוואה הראשונה ב-6: 3x + 2y = 24",solution:'×6: 3x + 2y = 24. הצבת x=y+3: 3(y+3)+2y=24 → 5y=15 → y=3, ולכן <b>x = 6</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:3,points:7,hint:"מצאתם 5y = 15",solution:'y = <b>3</b>. בדיקה: 6/2 + 3/3 = 3 + 1 = 4 ✓'}
+   ]},
+  {id:"q2",topic:"systems",points:14,title:"מערכת עם מקדמים שליליים",
+   stem:'פתרו: <span class="formula" dir="ltr">2x + 3y = 12</span> , <span class="formula" dir="ltr">4x − 3y = 6</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:3,points:7,hint:"חברו את המשוואות (3y מתבטל)",solution:'חיבור: 6x = 18 → <b>x = 3</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:2,points:7,hint:"הציבו x=3",solution:'2·3 + 3y = 12 → 3y = 6 → <b>y = 2</b>'}
+   ]},
+  {id:"q3",topic:"systems",points:14,title:"מערכת עם שברים כפולים",
+   stem:'פתרו: <span class="frac"><span class="num">x+1</span><span class="den">2</span></span> + <span class="frac"><span class="num">y−1</span><span class="den">3</span></span> = 3 , <span class="formula" dir="ltr">x + y = 7</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:3,points:7,hint:"×6: 3(x+1) + 2(y−1) = 18 ⟸ 3x + 2y = 17",solution:'×6: 3x+2y=17. הצבת y=7−x: 3x+2(7−x)=17 → x+14=17 → <b>x = 3</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:4,points:7,hint:"y = 7 − x",solution:'y = 7 − 3 = <b>4</b>. בדיקה: 4/2 + 3/3 = 2 + 1 = 3 ✓'}
+   ]},
+  {id:"q4",topic:"systems",points:14,title:"בעיה מילולית — כרטיסים",
+   stem:'2 מבוגרים ו-3 ילדים שילמו יחד 160 ש"ח על כרטיסים. כרטיס מבוגר יקר ב-30 ש"ח מכרטיס ילד.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו מחיר כרטיס מבוגר (בש"ח)?',type:"number",answer:50,points:7,hint:"a − k = 30 ; 2a + 3k = 160. הציבו a = k + 30",solution:'2(k+30) + 3k = 160 → 5k = 100 → k = 20, ולכן <b>a = 50 ש"ח</b>'},
+     {id:"b",label:"(ב)",text:'מהו מחיר כרטיס ילד (בש"ח)?',type:"number",answer:20,points:7,hint:"k = a − 30",solution:'k = 50 − 30 = <b>20 ש"ח</b>. בדיקה: 2·50 + 3·20 = 160 ✓'}
+   ]},
+  {id:"q5",topic:"percent",points:10,title:"אחוזים דו-שלביים",
+   stem:'מחיר של 100 ש"ח התייקר ב-<span class="formula" dir="ltr">25%</span>, ולאחר מכן ירד בהנחה של <span class="formula" dir="ltr">20%</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו המחיר הסופי (בש"ח)?',type:"number",answer:100,points:10,hint:"100 · 1.25 · 0.8",solution:'100 · 1.25 = 125 ; 125 · 0.8 = <b>100 ש"ח</b>'}
+   ]},
+  {id:"q6",topic:"percent",points:12,title:"מציאת המקור אחרי ייקור",
+   stem:'לאחר ייקור של <span class="formula" dir="ltr">15%</span> מחיר מוצר הוא 230 ש"ח.',
+   parts:[
+     {id:"a",label:"",text:'מהו המחיר המקורי (בש"ח)?',type:"number",answer:200,points:12,hint:"230 = 1.15 · X",solution:'230 ÷ 1.15 = <b>200 ש"ח</b>'}
+   ]},
+  {id:"q7",topic:"pythagoras",points:12,title:"מעוין ואלכסונים",
+   stem:'במעוין האלכסונים הם <span class="formula" dir="ltr">6</span> ו-<span class="formula" dir="ltr">8</span> ס"מ. האלכסונים חוצים זה את זה בניצב.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו אורך צלע המעוין (בס"מ)?',type:"number",answer:5,points:7,hint:"חצאי האלכסונים (3 ו-4) הם ניצבים במשולש ישר-זווית; הצלע היא היתר",solution:'√(3² + 4²) = √25 = <b>5 ס"מ</b>'},
+     {id:"b",label:"(ב)",text:'מהו היקף המעוין (בס"מ)?',type:"number",answer:20,points:5,hint:"במעוין כל הצלעות שוות",solution:'4 · 5 = <b>20 ס"מ</b>'}
+   ]},
+  {id:"q8",topic:"lineeq",points:10,title:"שטח משולש על מערכת צירים",
+   stem:'הישר <span class="formula" dir="ltr">y = −2x + 8</span> חותך את שני הצירים ויוצר איתם משולש ישר-זווית.',
+   parts:[
+     {id:"a",label:"",text:'מהו שטח המשולש (ביחידות ריבועיות)?',type:"number",answer:16,points:10,hint:"חיתוך עם ציר x ב-x=4, עם ציר y ב-y=8; שטח = (4·8)÷2",solution:'חיתוכים: x=4 (כש-y=0), y=8 (כש-x=0). שטח = (4 · 8) ÷ 2 = <b>16 יח"ר</b>'}
+   ]}
+];
+MQExam.run({examId:"exam_l3a", title:"מבחן תרגול · י'", kicker:"מתמטיקה · כיתה ח' · תרגול", EXAM});
+</script>
+</html>

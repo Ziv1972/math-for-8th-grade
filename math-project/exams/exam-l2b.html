@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן תרגול · ט' — מתמטיקה כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"systems",points:12,title:"מערכת — הצבת ערך",
+   stem:'במערכת <span class="formula" dir="ltr">2x + 3y = 12</span> ידוע ש-<span class="formula" dir="ltr">x = 3</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו y?',type:"number",answer:2,points:12,hint:"2·3 + 3y = 12",solution:'6 + 3y = 12 → 3y = 6 → <b>y = 2</b>'}
+   ]},
+  {id:"q2",topic:"systems",points:14,title:"מערכת — שיטת ההשוואה",
+   stem:'נתון: <span class="formula" dir="ltr">y = 2x + 1</span> , <span class="formula" dir="ltr">y = x + 4</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:3,points:7,hint:"השוו את שני הביטויים ל-y: 2x + 1 = x + 4",solution:'2x + 1 = x + 4 → x = <b>3</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:7,points:7,hint:"y = x + 4",solution:'y = 3 + 4 = <b>7</b>'}
+   ]},
+  {id:"q3",topic:"systems",points:14,title:"מערכת — שיטת החיבור",
+   stem:'פתרו: <span class="formula" dir="ltr">3x + 2y = 16</span> , <span class="formula" dir="ltr">3x − 2y = 8</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:4,points:7,hint:"חברו את המשוואות (2y מתבטל)",solution:'חיבור: 6x = 24 → <b>x = 4</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:2,points:7,hint:"הציבו x=4",solution:'3·4 + 2y = 16 → 2y = 4 → <b>y = 2</b>'}
+   ]},
+  {id:"q4",topic:"systems",points:14,title:"בעיה מילולית — מערכת ואחוזים",
+   stem:'קנו 3 ק"ג גבינה ו-2 ק"ג זיתים ושילמו יחד 80 ש"ח. לאחר שמחיר הגבינה התייקר ב-<span class="formula" dir="ltr">20%</span> (הזיתים לא השתנו), עבור אותה כמות שילמו 92 ש"ח.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו מחיר ק"ג גבינה המקורי (בש"ח)?',type:"number",answer:20,points:7,hint:"3g + 2z = 80 ; אחרי ייקור 3·(1.2g) + 2z = 92. חסרו את המשוואות",solution:'3g+2z=80 ; 3.6g+2z=92. חיסור: 0.6g = 12 → <b>g = 20 ש"ח</b>'},
+     {id:"b",label:"(ב)",text:'מהו מחיר ק"ג זיתים (בש"ח)?',type:"number",answer:10,points:7,hint:"הציבו g=20 ב-3g + 2z = 80",solution:'3·20 + 2z = 80 → 2z = 20 → <b>z = 10 ש"ח</b>'}
+   ]},
+  {id:"q5",topic:"percent",points:12,title:"מציאת המחיר המקורי",
+   stem:'לאחר הנחה של <span class="formula" dir="ltr">20%</span> מחיר מוצר הוא 160 ש"ח.',
+   parts:[
+     {id:"a",label:"",text:'מהו המחיר המקורי (בש"ח)?',type:"number",answer:200,points:12,hint:"160 = 0.8 · X",solution:'160 ÷ 0.8 = <b>200 ש"ח</b>'}
+   ]},
+  {id:"q6",topic:"percent",points:10,title:"אי-שוויון",
+   stem:'פתרו את אי-השוויון <span class="formula" dir="ltr">−2x > −10</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו הערך השלם הגדול ביותר של x? (שימו לב להיפוך הסימן)',type:"number",answer:4,points:10,hint:"מחלקים ב-(−2) → הסימן מתהפך: x < 5",solution:'חלוקה ב-(−2) הופכת את הסימן: x < 5 → השלם הגדול ביותר הוא <b>4</b>'}
+   ]},
+  {id:"q7",topic:"pythagoras",points:12,title:"משפט פיתגורס",
+   stem:'במשולש ישר-זווית הניצבים הם <span class="formula" dir="ltr">5</span> ו-<span class="formula" dir="ltr">12</span> ס"מ.',
+   parts:[
+     {id:"a",label:"",text:'מהו אורך היתר (בס"מ)?',type:"number",answer:13,points:12,hint:"√(5² + 12²)",solution:'√(25 + 144) = √169 = <b>13 ס"מ</b>'}
+   ]},
+  {id:"q8",topic:"stats",points:12,title:"חציון",
+   stem:'נתונים מסודרים: <span class="formula" dir="ltr">10, 20, 30, 40</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו החציון? (מספר זוגי של נתונים)',type:"number",answer:25,points:12,hint:"ממוצע שני הערכים האמצעיים",solution:'(20 + 30) ÷ 2 = <b>25</b>'}
+   ]}
+];
+MQExam.run({examId:"exam_l2b", title:"מבחן תרגול · ט'", kicker:"מתמטיקה · כיתה ח' · תרגול", EXAM});
+</script>
+</html>

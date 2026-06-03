@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מרכז הבקרה — מתמטיקה כיתה ח'</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Assistant:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --paper:#fbfaf6;--ink:#23201a;--accent:#0f6e5c;--accent2:#b8763e;
+  --rule:#d9d4c5;--good:#0f8a4d;--bad:#c4453a;--soft:#6d675a;--mark:#fef3c7;
+}
+body{font-family:'Assistant',sans-serif;background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px,transparent 1px);background-size:100% 34px;
+  color:var(--ink);line-height:1.7;padding-bottom:70px;}
+.wrap{max-width:900px;margin:0 auto;padding:0 20px;}
+.num{direction:ltr;unicode-bidi:isolate;}
+.head{text-align:center;padding:40px 0 22px;border-bottom:3px double var(--ink);margin-bottom:30px;}
+.head .kicker{font-size:0.82rem;letter-spacing:3px;color:var(--accent2);font-weight:700;margin-bottom:10px;}
+.head h1{font-family:'Fraunces',serif;font-weight:700;font-size:2.4rem;}
+.head p{color:var(--soft);margin-top:10px;}
+.section-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.35rem;color:var(--accent);
+  margin:34px 0 16px;display:flex;align-items:center;gap:10px;}
+.section-title .line{flex:1;height:1px;background:var(--rule);}
+.section-title.sub{font-size:1.05rem;margin:24px 0 12px;}
+.grid{display:grid;gap:16px;}
+.tools-grid{grid-template-columns:1fr 1fr;}
+.exams-grid{grid-template-columns:repeat(auto-fill,minmax(210px,1fr));}
+a.card{display:block;text-decoration:none;color:inherit;background:#fff;border:1px solid var(--rule);
+  border-radius:10px;padding:20px;transition:all .2s;box-shadow:2px 2px 0 rgba(35,32,26,0.04);position:relative;}
+a.card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 8px 18px rgba(15,110,92,0.12);}
+.card .ico{font-size:2rem;display:block;margin-bottom:8px;}
+.card .name{font-weight:700;font-size:1.1rem;}
+.card .desc{color:var(--soft);font-size:0.9rem;margin-top:4px;}
+.card .tag{position:absolute;top:14px;left:14px;font-size:0.72rem;font-weight:700;color:var(--accent2);
+  background:var(--mark);padding:3px 9px;border-radius:11px;}
+.card .last{margin-top:10px;font-size:0.86rem;font-weight:700;display:block;}
+.card .last.none{color:var(--soft);font-weight:500;}
+a.card.game{background:linear-gradient(135deg,#1b1038,#2a1850);color:#eafaff;border-color:#b14aff;}
+a.card.game:hover{box-shadow:0 8px 22px rgba(177,74,255,0.4);border-color:#00f0ff;}
+a.card.game .desc{color:#bda9e8;}
+a.card.game .name{color:#fff;}
+.dash-empty{background:#fff;border:1px dashed var(--rule);border-radius:10px;padding:30px;text-align:center;color:var(--soft);}
+.dash-empty b{color:var(--ink);}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;}
+.stat{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:16px;text-align:center;}
+.stat .v{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:700;color:var(--accent);direction:ltr;}
+.stat .l{font-size:0.8rem;color:var(--soft);margin-top:2px;}
+.topic-bars{display:flex;flex-direction:column;gap:11px;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px;}
+.topic-bar{display:flex;align-items:center;gap:12px;}
+.topic-bar .name{min-width:150px;font-size:0.9rem;font-weight:600;}
+.topic-bar .bar-bg{flex:1;height:20px;background:#ece8db;border-radius:11px;overflow:hidden;position:relative;}
+.topic-bar .bar-best{position:absolute;top:0;height:100%;background:repeating-linear-gradient(45deg,rgba(15,110,92,0.12),rgba(15,110,92,0.12) 5px,transparent 5px,transparent 10px);border-radius:11px;}
+.topic-bar .bar-fg{height:100%;border-radius:11px;transition:width .6s ease;position:relative;}
+.topic-bar .val{font-size:0.84rem;font-weight:700;min-width:84px;text-align:left;direction:ltr;color:var(--soft);}
+.topic-bar .val b{color:var(--ink);}
+.note{font-size:0.78rem;color:var(--soft);margin-top:6px;}
+.cols{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:18px;}
+.panel{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:18px;}
+.panel h4{font-family:'Fraunces',serif;font-size:1.05rem;margin-bottom:10px;}
+.muted{color:var(--soft);font-size:0.9rem;}
+.weak-list,.strong-list{list-style:none;}
+.weak-list li{padding:8px 12px;background:#fdf2f1;border-right:3px solid var(--bad);border-radius:5px;margin-bottom:7px;font-size:0.9rem;}
+.strong-list li{padding:8px 12px;background:#f0faf3;border-right:3px solid var(--good);border-radius:5px;margin-bottom:7px;font-size:0.9rem;}
+.reco{background:linear-gradient(135deg,#f0f7f5,#f7f4ec);border:1px solid var(--accent);border-radius:10px;padding:18px;margin-top:16px;}
+.reco h4{font-family:'Fraunces',serif;color:var(--accent);font-size:1.1rem;margin-bottom:6px;}
+.reco a{color:var(--accent2);font-weight:700;}
+.attempts{width:100%;border-collapse:collapse;font-size:0.88rem;background:#fff;border:1px solid var(--rule);border-radius:10px;overflow:hidden;}
+.attempts th,.attempts td{border-bottom:1px solid var(--rule);padding:9px 12px;text-align:right;}
+.attempts th{background:#f3eee2;font-weight:700;}
+.attempts td.sc{direction:ltr;text-align:left;font-weight:700;}
+.attempts tr:last-child td{border-bottom:none;}
+.actions{margin-top:26px;display:flex;gap:12px;flex-wrap:wrap;justify-content:center;}
+.btn{font-family:'Assistant';font-weight:700;font-size:0.9rem;padding:10px 20px;border-radius:8px;cursor:pointer;border:1px solid var(--rule);background:#fff;color:var(--ink);}
+.btn:hover{border-color:var(--accent);color:var(--accent);}
+.btn.danger:hover{border-color:var(--bad);color:var(--bad);}
+.export-area{width:100%;margin-top:14px;height:160px;font-family:'Courier New',monospace;font-size:0.76rem;
+  padding:12px;border:1px solid var(--rule);border-radius:8px;background:#fff;display:none;direction:ltr;text-align:left;white-space:pre;overflow:auto;}
+.export-area.show{display:block;}
+.profile-bar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--rule);border-radius:10px;padding:12px 16px;margin-bottom:14px;}
+.profile-bar .pf-label{font-weight:700;}
+.pf-select{font-family:'Assistant';font-size:0.95rem;font-weight:600;padding:7px 12px;border:1px solid var(--rule);border-radius:8px;background:#fbfaf6;color:var(--ink);}
+.pf-btn{font-family:'Assistant';font-weight:700;font-size:0.82rem;padding:6px 12px;border-radius:8px;cursor:pointer;border:1px solid var(--rule);background:#fff;color:var(--ink);}
+.pf-btn:hover{border-color:var(--accent);color:var(--accent);}
+.pf-btn.danger:hover{border-color:var(--bad);color:var(--bad);}
+.pf-hint{color:var(--soft);font-size:0.84rem;}
+@media(max-width:640px){
+  .head h1{font-size:1.7rem;}
+  .tools-grid,.cols{grid-template-columns:1fr;}
+  .stat-grid{grid-template-columns:repeat(2,1fr);}
+  .topic-bar .name{min-width:96px;font-size:0.8rem;}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="head">
+    <div class="kicker">מתמטיקה · כיתה ח' · לקראת מועד ב'</div>
+    <h1>מרכז הבקרה</h1>
+    <p>כל כלי התרגול במקום אחד — והמעקב נבנה לבד מכל מבחן שמסיימים.</p>
+  </div>
+
+  <div class="profile-bar" id="profileBar"></div>
+
+  <div class="section-title">🚀 להתחיל לתרגל <span class="line"></span></div>
+  <div class="grid tools-grid">
+    <a class="card game" href="game.html">
+      <span class="ico">🎮</span>
+      <span class="name">המשחק — מסע המתמטיקה</span>
+      <span class="desc">8 עולמות, XP, רצף ותגים. לתרגול שוטף וכיפי.</span>
+      <span class="last none" id="gameLast">—</span>
+    </a>
+    <a class="card" href="tirgul.html">
+      <span class="ico">📖</span>
+      <span class="name">תרגול והסבר</span>
+      <span class="desc">הסברים קצרים + תרגילים לכל אחד מ-8 הנושאים.</span>
+    </a>
+  </div>
+
+  <div class="section-title">📝 מבחנים <span class="line"></span></div>
+  <div class="grid exams-grid" id="examCards"></div>
+
+  <div class="section-title">📊 דוח התקדמות <span class="line"></span></div>
+  <div id="dash"></div>
+
+  <div class="actions">
+    <button class="btn" id="btnExport">📋 ייצוא נתוני מעקב</button>
+    <button class="btn danger" id="btnReset">🗑 איפוס נתוני מעקב</button>
+  </div>
+  <textarea class="export-area" id="exportArea" readonly></textarea>
+</div>
+
+<script src="progress.js"></script>
+<script>
+// ---- בונה DOM בטוח (ללא innerHTML; כל טקסט עובר כ-textNode) ----
+function h(tag, attrs, ...kids){
+  const e=document.createElement(tag);
+  if(attrs) for(const k in attrs){
+    const v=attrs[k];
+    if(v==null||v===false) continue;
+    if(k==='class') e.className=v;
+    else if(k==='style') e.style.cssText=v;
+    else if(k.slice(0,2)==='on') e[k]=v;
+    else e.setAttribute(k,v);
+  }
+  kids.flat().forEach(c=>{
+    if(c==null||c===false) return;
+    e.append(c.nodeType ? c : document.createTextNode(String(c)));
+  });
+  return e;
+}
+function clear(el){ while(el.firstChild) el.removeChild(el.firstChild); }
+
+const EXAMS=[
+  {id:"exam1",file:"exam.html",name:"מבחן מסכם · א'",tag:"מסכם",desc:"7 שאלות, 100 נק'."},
+  {id:"exam2",file:"exam2.html",name:"מבחן מסכם · ב'",tag:"דגש מערכות",desc:"8 שאלות, 4 על מערכות."},
+  {id:"exam3",file:"exam3.html",name:"מבחן מתקדם · ג'",tag:"קשה",desc:"פתרון נעול, מעקב הצצות."},
+  {id:"exam4",file:"exam4.html",name:"מבחן אתגר · ד'",tag:"קשה מאוד",desc:"שברים כפולים, מקדמים שליליים."},
+  {id:"exam5",file:"exam5.html",name:"מבחן + מעקב · ה'",tag:"מעקב מלא",desc:"זמן, טעויות ודוח AI."},
+  {id:"exam_l1a",file:"exam-l1a.html",name:"מבחן תרגול · ו'",tag:"תרגול",desc:"דגש מערכות + אחוזים, פיתגורס, קו."},
+  {id:"exam_l1b",file:"exam-l1b.html",name:"מבחן תרגול · ז'",tag:"תרגול",desc:"דגש מערכות + אחוזים, פיתגורס, סטטיסטיקה."},
+  {id:"exam_l2a",file:"exam-l2a.html",name:"מבחן תרגול · ח'",tag:"תרגול",desc:"דגש מערכות + שטח על צירים, פיתגורס."},
+  {id:"exam_l2b",file:"exam-l2b.html",name:"מבחן תרגול · ט'",tag:"תרגול",desc:"דגש מערכות + אי-שוויון, פיתגורס, חציון."},
+  {id:"exam_l3a",file:"exam-l3a.html",name:"מבחן תרגול · י'",tag:"תרגול",desc:"דגש מערכות (שברים) + מעוין, שטח על צירים."}
+];
+const TOPIC_ORDER=["polygons","linear","lineeq","systems","percent","congruence","pythagoras","stats"];
+
+function latestByExam(attempts){
+  const m={};
+  attempts.forEach(a=>{ if(!m[a.examId]||a.ts>m[a.examId].ts) m[a.examId]=a; });
+  return m;
+}
+function fmtDate(ts){
+  try{ const d=new Date(ts);
+    return d.toLocaleDateString('he-IL',{day:'numeric',month:'numeric'})+' '+d.toLocaleTimeString('he-IL',{hour:'2-digit',minute:'2-digit'}); }
+  catch(e){ return ''; }
+}
+function colorFor(p){ return p>=85?'var(--good)':(p>=60?'var(--accent2)':'var(--bad)'); }
+function numSpan(txt){ return h('span',{class:'num'},txt); }
+
+// ---- כרטיסי מבחנים ----
+function renderExamCards(latest){
+  const wrap=document.getElementById('examCards'); clear(wrap);
+  EXAMS.forEach(e=>{
+    const a=latest[e.id];
+    const last = a
+      ? h('span',{class:'last',style:'color:'+colorFor(a.pct)}, 'ציון אחרון: ', numSpan(a.score+'/'+a.total), ' · '+a.pct+'%')
+      : h('span',{class:'last none'}, 'טרם נוסה');
+    wrap.append(h('a',{class:'card',href:e.file},
+      h('span',{class:'tag'},e.tag),
+      h('span',{class:'ico'},'📝'),
+      h('span',{class:'name'},e.name),
+      h('span',{class:'desc'},e.desc),
+      last
+    ));
+  });
+}
+
+// ---- דוח ----
+function renderDash(){
+  const attempts=MQ.getAll();
+  const dash=document.getElementById('dash'); clear(dash);
+  const game=MQ.readGameState();
+
+  if(game){
+    const cleared=Object.keys(game.cleared||{}).length;
+    const gl=document.getElementById('gameLast');
+    gl.className='last'; clear(gl);
+    gl.append(numSpan(game.xp||0),' XP · '+cleared+'/8 עולמות · רצף שיא ',numSpan(game.bestStreak||0),' 🔥');
+  }
+
+  if(!attempts.length){
+    dash.append(h('div',{class:'dash-empty'},
+      h('b',{},'עדיין אין נתוני מעקב.'), h('br'),
+      "ברגע שתסיים/י מבחן (כל אחד מ-א' עד ה') — הציון והפירוט לפי נושא ייכנסו לכאן אוטומטית, ותיבנה תמונת חוזקות וחולשות לאורך זמן."));
+    return;
+  }
+
+  const agg=MQ.aggregate();
+  const topics=TOPIC_ORDER.filter(t=>agg[t]).map(t=>agg[t]);
+  const avgAll=Math.round(attempts.reduce((s,a)=>s+a.pct,0)/attempts.length);
+  const bestAll=Math.max.apply(null,attempts.map(a=>a.pct));
+
+  // סטטיסטיקה כללית
+  const stat=(v,l)=>h('div',{class:'stat'},h('div',{class:'v'},v),h('div',{class:'l'},l));
+  dash.append(h('div',{class:'stat-grid'},
+    stat(attempts.length,'מבחנים שהושלמו'),
+    stat(avgAll+'%','ממוצע כללי'),
+    stat(bestAll+'%','השיא'),
+    stat(topics.length,'נושאים שנבדקו')
+  ));
+
+  // שליטה לפי נושא (מהחלש לחזק)
+  const sorted=topics.slice().sort((a,b)=>a.last-b.last);
+  dash.append(h('div',{class:'section-title sub'},'🎯 שליטה לפי נושא ',h('span',{class:'line'})));
+  const bars=h('div',{class:'topic-bars'});
+  sorted.forEach(t=>{
+    bars.append(h('div',{class:'topic-bar'},
+      h('span',{class:'name'},t.name),
+      h('div',{class:'bar-bg'},
+        h('div',{class:'bar-best',style:'width:'+t.best+'%'}),
+        h('div',{class:'bar-fg',style:'width:'+t.last+'%;background:'+colorFor(t.last)})
+      ),
+      h('span',{class:'val'},h('b',{},t.last+'%'),' · שיא '+t.best+'% · '+t.attempts+'×')
+    ));
+  });
+  dash.append(bars);
+  dash.append(h('p',{class:'note'},'המילוי המלא = הציון האחרון בנושא · הפס המקווקו = השיא · "×" = כמה פעמים נבדק.'));
+
+  // חוזקות + חולשות
+  const weak=sorted.filter(t=>t.last<70);
+  const strong=sorted.filter(t=>t.last>=85).reverse();
+  const weakPanel=h('div',{class:'panel'},h('h4',{},'🔍 נקודות לחיזוק'));
+  if(weak.length){
+    const ul=h('ul',{class:'weak-list'});
+    weak.forEach(t=>ul.append(h('li',{},t.name+' — ציון אחרון ',numSpan(t.last+'%'))));
+    weakPanel.append(ul);
+  } else weakPanel.append(h('p',{class:'muted'},'אין נושא מתחת ל-70%. יפה מאוד! 🎉'));
+  const strongPanel=h('div',{class:'panel'},h('h4',{},'💪 חוזקות'));
+  if(strong.length){
+    const ul=h('ul',{class:'strong-list'});
+    strong.forEach(t=>ul.append(h('li',{},t.name+' — ',numSpan(t.last+'%'))));
+    strongPanel.append(ul);
+  } else strongPanel.append(h('p',{class:'muted'},'עוד אין נושא מעל 85% — אפשר להגיע לשם!'));
+  dash.append(h('div',{class:'cols'},weakPanel,strongPanel));
+
+  // הצעד הבא — המלצה אדפטיבית (רמת הקושי נסתרת מהתלמיד)
+  const rec=MQ.recommend();
+  if(rec){
+    const body=h('p',{},'הנושא לחיזוק עכשיו הוא ',h('b',{},rec.name),' (ציון אחרון ',numSpan(rec.last+'%'),'). ');
+    if(rec.resource){
+      body.append('כדאי לתרגל עם ',h('a',{href:rec.resource.file},rec.resource.title),'.');
+    } else {
+      body.append('שחק/י את העולם המתאים ב',h('a',{href:'game.html'},'משחק'),' או רענן/י עם ',h('a',{href:'tirgul.html'},'ההסבר'),'.');
+    }
+    dash.append(h('div',{class:'reco'},h('h4',{},'👉 הצעד הבא'),body));
+  }
+
+  // ניסיונות אחרונים
+  const recent=attempts.slice().sort((a,b)=>b.ts-a.ts).slice(0,8);
+  dash.append(h('div',{class:'section-title sub'},'🕘 ניסיונות אחרונים ',h('span',{class:'line'})));
+  const table=h('table',{class:'attempts'},
+    h('tr',{},h('th',{},'מתי'),h('th',{},'מבחן'),h('th',{},'ציון')));
+  recent.forEach(a=>{
+    table.append(h('tr',{},
+      h('td',{},fmtDate(a.ts)),
+      h('td',{},a.title),
+      h('td',{class:'sc',style:'color:'+colorFor(a.pct)},a.score+'/'+a.total+' · '+a.pct+'%')
+    ));
+  });
+  dash.append(table);
+}
+
+// ---- פעולות ----
+// ---- פרופיל משתמש ----
+function promptNewUser(){
+  const name=prompt('שם המשתמש (שם פרטי / כינוי):');
+  if(name && name.trim()) MQ.setUser(name.trim());
+  renderAll();
+}
+function renderProfileBar(){
+  const bar=document.getElementById('profileBar'); clear(bar);
+  const users=MQ.listUsers();
+  const cur=MQ.currentUser();
+  bar.append(h('span',{class:'pf-label'},'👤 משתמש:'));
+  const sel=h('select',{class:'pf-select',onchange:e=>{
+    const v=e.target.value;
+    if(v==='__new__'){ promptNewUser(); return; }
+    MQ.setUser(v); renderAll();
+  }});
+  if(!users.length) sel.append(h('option',{value:''},'— צור פרופיל —'));
+  users.forEach(u=> sel.append(h('option',{value:u}, u)) );
+  sel.append(h('option',{value:'__new__'},'➕ משתמש חדש…'));
+  bar.append(sel);
+  if(cur) sel.value=cur;
+  bar.append(h('button',{class:'pf-btn',onclick:promptNewUser},'➕ חדש'));
+  if(cur) bar.append(h('button',{class:'pf-btn danger',onclick:()=>{
+    if(confirm('למחוק את הפרופיל "'+cur+'" וכל נתוני המעקב שלו?')){ MQ.deleteUser(cur); renderAll(); }
+  }},'🗑 מחק פרופיל'));
+  else bar.append(h('span',{class:'pf-hint'},'בחר/י או צור/צרי שם כדי לשמור התקדמות אישית'));
+}
+
+document.getElementById('btnReset').onclick=()=>{
+  const u=MQ.currentUser()||'אורח';
+  if(confirm('לאפס את נתוני המעקב של "'+u+'"? (מצב המשחק לא יושפע)')){ MQ.clearAll(); renderAll(); }
+};
+document.getElementById('btnExport').onclick=()=>{
+  const area=document.getElementById('exportArea');
+  area.value=JSON.stringify(MQ.getAll(),null,2);
+  area.classList.add('show'); area.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.getElementById('btnExport').textContent='✓ הועתק ללוח';
+};
+
+function renderAll(){
+  renderProfileBar();
+  renderExamCards(latestByExam(MQ.getAll()));
+  renderDash();
+}
+renderAll();
+</script>
+</body>
+</html>

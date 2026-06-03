@@ -239,6 +239,7 @@ function updateScore(){
   if(answered>=totalParts)showFinish(sum,pct);
 }
 function showFinish(sum,pct){
+  if(window.MQ)MQ.record("exam4","מבחן אתגר · ד'",EXAM,earned);
   const box=document.getElementById('finishBox');box.style.display='block';
   document.getElementById('finalScore').textContent=sum+' / '+totalPoints;
   let msg;
@@ -321,5 +322,6 @@ function makePart(q,p){
 }
 build();updateScore();
 </script>
+<script src="progress.js"></script>
 </body>
 </html>

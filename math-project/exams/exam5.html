@@ -254,6 +254,7 @@ function updateScore(){
 }
 
 function showFinish(sum,pct){
+  if(window.MQ)MQ.record("exam5","מבחן + מעקב · ה'",EXAM,earned);
   flushTime();
   const box=document.getElementById('finishBox');box.style.display='block';
   document.getElementById('finalScore').textContent=sum+' / '+totalPoints;
@@ -488,5 +489,6 @@ function makePart(q,p){
 }
 build();
 </script>
+<script src="progress.js"></script>
 </body>
 </html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן תרגול · ז' — מתמטיקה כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"systems",points:14,title:"מערכת משוואות — חיבור",
+   stem:'פתרו: <span class="formula" dir="ltr">x + y = 15</span> , <span class="formula" dir="ltr">x − y = 3</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:9,points:7,hint:"חברו את המשוואות",solution:'2x = 18 → <b>x = 9</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:6,points:7,hint:"הציבו x=9",solution:'9 + y = 15 → <b>y = 6</b>'}
+   ]},
+  {id:"q2",topic:"systems",points:14,title:"מערכת משוואות — הצבה",
+   stem:'נתון: <span class="formula" dir="ltr">y = 2x</span> , <span class="formula" dir="ltr">x + y = 9</span>.',
+   parts:[
+     {id:"a",label:"(א) x:",text:'מהו x?',type:"number",answer:3,points:7,hint:"x + 2x = 9",solution:'3x = 9 → <b>x = 3</b>'},
+     {id:"b",label:"(ב) y:",text:'מהו y?',type:"number",answer:6,points:7,hint:"y = 2x",solution:'y = 2·3 = <b>6</b>'}
+   ]},
+  {id:"q3",topic:"systems",points:10,title:"מערכת — הצבת ערך",
+   stem:'במערכת <span class="formula" dir="ltr">2x + y = 11</span> ידוע ש-<span class="formula" dir="ltr">x = 3</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו y?',type:"number",answer:5,points:10,hint:"2·3 + y = 11",solution:'6 + y = 11 → <b>y = 5</b>'}
+   ]},
+  {id:"q4",topic:"systems",points:12,title:"בעיה מילולית — קולנוע",
+   stem:'כרטיס ושקית פופקורן עולים יחד 30 ש"ח. הכרטיס יקר ב-10 ש"ח מהפופקורן.',
+   parts:[
+     {id:"a",label:"",text:'מהו מחיר הכרטיס (בש"ח)?',type:"number",answer:20,points:12,hint:"אם הפופקורן x, הכרטיס x+10: x + (x+10) = 30",solution:'2x + 10 = 30 → x = 10 (פופקורן), הכרטיס = <b>20 ש"ח</b>'}
+   ]},
+  {id:"q5",topic:"percent",points:12,title:"מציאת השלם",
+   stem:'ידוע ש-<span class="formula" dir="ltr">30%</span> ממספר מסוים שווה 45.',
+   parts:[
+     {id:"a",label:"",text:'מהו המספר?',type:"number",answer:150,points:12,hint:"45 ÷ 0.30",solution:'45 ÷ 0.30 = <b>150</b>'}
+   ]},
+  {id:"q6",topic:"percent",points:12,title:"ייקור",
+   stem:'מוצר עלה 200 ש"ח והתייקר ב-<span class="formula" dir="ltr">10%</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו המחיר החדש (בש"ח)?',type:"number",answer:220,points:12,hint:"200 · 1.10",solution:'200 · 1.10 = <b>220 ש"ח</b>'}
+   ]},
+  {id:"q7",topic:"pythagoras",points:14,title:"משפט פיתגורס",
+   stem:'במשולש ישר-זווית הניצבים הם <span class="formula" dir="ltr">6</span> ו-<span class="formula" dir="ltr">8</span> ס"מ.',
+   parts:[
+     {id:"a",label:"",text:'מהו אורך היתר (בס"מ)?',type:"number",answer:10,points:14,hint:"√(6² + 8²)",solution:'√(36 + 64) = √100 = <b>10 ס"מ</b>'}
+   ]},
+  {id:"q8",topic:"stats",points:12,title:"ממוצע",
+   stem:'נתונים: <span class="formula" dir="ltr">4, 6, 8, 10, 2</span>.',
+   parts:[
+     {id:"a",label:"",text:'מהו הממוצע?',type:"number",answer:6,points:12,hint:"סכום ÷ 5",solution:'30 ÷ 5 = <b>6</b>'}
+   ]}
+];
+MQExam.run({examId:"exam_l1b", title:"מבחן תרגול · ז'", kicker:"מתמטיקה · כיתה ח' · תרגול", EXAM});
+</script>
+</html>
