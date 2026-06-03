@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 3 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"forces_contact",points:13,title:"כוח אלסטי",
+   stem:'מותחים קפיץ.',
+   parts:[{id:"a",label:"",text:'הכוח האלסטי של הקפיץ פועל…',type:"mcq",options:['בכיוון המתיחה','מנוגד לכיוון שינוי הצורה (המתיחה)','אין כוח'],correct:1,points:13,solution:'הכוח האלסטי <b>מנוגד</b> לכיוון המתיחה/הדחיסה.'}]},
+  {id:"q2",topic:"forces_distance",points:13,title:"כוח הכבידה",
+   stem:'כדור הארץ מפעיל כוח על עצמים.',
+   parts:[{id:"a",label:"",text:'כוח הכבידה מושך עצמים…',type:"mcq",options:['כלפי מעלה','כלפי מטה (אל מרכז כדור הארץ)','הצידה'],correct:1,points:13,solution:'הכבידה מושכת <b>כלפי מטה</b>, אל מרכז כדור הארץ.'}]},
+  {id:"q3",topic:"forces_newton3",points:12,title:"בלון מתרוקן",
+   stem:'מנפחים בלון ומשחררים — הבלון טס.',svg:SCI.forcePair('האוויר','הבלון'),
+   parts:[{id:"a",label:"",text:'מדוע הבלון נע?',type:"mcq",options:['האוויר היוצא דוחף את הבלון לכיוון ההפוך','הבלון קל מאוד','אין הסבר'],correct:0,points:12,solution:'הבלון דוחף את האוויר החוצה, והאוויר דוחף את הבלון <b>בכיוון ההפוך</b> (ניוטון 3).'}]},
+  {id:"q4",topic:"elec_voltage",points:13,title:"חוזק המקור",
+   stem:'מחליפים את מקור החשמל במקור חזק יותר (מתח גבוה יותר).',
+   parts:[{id:"a",label:"",text:'ככל שהמתח של המקור חזק יותר, עוצמת הזרם במעגל…',type:"mcq",options:['קטנה','גדולה יותר','לא משתנה'],correct:1,points:13,solution:'מתח חזק יותר → זרם <b>גדול</b> יותר.'}]},
+  {id:"q5",topic:"elec_wire",points:12,title:"עובי המוליך",
+   stem:'משווים שני תילים מאותו חומר ובאותו אורך.',
+   parts:[{id:"a",label:"",text:'ככל שהתיל עבה יותר (שטח חתך גדול), ההתנגדות…',type:"mcq",options:['גדלה','קטנה','לא משתנה'],correct:1,points:12,solution:'תיל עבה יותר → מעבר זרם קל יותר → התנגדות <b>קטנה</b> יותר.'}]},
+  {id:"q6",topic:"elec_power",points:13,title:"ואט וקילוואט",
+   stem:'על מכשיר חשמלי כתוב הספק של 2000 ואט.',
+   parts:[{id:"a",label:"",text:'כמה קילוואט (kW) זה?',type:"number",answer:2,points:13,hint:"1 קילוואט = 1000 ואט",solution:'2000 ÷ 1000 = <b>2 קילוואט</b>.'}]},
+  {id:"q7",topic:"elec_series_parallel",points:12,title:"חיבור במקביל",
+   stem:'מכשירים מחוברים במקביל.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'אם מנתקים מכשיר אחד, המכשירים האחרים…',type:"mcq",options:['נכבים גם הם','ממשיכים לפעול','מתחלפים'],correct:1,points:12,solution:'במקביל כל מכשיר על ענף נפרד → האחרים <b>ממשיכים לפעול</b>.'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"עומס יתר",
+   stem:'מחברים יותר מדי מכשירים בו-זמנית לאותו מעגל ביתי, והתילים מתחממים.',
+   parts:[{id:"a",label:"",text:'כיצד נקרא מצב זה?',type:"mcq",options:['קצר חשמלי','עומס יתר','הארקה'],correct:1,points:12,solution:'זהו <b>עומס יתר</b> — זרם גבוה בתילים → התחממות וסכנת שריפה.'}]}
+];
+MQExam.run({examId:"sci3", title:"תרגול מדעים · 3", kicker:"מדע וטכנולוגיה · כיתה ח'", EXAM});
+</script>
+</html>

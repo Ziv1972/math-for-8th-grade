@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 8 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_power",points:13,title:"אנרגיית מזגן",
+   stem:'מזגן בהספק 2.5 קילוואט פעל 3 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש צרך?',type:"number",answer:7.5,tolerance:0.05,points:13,hint:"הספק × זמן",solution:'2.5 × 3 = <b>7.5 קוט"ש</b>.'}]},
+  {id:"q2",topic:"elec_power",points:13,title:"חשבון חשמל",
+   stem:'מכשיר צרך 4 קוט"ש, ומחיר קוט"ש הוא 0.5 ש"ח.',
+   parts:[{id:"a",label:"",text:'כמה ישולם (בש"ח)?',type:"number",answer:2,points:13,hint:"קוט\"ש × מחיר",solution:'4 × 0.5 = <b>2 ש"ח</b>.'}]},
+  {id:"q3",topic:"elec_safety",points:12,title:"מתי עומס יתר",
+   stem:'בוחנים מצבי סכנה במערכת החשמל הביתית.',
+   parts:[{id:"a",label:"",text:'מתי נגרם עומס יתר?',type:"mcq",options:['כשמנתקים מכשירים','כשמחברים יותר מדי מכשירים בו-זמנית למעגל אחד','כשהזרם אפס'],correct:1,points:12,solution:'<b>עומס יתר</b> — יותר מדי מכשירים בו-זמנית → זרם גבוה בתילים.'}]},
+  {id:"q4",topic:"elec_series_parallel",points:13,title:"מתח במקביל",
+   stem:'מכשירים מחוברים במקביל למקור.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'המתח על כל ענף בחיבור מקביל הוא…',type:"mcq",options:['מתחלק בין הענפים','זהה לכולם (כמתח המקור)','אפס'],correct:1,points:13,solution:'במקביל המתח <b>זהה</b> על כל הענפים (כמו במקור — לכן בבית 220 וולט בכל שקע).'}]},
+  {id:"q5",topic:"forces_newton3",points:12,title:"שחייה",
+   stem:'שחיין דוחף את המים לאחור בידיו.',svg:SCI.forcePair('המים','השחיין'),
+   parts:[{id:"a",label:"",text:'מדוע השחיין נע קדימה?',type:"mcq",options:['המים דוחפים אותו קדימה בכוח שווה ומנוגד','המים אינם מגיבים','המים מושכים אותו מטה'],correct:0,points:12,solution:'היד דוחפת מים לאחור, והמים דוחפים את השחיין <b>קדימה</b> (ניוטון 3).'}]},
+  {id:"q6",topic:"forces_distance",points:13,title:"כבידה הדדית",
+   stem:'כדור הארץ מושך אותנו בכוח הכבידה.',svg:SCI.forcePair('האדם','כדה"א'),
+   parts:[{id:"a",label:"",text:'לפי החוק השלישי, אנחנו…',type:"mcq",options:['לא משפיעים על כדור הארץ','מושכים את כדור הארץ בכוח שווה ומנוגד','דוחים את כדור הארץ'],correct:1,points:13,solution:'הכבידה הדדית — גם אנחנו מושכים את כדור הארץ בכוח <b>שווה ומנוגד</b>.'}]},
+  {id:"q7",topic:"forces_contact",points:12,title:"חיכוך אוויר",
+   stem:'גוף נופל באוויר.',
+   parts:[{id:"a",label:"",text:'כוח החיכוך עם האוויר פועל על הגוף הנופל…',type:"mcq",options:['בכיוון הנפילה','מנוגד לכיוון התנועה (מאט אותו)','אין חיכוך אוויר'],correct:1,points:12,solution:'חיכוך האוויר פועל <b>מנגד לכיוון התנועה</b> ומאט את הנפילה.'}]},
+  {id:"q8",topic:"elec_resistance",points:12,title:"נגד והמרת אנרגיה",
+   stem:'זרם עובר דרך נגד (למשל גוף חימום או נורת להט).',
+   parts:[{id:"a",label:"",text:'הנגד ממיר את האנרגיה החשמלית בעיקר ל…',type:"mcq",options:['אור בלבד','חום','קול'],correct:1,points:12,solution:'נגד ממיר אנרגיה חשמלית ל<b>חום</b> (ובנורת להט גם לאור).'}]}
+];
+MQExam.run({examId:"sci8", title:"תרגול מדעים · 8", kicker:"מדע וטכנולוגיה · כיתה ח'", EXAM});
+</script>
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 1 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_circuit",points:13,title:"מעגל חשמלי",
+   stem:'בציור מעגל חשמלי שבו הנורה דולקת.',svg:SCI.circuitClosed,
+   parts:[{id:"a",label:"",text:'מה הכרחי כדי שיזרום זרם והנורה תדלוק?',type:"mcq",options:['מספיק שיש נורה','מעגל סגור המחובר למקור חשמל','שהמתג יהיה פתוח'],correct:1,points:13,solution:'צריך <b>מעגל סגור</b> ומחובר ל<b>מקור חשמל</b>.'}]},
+  {id:"q2",topic:"elec_current",points:13,title:"זרם חשמלי",
+   stem:'זרם חשמלי במוליך מתכתי (למשל נחושת).',
+   parts:[{id:"a",label:"",text:'הזרם הוא תנועה של…',type:"mcq",options:['אטומים','אלקטרונים','גרעינים'],correct:1,points:13,solution:'במתכת הזרם הוא תנועת <b>אלקטרונים</b>.'}]},
+  {id:"q3",topic:"elec_voltage",points:12,title:"מתח חשמלי",
+   stem:'מקור החשמל יוצר "מתח" המניע את הזרם.',
+   parts:[{id:"a",label:"",text:'מהי יחידת המידה של מתח חשמלי?',type:"mcq",options:['אמפר','וולט','ואט'],correct:1,points:12,solution:'מתח נמדד ב<b>וולט</b> (זרם באמפר, הספק בואט).'}]},
+  {id:"q4",topic:"elec_resistance",points:13,title:"מוליכים ומבודדים",
+   stem:'חומרים שונים מוליכים חשמל ברמות שונות.',
+   parts:[{id:"a",label:"",text:'איזה חומר הוא מבודד (כמעט אינו מוליך חשמל)?',type:"mcq",options:['נחושת','גרפיט','פלסטיק'],correct:2,points:13,solution:'<b>פלסטיק</b> הוא מבודד; מתכות וגרפיט מוליכים.'}]},
+  {id:"q5",topic:"elec_wire",points:12,title:"אורך המוליך",
+   stem:'משווים שני תילים מאותו חומר ובאותו עובי.',
+   parts:[{id:"a",label:"",text:'ככל שהתיל המוליך ארוך יותר, ההתנגדות שלו…',type:"mcq",options:['גדלה','קטנה','לא משתנה'],correct:0,points:12,solution:'תיל ארוך יותר → התנגדות <b>גדולה</b> יותר.'}]},
+  {id:"q6",topic:"elec_series_parallel",points:13,title:"חיבור בטור",
+   stem:'שתי נורות מחוברות בטור (על מסלול אחד).',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'אם נורה אחת מתנתקת/נשרפת, מה קורה?',type:"mcq",options:['השנייה ממשיכה לדלוק','שתי הנורות כבות','הזרם גדל'],correct:1,points:13,solution:'בטור יש מסלול אחד — ניתוק אחת מפסיק את כל המעגל → <b>שתיהן כבות</b>.'}]},
+  {id:"q7",topic:"elec_power",points:12,title:"הספק חשמלי",
+   stem:'מכשירי חשמל שונים צורכים אנרגיה בקצב שונה.',
+   parts:[{id:"a",label:"",text:'מהי יחידת המידה של הספק חשמלי?',type:"mcq",options:['וולט','ואט','אמפר'],correct:1,points:12,solution:'הספק נמדד ב<b>ואט</b> (W).'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"בטיחות בחשמל",
+   stem:'מצב שבו שני מוליכים מחוברים ישירות למקור ללא צרכן, והזרם עולה מאוד.',
+   parts:[{id:"a",label:"",text:'כיצד נקרא מצב זה?',type:"mcq",options:['עומס יתר','קצר חשמלי','הארקה'],correct:1,points:12,solution:'זהו <b>קצר חשמלי</b> — התנגדות נמוכה, זרם גבוה, סכנת התחממות.'}]}
+];
+MQExam.run({examId:"sci1", title:"תרגול מדעים · 1", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל", EXAM});
+</script>
+</html>

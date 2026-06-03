@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 2 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_circuit",points:13,title:"תנאים לזרימת זרם",
+   stem:'מתבוננים במעגל חשמלי.',svg:SCI.circuitClosed,
+   parts:[{id:"a",label:"",text:'אילו שני תנאים דרושים כדי שיזרום זרם?',type:"mcq",options:['מעגל סגור + חיבור למקור חשמל','רק חוטים מחוברים','שהמתג יהיה פתוח'],correct:0,points:13,solution:'מעגל <b>סגור</b> + מחובר ל<b>מקור</b>.'}]},
+  {id:"q2",topic:"elec_current",points:13,title:"מד-זרם",
+   stem:'במעגל מחברים מכשיר מדידה המסומן באות A.',
+   parts:[{id:"a",label:"",text:'מד-זרם (אמפרמטר) מודד את…',type:"mcq",options:['המתח','עוצמת הזרם','ההתנגדות'],correct:1,points:13,solution:'מד-זרם מודד את <b>עוצמת הזרם</b> (באמפר).'}]},
+  {id:"q3",topic:"elec_resistance",points:12,title:"מוליך טוב",
+   stem:'בוחרים חומר לתיל חשמלי.',
+   parts:[{id:"a",label:"",text:'איזה חומר מוליך חשמל היטב?',type:"mcq",options:['זכוכית','נחושת (מתכת)','גומי'],correct:1,points:12,solution:'<b>נחושת</b> (מתכת) מוליכה היטב.'}]},
+  {id:"q4",topic:"elec_series_parallel",points:13,title:"חשמל בבית",
+   stem:'מערכת החשמל בבית מאפשרת להפעיל כל מכשיר בנפרד.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'כיצד מחוברים מכשירי החשמל בבית בדרך כלל?',type:"mcq",options:['בטור','במקביל','ללא מקור'],correct:1,points:13,solution:'<b>במקביל</b> — כל מכשיר על ענף נפרד.'}]},
+  {id:"q5",topic:"elec_safety",points:12,title:"הארקה",
+   stem:'לחלק מהמכשירים מחובר תיל שלישי המחובר לאדמה.',
+   parts:[{id:"a",label:"",text:'מה תפקיד ההארקה?',type:"mcq",options:['להגדיל את הזרם','להגן מפני התחשמלות בעת תקלה','לכבות את האור'],correct:1,points:12,solution:'הארקה <b>מגינה מפני התחשמלות</b> בעת דליפת זרם.'}]},
+  {id:"q6",topic:"forces_contact",points:13,title:"כוח החיכוך",
+   stem:'גוף מחליק על הקרקע ומאט.',
+   parts:[{id:"a",label:"",text:'כוח החיכוך בין הגוף לקרקע פועל…',type:"mcq",options:['בכיוון התנועה','בכיוון מנוגד לתנועה','אנכית כלפי מעלה'],correct:1,points:13,solution:'חיכוך פועל <b>מנגד לכיוון התנועה</b> ("מנסה" לעצור).'}]},
+  {id:"q7",topic:"forces_distance",points:12,title:"כוח ממרחק",
+   stem:'יש כוחות הפועלים גם ללא מגע בין הגופים.',
+   parts:[{id:"a",label:"",text:'איזה כוח פועל ממרחק (ללא מגע)?',type:"mcq",options:['דחיפת עגלה','כוח הכבידה','משיכת חבל'],correct:1,points:12,solution:'<b>כוח הכבידה</b> פועל ממרחק (גם כבידה, חשמלי, מגנטי).'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"החוק השלישי של ניוטון",
+   stem:'אדם דוחף קיר.',svg:SCI.forcePair('הקיר','האדם'),
+   parts:[{id:"a",label:"",text:'לפי החוק השלישי של ניוטון, הקיר…',type:"mcq",options:['אינו מגיב','דוחף את האדם בכוח שווה ומנוגד','מושך את האדם'],correct:1,points:12,solution:'לכל פעולה תגובה <b>שווה בגודלה ומנוגדת בכיוונה</b>.'}]}
+];
+MQExam.run({examId:"sci2", title:"תרגול מדעים · 2", kicker:"מדע וטכנולוגיה · כיתה ח'", EXAM});
+</script>
+</html>

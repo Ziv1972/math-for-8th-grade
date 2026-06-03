@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 5 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"נגד",
+   stem:'במכשירי חשמל רבים יש רכיב הנקרא נגד.',
+   parts:[{id:"a",label:"",text:'מהו נגד?',type:"mcq",options:['רכיב שמגדיל את הזרם','רכיב המתנגד למעבר הזרם וממיר אנרגיה חשמלית לחום','מבודד מוחלט'],correct:1,points:13,solution:'<b>נגד</b> מתנגד למעבר הזרם וממיר אנרגיה חשמלית ל<b>חום</b> (נורת להט, גוף חימום).'}]},
+  {id:"q2",topic:"elec_wire",points:13,title:"אנלוגיית הצינור",
+   stem:'אפשר לדמות מעבר זרם בתיל לזרימת מים בצינור.',
+   parts:[{id:"a",label:"",text:'צינור צר וארוך מקביל ל…',type:"mcq",options:['התנגדות חשמלית גבוהה','התנגדות חשמלית נמוכה','מוליך מצוין'],correct:0,points:13,solution:'צר וארוך → קשה לזרום → <b>התנגדות גבוהה</b>.'}]},
+  {id:"q3",topic:"elec_series_parallel",points:12,title:"התנגדות במקביל",
+   stem:'מוסיפים ענפים בחיבור במקביל.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'ההתנגדות הכוללת בחיבור מקביל, לעומת נגד בודד, היא…',type:"mcq",options:['גדולה יותר','קטנה יותר','שווה'],correct:1,points:12,solution:'הוספת מסלולים מקבילים מקטינה את ההתנגדות הכוללת → <b>קטנה</b> יותר.'}]},
+  {id:"q4",topic:"elec_power",points:13,title:"הספק בקילוואט",
+   stem:'על תנור חימום כתוב 3000 ואט.',
+   parts:[{id:"a",label:"",text:'מהו ההספק בקילוואט?',type:"number",answer:3,points:13,hint:"חלקו ב-1000",solution:'3000 ÷ 1000 = <b>3 קילוואט</b>.'}]},
+  {id:"q5",topic:"forces_contact",points:12,title:"חיכוך בבלימה",
+   stem:'נהג בולם את המכונית.',
+   parts:[{id:"a",label:"",text:'כוח החיכוך בבלמים פועל…',type:"mcq",options:['בכיוון הנסיעה','בכיוון מנוגד לנסיעה','אנכית כלפי מעלה'],correct:1,points:12,solution:'החיכוך פועל <b>מנגד לנסיעה</b> ולכן מאט את המכונית.'}]},
+  {id:"q6",topic:"forces_distance",points:13,title:"כוח מגנטי",
+   stem:'מגנט מקרב אטב פלדה והאטב נמשך אליו מבלי שנגעו.',
+   parts:[{id:"a",label:"",text:'איזה סוג כוח פועל כאן?',type:"mcq",options:['כוח מגע','כוח ממרחק (מגנטי)','כוח חיכוך'],correct:1,points:13,solution:'כוח <b>מגנטי</b> — פועל ממרחק, ללא מגע.'}]},
+  {id:"q7",topic:"forces_newton3",points:12,title:"אבן נופלת",
+   stem:'כדור הארץ מושך אבן כלפי מטה.',svg:SCI.forcePair('האבן','כדה"א'),
+   parts:[{id:"a",label:"",text:'לפי החוק השלישי, האבן…',type:"mcq",options:['אינה מפעילה כוח','מושכת את כדור הארץ בכוח שווה ומנוגד','דוחה את כדור הארץ'],correct:1,points:12,solution:'גם האבן מושכת את כדור הארץ בכוח <b>שווה ומנוגד</b> (אך כדה"א כבד מאוד ולכן אינו זז בפועל).'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"מכת חשמל",
+   stem:'זרם חשמלי עלול לעבור דרך גוף האדם.',
+   parts:[{id:"a",label:"",text:'מעבר זרם דרך גוף האדם הוא…',type:"mcq",options:['בטוח','מסוכן (התחשמלות)','מועיל לבריאות'],correct:1,points:12,solution:'מעבר זרם דרך הגוף <b>מסוכן</b> — מכת חשמל.'}]}
+];
+MQExam.run({examId:"sci5", title:"תרגול מדעים · 5", kicker:"מדע וטכנולוגיה · כיתה ח'", EXAM});
+</script>
+</html>

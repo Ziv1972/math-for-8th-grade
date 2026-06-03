@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 6 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_voltage",points:13,title:"זרם מול מתח",
+   stem:'זרם ומתח הם שני מושגים שונים שמבלבלים ביניהם.',
+   parts:[{id:"a",label:"",text:'מהו ההבדל הנכון?',type:"mcq",options:['אין הבדל — אותו דבר','זרם = תנועת המטענים (אמפר); מתח = "הדחיפה" של המקור (וולט)','שניהם נמדדים בוואט'],correct:1,points:13,solution:'<b>זרם</b> = תנועת מטענים (אמפר); <b>מתח</b> = הדחיפה של המקור (וולט).'}]},
+  {id:"q2",topic:"elec_power",points:13,title:"צריכת מקרר",
+   stem:'מקרר בהספק 0.2 קילוואט פועל 24 שעות ביממה.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש הוא צורך ביממה?',type:"number",answer:4.8,tolerance:0.05,points:13,hint:"הספק (kW) × שעות",solution:'0.2 × 24 = <b>4.8 קוט"ש</b>.'}]},
+  {id:"q3",topic:"elec_series_parallel",points:12,title:"זרם בטור",
+   stem:'בוחנים מעגל המחובר בטור.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'עוצמת הזרם בחיבור בטור היא…',type:"mcq",options:['שונה בכל נקודה','זהה בכל נקודות המעגל','אפס'],correct:1,points:12,solution:'בטור יש מסלול אחד → הזרם <b>זהה</b> בכל נקודה.'}]},
+  {id:"q4",topic:"forces_contact",points:13,title:"מה עוצר תנועה",
+   stem:'כדור מתגלגל על הקרקע ולבסוף נעצר.',
+   parts:[{id:"a",label:"",text:'איזה כוח מאט ועוצר אותו?',type:"mcq",options:['כוח החיכוך','כוח הכבידה בלבד','שום כוח'],correct:0,points:13,solution:'<b>כוח החיכוך</b> עם הקרקע והאוויר מאט ועוצר.'}]},
+  {id:"q5",topic:"forces_distance",points:12,title:"כוח חשמלי",
+   stem:'סרגל פלסטיק שפשפנו בבד מקרב פתיתי נייר — והם נמשכים אליו.',
+   parts:[{id:"a",label:"",text:'איזה כוח פועל בין הסרגל הטעון לפתיתים?',type:"mcq",options:['מגנטי','חשמלי (ממרחק)','חיכוך'],correct:1,points:12,solution:'כוח <b>חשמלי</b> — בין גוף טעון לפתיתים, פועל ממרחק.'}]},
+  {id:"q6",topic:"forces_newton3",points:13,title:"הנעת רקטה",
+   stem:'רקטה פולטת גזים לאחור ונעה קדימה.',svg:SCI.forcePair('הגזים','הרקטה'),
+   parts:[{id:"a",label:"",text:'איזה עיקרון מסביר את תנועת הרקטה?',type:"mcq",options:['החוק השלישי של ניוטון','כוח חיכוך','כוח הכבידה'],correct:0,points:13,solution:'הרקטה דוחפת גזים לאחור והם דוחפים אותה קדימה — <b>החוק השלישי</b>.'}]},
+  {id:"q7",topic:"elec_resistance",points:12,title:"מוליך ומבודד",
+   stem:'מסווגים חומרים לפי מוליכות חשמלית.',
+   parts:[{id:"a",label:"",text:'איזה זוג הוא (מוליך, מבודד) בהתאמה?',type:"mcq",options:['נחושת, פלסטיק','פלסטיק, נחושת','זכוכית, גומי'],correct:0,points:12,solution:'<b>נחושת</b> מוליכה, <b>פלסטיק</b> מבודד.'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"מפסק פחת",
+   stem:'אמצעי בטיחות נוסף במערכת הביתית.',
+   parts:[{id:"a",label:"",text:'מהו מפסק פחת?',type:"mcq",options:['מד-זרם','אמצעי שמנתק את הזרם כשיש דליפת זרם (סכנת מכת חשמל)','סוללה'],correct:1,points:12,solution:'<b>מפסק פחת</b> מזהה דליפת זרם ומנתק — הגנה מפני התחשמלות.'}]}
+];
+MQExam.run({examId:"sci6", title:"תרגול מדעים · 6", kicker:"מדע וטכנולוגיה · כיתה ח'", EXAM});
+</script>
+</html>

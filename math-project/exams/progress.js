@@ -17,6 +17,7 @@
   var loadTime = Date.now();          // זמן טעינת הדף — לאומדן משך מבחן
 
   var TOPIC_NAMES = {
+    // מתמטיקה
     polygons: "זוויות ומצולעים",
     linear: "פונקציה קווית",
     lineeq: "פונקציה קווית ושטח",
@@ -24,22 +25,44 @@
     percent: "אחוזים",
     congruence: "חפיפת משולשים",
     pythagoras: "משפט פיתגורס",
-    stats: "סטטיסטיקה"
+    stats: "סטטיסטיקה",
+    // מדעים — חשמל
+    elec_circuit: "מעגל חשמלי",
+    elec_current: "זרם חשמלי",
+    elec_voltage: "מתח חשמלי",
+    elec_resistance: "התנגדות ומוליכים",
+    elec_wire: "אורך ועובי המוליך",
+    elec_series_parallel: "חיבור בטור ובמקביל",
+    elec_power: "הספק ואנרגיה",
+    elec_safety: "בטיחות בחשמל",
+    // מדעים — כוחות
+    forces_contact: "כוחות מגע",
+    forces_distance: "כוחות ממרחק",
+    forces_newton3: "החוק השלישי של ניוטון"
   };
 
   // ---- קטלוג מבחנים: topics + level (1=קל,2=בינוני,3=קשה) — level פנימי בלבד ----
   var CATALOG = [
-    { id: "exam1", file: "exam.html",  title: "מבחן מסכם · א'",   level: 2, kind: "exam", topics: ["congruence","lineeq","systems","percent","pythagoras","stats"] },
-    { id: "exam2", file: "exam2.html", title: "מבחן מסכם · ב'",   level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    { id: "exam5", file: "exam5.html", title: "מבחן + מעקב · ה'", level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    { id: "exam3", file: "exam3.html", title: "מבחן מסכם · ג'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    { id: "exam4", file: "exam4.html", title: "מבחן מסכם · ד'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    // מבחני תרגול חדשים — רמה (level) פנימית בלבד, לא מוצגת לתלמיד
-    { id: "exam_l1a", file: "exam-l1a.html", title: "מבחן תרגול · ו'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","linear","polygons"] },
-    { id: "exam_l1b", file: "exam-l1b.html", title: "מבחן תרגול · ז'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
-    { id: "exam_l2a", file: "exam-l2a.html", title: "מבחן תרגול · ח'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] },
-    { id: "exam_l2b", file: "exam-l2b.html", title: "מבחן תרגול · ט'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
-    { id: "exam_l3a", file: "exam-l3a.html", title: "מבחן תרגול · י'", level: 3, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] }
+    // ---- מתמטיקה ----
+    { id: "exam1", file: "exam.html",  subject: "math", title: "מבחן מסכם · א'",   level: 2, kind: "exam", topics: ["congruence","lineeq","systems","percent","pythagoras","stats"] },
+    { id: "exam2", file: "exam2.html", subject: "math", title: "מבחן מסכם · ב'",   level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam5", file: "exam5.html", subject: "math", title: "מבחן + מעקב · ה'", level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam3", file: "exam3.html", subject: "math", title: "מבחן מסכם · ג'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam4", file: "exam4.html", subject: "math", title: "מבחן מסכם · ד'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam_l1a", file: "exam-l1a.html", subject: "math", title: "מבחן תרגול · ו'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","linear","polygons"] },
+    { id: "exam_l1b", file: "exam-l1b.html", subject: "math", title: "מבחן תרגול · ז'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
+    { id: "exam_l2a", file: "exam-l2a.html", subject: "math", title: "מבחן תרגול · ח'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] },
+    { id: "exam_l2b", file: "exam-l2b.html", subject: "math", title: "מבחן תרגול · ט'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
+    { id: "exam_l3a", file: "exam-l3a.html", subject: "math", title: "מבחן תרגול · י'", level: 3, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] },
+    // ---- מדעים (חשמל + כוחות) — רמה פנימית בלבד, לא מוצגת לתלמיד ----
+    { id: "sci1", file: "science-1.html", subject: "science", title: "תרגול מדעים · 1", level: 1, kind: "exam", topics: ["elec_circuit","elec_current","elec_voltage","elec_resistance","elec_wire","elec_series_parallel","elec_power","elec_safety"] },
+    { id: "sci2", file: "science-2.html", subject: "science", title: "תרגול מדעים · 2", level: 1, kind: "exam", topics: ["elec_circuit","elec_current","elec_resistance","elec_series_parallel","elec_safety","forces_contact","forces_distance","forces_newton3"] },
+    { id: "sci3", file: "science-3.html", subject: "science", title: "תרגול מדעים · 3", level: 1, kind: "exam", topics: ["forces_contact","forces_distance","forces_newton3","elec_voltage","elec_wire","elec_power","elec_series_parallel","elec_safety"] },
+    { id: "sci4", file: "science-4.html", subject: "science", title: "תרגול מדעים · 4", level: 2, kind: "exam", topics: ["elec_circuit","elec_current","elec_voltage","elec_resistance","elec_wire","elec_series_parallel","elec_power","elec_safety"] },
+    { id: "sci5", file: "science-5.html", subject: "science", title: "תרגול מדעים · 5", level: 2, kind: "exam", topics: ["elec_resistance","elec_wire","elec_series_parallel","elec_power","elec_safety","forces_contact","forces_distance","forces_newton3"] },
+    { id: "sci6", file: "science-6.html", subject: "science", title: "תרגול מדעים · 6", level: 2, kind: "exam", topics: ["elec_voltage","elec_power","elec_series_parallel","elec_resistance","elec_safety","forces_contact","forces_distance","forces_newton3"] },
+    { id: "sci7", file: "science-7.html", subject: "science", title: "תרגול מדעים · 7", level: 3, kind: "exam", topics: ["elec_power","elec_current","elec_voltage","elec_wire","elec_series_parallel","elec_safety"] },
+    { id: "sci8", file: "science-8.html", subject: "science", title: "תרגול מדעים · 8", level: 3, kind: "exam", topics: ["elec_power","elec_safety","elec_series_parallel","elec_resistance","forces_contact","forces_distance","forces_newton3"] }
   ];
 
   // ---- עזרי localStorage ----
@@ -118,6 +141,7 @@
       score: got, total: pts, pct: pct, byTopic: byTopic,
       durationMs: (meta && meta.durationMs) || Math.max(0, Date.now() - loadTime),
       level: cat ? cat.level : null,
+      subject: cat ? cat.subject : ((meta && meta.subject) || "math"),
       user: activeUser()
     };
 
@@ -129,11 +153,15 @@
     return attempt;
   }
 
-  function getAll() { return load().attempts.slice(); }
+  function getAll(subject) {
+    var all = load().attempts.slice();
+    if (!subject) return all;
+    return all.filter(function (a) { return (a.subject || "math") === subject; });
+  }
 
   // ---- צבירה לפי נושא: last/best/avg/attempts + אומדן קצב ----
-  function aggregate() {
-    var attempts = getAll();
+  function aggregate(subject) {
+    var attempts = getAll(subject);
     var acc = {};
     attempts.forEach(function (a) {
       Object.keys(a.byTopic || {}).forEach(function (t) {
@@ -159,8 +187,8 @@
   }
 
   // ---- המלצה אדפטיבית: נושא חלש → משאב ברמה מתאימה (level פנימי) ----
-  function recommend() {
-    var agg = aggregate();
+  function recommend(subject) {
+    var agg = aggregate(subject);
     var topics = Object.keys(agg).map(function (t) { return agg[t]; });
     if (!topics.length) return null;
     topics.sort(function (a, b) { return a.last - b.last; });
@@ -169,8 +197,8 @@
     // רמת יעד לפי הציון האחרון: <60 קל · 60-84 בינוני · ≥85 קשה
     var band = t.last < 60 ? 1 : (t.last < 85 ? 2 : 3);
 
-    var done = {}; getAll().forEach(function (a) { done[a.examId] = true; });
-    var cands = CATALOG.filter(function (c) { return c.topics.indexOf(t.topic) >= 0; });
+    var done = {}; getAll(subject).forEach(function (a) { done[a.examId] = true; });
+    var cands = CATALOG.filter(function (c) { return c.topics.indexOf(t.topic) >= 0 && (!subject || c.subject === subject); });
     cands.sort(function (a, b) {
       var d = Math.abs(a.level - band) - Math.abs(b.level - band);   // קרוב לרמת היעד
       if (d) return d;

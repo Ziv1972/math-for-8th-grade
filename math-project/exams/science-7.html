@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 7 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_power",points:13,title:"אנרגיה של תנור",
+   stem:'תנור חימום בהספק 2 קילוואט פעל 4 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש (קילוואט-שעה) צרך?',type:"number",answer:8,points:13,hint:"הספק (kW) × זמן (שעות)",solution:'2 × 4 = <b>8 קוט"ש</b>.'}]},
+  {id:"q2",topic:"elec_power",points:13,title:"עלות חשמל",
+   stem:'מכשיר צרך 5 קוט"ש. מחיר קוט"ש הוא 0.6 ש"ח.',
+   parts:[{id:"a",label:"",text:'כמה ישולם עבור הצריכה (בש"ח)?',type:"number",answer:3,points:13,hint:"עלות = קוט\"ש × מחיר ליחידה",solution:'5 × 0.6 = <b>3 ש"ח</b>.'}]},
+  {id:"q3",topic:"elec_power",points:12,title:"נורה לאורך זמן",
+   stem:'נורה בהספק 100 ואט דלקה 10 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש צרכה?',type:"number",answer:1,tolerance:0.01,points:12,hint:"100 ואט = 0.1 קילוואט; הכפל בשעות",solution:'0.1 kW × 10 שעות = <b>1 קוט"ש</b> (100×10=1000 ואט-שעה).'}]},
+  {id:"q4",topic:"elec_current",points:13,title:"יחידת הזרם",
+   stem:'מודדים את עוצמת הזרם במעגל.',
+   parts:[{id:"a",label:"",text:'באיזו יחידה נמדדת עוצמת הזרם?',type:"mcq",options:['וולט','אמפר','קוט"ש'],correct:1,points:13,solution:'עוצמת הזרם נמדדת ב<b>אמפר</b>.'}]},
+  {id:"q5",topic:"elec_voltage",points:12,title:"המרת הספק",
+   stem:'ממירים יחידות הספק.',
+   parts:[{id:"a",label:"",text:'כמה ואט הם 0.5 קילוואט?',type:"number",answer:500,points:12,hint:"× 1000",solution:'0.5 × 1000 = <b>500 ואט</b>.'}]},
+  {id:"q6",topic:"elec_wire",points:13,title:"תיל דק",
+   stem:'שני תילים מאותו חומר ובאותו אורך, אך בעובי שונה.',
+   parts:[{id:"a",label:"",text:'לתיל הדק יותר (שטח חתך קטן)…',type:"mcq",options:['התנגדות גדולה יותר','התנגדות קטנה יותר','אותה התנגדות'],correct:0,points:13,solution:'דק יותר → קשה לזרום → התנגדות <b>גדולה</b> יותר.'}]},
+  {id:"q7",topic:"elec_series_parallel",points:12,title:"למה מקביל בבית",
+   stem:'מערכת החשמל הביתית בנויה במקביל.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'מדוע מחברים את מכשירי החשמל בבית במקביל ולא בטור?',type:"mcq",options:['כדי שכל מכשיר יקבל מתח מלא ויפעל בנפרד','כדי לחסוך בחוטים','אין סיבה'],correct:0,points:12,solution:'במקביל כל מכשיר מקבל את <b>המתח המלא</b> ופועל <b>בנפרד</b> (ניתוק אחד אינו משפיע על האחרים).'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"סכנת קצר",
+   stem:'מתרחש קצר חשמלי במעגל.',
+   parts:[{id:"a",label:"",text:'מדוע קצר חשמלי מסוכן?',type:"mcq",options:['הזרם קטן מאוד','הזרם עולה מאוד והתילים מתחממים — סכנת שריפה','אין שום סכנה'],correct:1,points:12,solution:'בקצר ההתנגדות יורדת והזרם <b>עולה מאוד</b> → התחממות → סכנת שריפה.'}]}
+];
+MQExam.run({examId:"sci7", title:"תרגול מדעים · 7", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל", EXAM});
+</script>
+</html>

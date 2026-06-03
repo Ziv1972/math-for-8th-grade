@@ -43,7 +43,7 @@ a.card.game .desc{color:#bda9e8;}
 a.card.game .name{color:#fff;}
 .dash-empty{background:#fff;border:1px dashed var(--rule);border-radius:10px;padding:30px;text-align:center;color:var(--soft);}
 .dash-empty b{color:var(--ink);}
-.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:8px;}
+.stat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(115px,1fr));gap:12px;margin-bottom:8px;}
 .stat{background:#fff;border:1px solid var(--rule);border-radius:10px;padding:16px;text-align:center;}
 .stat .v{font-family:'Fraunces',serif;font-size:1.7rem;font-weight:700;color:var(--accent);direction:ltr;}
 .stat .l{font-size:0.8rem;color:var(--soft);margin-top:2px;}
@@ -85,6 +85,11 @@ a.card.game .name{color:#fff;}
 .pf-btn:hover{border-color:var(--accent);color:var(--accent);}
 .pf-btn.danger:hover{border-color:var(--bad);color:var(--bad);}
 .pf-hint{color:var(--soft);font-size:0.84rem;}
+.subject-tabs{display:flex;gap:10px;margin-bottom:14px;}
+.subj-btn{flex:1;font-family:'Assistant';font-weight:700;font-size:1.05rem;padding:12px;border-radius:10px;cursor:pointer;border:1px solid var(--rule);background:#fff;color:var(--soft);transition:all .2s;}
+.subj-btn:hover{border-color:var(--accent);}
+.subj-btn.active{color:#fff;background:var(--accent);border-color:var(--accent);box-shadow:0 4px 12px rgba(15,110,92,0.2);}
+.subj-btn.science.active{background:#2c5d7c;border-color:#2c5d7c;box-shadow:0 4px 12px rgba(44,93,124,0.25);}
 @media(max-width:640px){
   .head h1{font-size:1.7rem;}
   .tools-grid,.cols{grid-template-columns:1fr;}
@@ -101,6 +106,7 @@ a.card.game .name{color:#fff;}
     <p>כל כלי התרגול במקום אחד — והמעקב נבנה לבד מכל מבחן שמסיימים.</p>
   </div>
 
+  <div class="subject-tabs" id="subjectTabs"></div>
   <div class="profile-bar" id="profileBar"></div>
 
   <div class="section-title">📝 מבחנים <span class="line"></span></div>
@@ -138,7 +144,7 @@ function h(tag, attrs, ...kids){
 }
 function clear(el){ while(el.firstChild) el.removeChild(el.firstChild); }
 
-const EXAMS=[
+const MATH_EXAMS=[
   {id:"exam1",file:"exam.html",name:"מבחן מסכם · א'",tag:"מסכם",desc:"7 שאלות, 100 נק'."},
   {id:"exam2",file:"exam2.html",name:"מבחן מסכם · ב'",tag:"דגש מערכות",desc:"8 שאלות, 4 על מערכות."},
   {id:"exam3",file:"exam3.html",name:"מבחן מסכם · ג'",tag:"מסכם",desc:"8 שאלות, 100 נק'."},
@@ -150,7 +156,23 @@ const EXAMS=[
   {id:"exam_l2b",file:"exam-l2b.html",name:"מבחן תרגול · ט'",tag:"תרגול",desc:"מערכות, חפיפת משולשים, אי-שוויון, פיתגורס."},
   {id:"exam_l3a",file:"exam-l3a.html",name:"מבחן תרגול · י'",tag:"תרגול",desc:"מערכות (שברים), מצולעים, מעוין, שטח על צירים."}
 ];
-const TOPIC_ORDER=["polygons","linear","lineeq","systems","percent","congruence","pythagoras","stats"];
+const SCIENCE_EXAMS=[
+  {id:"sci1",file:"science-1.html",name:"תרגול מדעים · 1",tag:"חשמל",desc:"מעגל, זרם, מתח, התנגדות, טור/מקביל, הספק, בטיחות."},
+  {id:"sci2",file:"science-2.html",name:"תרגול מדעים · 2",tag:"מדעים",desc:"חשמל + כוחות: מעגל, זרם, חיכוך, כבידה, ניוטון."},
+  {id:"sci3",file:"science-3.html",name:"תרגול מדעים · 3",tag:"מדעים",desc:"כוחות + חשמל: מגע, ממרחק, ניוטון, מתח, הספק."},
+  {id:"sci4",file:"science-4.html",name:"תרגול מדעים · 4",tag:"חשמל",desc:"חשמל לעומק: זרם, מתח, התנגדות, טור/מקביל, בטיחות."},
+  {id:"sci5",file:"science-5.html",name:"תרגול מדעים · 5",tag:"מדעים",desc:"התנגדות, הספק, חיכוך, כבידה, ניוטון."},
+  {id:"sci6",file:"science-6.html",name:"תרגול מדעים · 6",tag:"מדעים",desc:"מתח, הספק, טור/מקביל + כוחות וניוטון."},
+  {id:"sci7",file:"science-7.html",name:"תרגול מדעים · 7",tag:"חשמל",desc:"הספק ואנרגיה (קוט\"ש), חישובים, בטיחות."},
+  {id:"sci8",file:"science-8.html",name:"תרגול מדעים · 8",tag:"מדעים",desc:"חשמל + כוחות מאתגר: הספק, ניוטון, כבידה."}
+];
+const MATH_TOPIC_ORDER=["polygons","linear","lineeq","systems","percent","congruence","pythagoras","stats"];
+const SCIENCE_TOPIC_ORDER=["elec_circuit","elec_current","elec_voltage","elec_resistance","elec_wire","elec_series_parallel","elec_power","elec_safety","forces_contact","forces_distance","forces_newton3"];
+function getSubject(){ try{ return localStorage.getItem('mq_subject')||'math'; }catch(e){ return 'math'; } }
+function setSubject(s){ try{ localStorage.setItem('mq_subject',s); }catch(e){} }
+function subjExams(){ return getSubject()==='science'?SCIENCE_EXAMS:MATH_EXAMS; }
+function subjOrder(){ return getSubject()==='science'?SCIENCE_TOPIC_ORDER:MATH_TOPIC_ORDER; }
+function fmtDur(ms){ if(!ms||ms<0) return '—'; const s=Math.round(ms/1000),m=Math.floor(s/60); return m+':'+String(s%60).padStart(2,'0'); }
 
 function latestByExam(attempts){
   const m={};
@@ -168,7 +190,7 @@ function numSpan(txt){ return h('span',{class:'num'},txt); }
 // ---- כרטיסי מבחנים ----
 function renderExamCards(latest){
   const wrap=document.getElementById('examCards'); clear(wrap);
-  EXAMS.forEach(e=>{
+  subjExams().forEach(e=>{
     const a=latest[e.id];
     const last = a
       ? h('span',{class:'last',style:'color:'+colorFor(a.pct)}, 'ציון אחרון: ', numSpan(a.score+'/'+a.total), ' · '+a.pct+'%')
@@ -185,20 +207,23 @@ function renderExamCards(latest){
 
 // ---- דוח ----
 function renderDash(){
-  const attempts=MQ.getAll();
+  const subject=getSubject();
+  const attempts=MQ.getAll(subject);
   const dash=document.getElementById('dash'); clear(dash);
 
   if(!attempts.length){
     dash.append(h('div',{class:'dash-empty'},
-      h('b',{},'עדיין אין נתוני מעקב.'), h('br'),
-      "ברגע שתסיים/י מבחן (כל אחד מ-א' עד ה') — הציון והפירוט לפי נושא ייכנסו לכאן אוטומטית, ותיבנה תמונת חוזקות וחולשות לאורך זמן."));
+      h('b',{},'עדיין אין נתוני מעקב '+(subject==='science'?'במדעים':'במתמטיקה')+'.'), h('br'),
+      "ברגע שתסיים/י תרגול — הציון, הזמן והפירוט לפי נושא ייכנסו לכאן אוטומטית, ותיבנה תמונת חוזקות וחולשות לאורך זמן."));
     return;
   }
 
-  const agg=MQ.aggregate();
-  const topics=TOPIC_ORDER.filter(t=>agg[t]).map(t=>agg[t]);
+  const agg=MQ.aggregate(subject);
+  const topics=subjOrder().filter(t=>agg[t]).map(t=>agg[t]);
   const avgAll=Math.round(attempts.reduce((s,a)=>s+a.pct,0)/attempts.length);
   const bestAll=Math.max.apply(null,attempts.map(a=>a.pct));
+  const durs=attempts.map(a=>a.durationMs||0).filter(d=>d>0);
+  const avgDur=durs.length?fmtDur(durs.reduce((s,d)=>s+d,0)/durs.length):'—';
 
   // סטטיסטיקה כללית
   const stat=(v,l)=>h('div',{class:'stat'},h('div',{class:'v'},v),h('div',{class:'l'},l));
@@ -206,6 +231,7 @@ function renderDash(){
     stat(attempts.length,'מבחנים שהושלמו'),
     stat(avgAll+'%','ממוצע כללי'),
     stat(bestAll+'%','השיא'),
+    stat(avgDur,'זמן ממוצע'),
     stat(topics.length,'נושאים שנבדקו')
   ));
 
@@ -244,7 +270,7 @@ function renderDash(){
   dash.append(h('div',{class:'cols'},weakPanel,strongPanel));
 
   // הצעד הבא — המלצה אדפטיבית (רמת הקושי נסתרת מהתלמיד)
-  const rec=MQ.recommend();
+  const rec=MQ.recommend(subject);
   if(rec){
     const body=h('p',{},'הנושא לחיזוק עכשיו הוא ',h('b',{},rec.name),' (ציון אחרון ',numSpan(rec.last+'%'),'). ');
     if(rec.resource){
@@ -259,12 +285,13 @@ function renderDash(){
   const recent=attempts.slice().sort((a,b)=>b.ts-a.ts).slice(0,8);
   dash.append(h('div',{class:'section-title sub'},'🕘 ניסיונות אחרונים ',h('span',{class:'line'})));
   const table=h('table',{class:'attempts'},
-    h('tr',{},h('th',{},'מתי'),h('th',{},'מבחן'),h('th',{},'ציון')));
+    h('tr',{},h('th',{},'מתי'),h('th',{},'מבחן'),h('th',{},'ציון'),h('th',{},'זמן')));
   recent.forEach(a=>{
     table.append(h('tr',{},
       h('td',{},fmtDate(a.ts)),
       h('td',{},a.title),
-      h('td',{class:'sc',style:'color:'+colorFor(a.pct)},a.score+'/'+a.total+' · '+a.pct+'%')
+      h('td',{class:'sc',style:'color:'+colorFor(a.pct)},a.score+'/'+a.total+' · '+a.pct+'%'),
+      h('td',{class:'num'},fmtDur(a.durationMs))
     ));
   });
   dash.append(table);
@@ -311,9 +338,16 @@ document.getElementById('btnExport').onclick=()=>{
   document.getElementById('btnExport').textContent='✓ הועתק ללוח';
 };
 
+function renderSubjectTabs(){
+  const bar=document.getElementById('subjectTabs'); clear(bar);
+  const cur=getSubject();
+  const mk=(key,label,cls)=>h('button',{class:'subj-btn'+(cls||'')+(cur===key?' active':''),onclick:()=>{ setSubject(key); renderAll(); }},label);
+  bar.append(mk('math','📐 מתמטיקה',''), mk('science','🔬 מדעים',' science'));
+}
 function renderAll(){
+  renderSubjectTabs();
   renderProfileBar();
-  renderExamCards(latestByExam(MQ.getAll()));
+  renderExamCards(latestByExam(MQ.getAll(getSubject())));
   renderDash();
 }
 renderAll();

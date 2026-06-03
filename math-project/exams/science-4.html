@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 4 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_circuit",points:13,title:"מתג פתוח",
+   stem:'בציור המתג במעגל פתוח.',svg:SCI.circuitOpen,
+   parts:[{id:"a",label:"",text:'האם הנורה דולקת?',type:"mcq",options:['כן','לא — המעגל אינו סגור','רק חלקית'],correct:1,points:13,solution:'מתג פתוח = מעגל לא סגור → אין זרם → הנורה <b>כבויה</b>.'}]},
+  {id:"q2",topic:"elec_current",points:13,title:"זרם בתמיסה",
+   stem:'מעבירים זרם בתמיסת מי-מלח (תרכובת יונית מומסת).',
+   parts:[{id:"a",label:"",text:'הזרם בתמיסה נגרם מתנועת…',type:"mcq",options:['אלקטרונים בלבד','יונים חיוביים ושליליים','אטומים נייטרליים'],correct:1,points:13,solution:'בתמיסה מוליכה הזרם הוא תנועת <b>יונים</b> (חיוביים ושליליים).'}]},
+  {id:"q3",topic:"elec_voltage",points:12,title:"יחידת המתח",
+   stem:'יחידת המתח נקראה על שם מדען.',
+   parts:[{id:"a",label:"",text:'מהי יחידת המתח ועל שם מי נקראה?',type:"mcq",options:['אמפר — אנדרה אמפר','וולט — אלסנדרו וולטה','ואט — ג\'יימס ואט'],correct:1,points:12,solution:'מתח נמדד ב<b>וולט</b>, על שם <b>וולטה</b> (ממציא הסוללה).'}]},
+  {id:"q4",topic:"elec_resistance",points:13,title:"מוליכות והתנגדות",
+   stem:'מוליכות חשמלית והתנגדות הן תכונות הפוכות.',
+   parts:[{id:"a",label:"",text:'ככל שמוליכות החומר טובה יותר, ההתנגדות שלו…',type:"mcq",options:['גדולה יותר','קטנה יותר','שווה'],correct:1,points:13,solution:'מוליכות טובה יותר → התנגדות <b>קטנה</b> יותר (יחס הפוך).'}]},
+  {id:"q5",topic:"elec_wire",points:12,title:"אורך והתנגדות",
+   stem:'שני תילים מאותו חומר ובאותו עובי, אך באורך שונה.',
+   parts:[{id:"a",label:"",text:'לתיל הארוך יותר תהיה…',type:"mcq",options:['התנגדות גדולה יותר','התנגדות קטנה יותר','אותה התנגדות'],correct:0,points:12,solution:'ארוך יותר → התנגדות <b>גדולה</b> יותר.'}]},
+  {id:"q6",topic:"elec_series_parallel",points:13,title:"זרם בטור",
+   stem:'מוסיפים עוד נורות בחיבור בטור.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'ככל שמוסיפים נורות בטור, עוצמת הזרם…',type:"mcq",options:['גדלה','קטנה (ההתנגדות הכוללת גדלה)','לא משתנה'],correct:1,points:13,solution:'בטור ההתנגדות הכוללת גדלה → הזרם <b>קטן</b> (הנורות חלשות יותר).'}]},
+  {id:"q7",topic:"elec_power",points:12,title:"צריכת אנרגיה",
+   stem:'מכשיר בהספק 1.5 קילוואט פעל שעתיים.',
+   parts:[{id:"a",label:"",text:'כמה קילוואט-שעה (קוט"ש) צרך?',type:"number",answer:3,points:12,hint:"אנרגיה = הספק (kW) × זמן (שעות)",solution:'1.5 × 2 = <b>3 קוט"ש</b>.'}]},
+  {id:"q8",topic:"elec_safety",points:12,title:"מפסק אוטומטי",
+   stem:'אמצעי בטיחות במערכת החשמל הביתית.',
+   parts:[{id:"a",label:"",text:'מהו רכיב שמנתק את הזרם בעת עומס יתר או קצר?',type:"mcq",options:['מד-זרם','מפסק אוטומטי','נגד'],correct:1,points:12,solution:'<b>מפסק אוטומטי</b> מנתק את הזרם בעת תקלה.'}]}
+];
+MQExam.run({examId:"sci4", title:"תרגול מדעים · 4", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל", EXAM});
+</script>
+</html>
