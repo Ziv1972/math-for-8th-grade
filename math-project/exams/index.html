@@ -118,6 +118,8 @@ a.card.game .name{color:#fff;}
   <div class="subject-tabs" id="subjectTabs"></div>
   <div class="profile-bar" id="profileBar"></div>
 
+  <div id="predictPanel"></div>
+
   <div class="section-title">📝 מבחנים <span class="line"></span></div>
   <div class="grid exams-grid" id="examCards"></div>
 
@@ -225,21 +227,6 @@ function renderDash(){
       h('b',{},'עדיין אין נתוני מעקב '+(subject==='science'?'במדעים':'במתמטיקה')+'.'), h('br'),
       "ברגע שתסיים/י תרגול — הציון, הזמן והפירוט לפי נושא ייכנסו לכאן אוטומטית, ותיבנה תמונת חוזקות וחולשות לאורך זמן."));
     return;
-  }
-
-  // ----- צפי לציון במבחן -----
-  const pred=MQ.predict(subject);
-  if(pred){
-    const confTxt={high:'ביטחון גבוה',medium:'ביטחון בינוני',low:'ביטחון נמוך — שווה עוד תרגול'}[pred.confidence];
-    dash.append(h('div',{class:'predict'},
-      h('div',{class:'predict-num',style:'color:'+colorFor(pred.grade)},pred.grade),
-      h('div',{class:'predict-side'},
-        h('div',{class:'predict-lbl'},'צפי לציון במבחן'),
-        h('div',{class:'predict-conf'},confTxt+' · לפי '+pred.covered+'/'+pred.total+' נושאים'),
-        pred.weakest.length?h('div',{class:'predict-weak'},'מורידים את הצפי: '+pred.weakest.map(w=>w.name+' ('+w.mastery+'%)').join(' · ')):null,
-        h('a',{class:'predict-btn',href:'focus.html?subject='+subject},'⚡ בנה לי תרגול ממוקד')
-      )
-    ));
   }
 
   const agg=MQ.aggregate(subject);
@@ -368,9 +355,35 @@ function renderSubjectTabs(){
   const mk=(key,label,cls)=>h('button',{class:'subj-btn'+(cls||'')+(cur===key?' active':''),onclick:()=>{ setSubject(key); renderAll(); }},label);
   bar.append(mk('math','📐 מתמטיקה',''), mk('science','🔬 מדעים',' science'));
 }
+function renderPrediction(){
+  const subject=getSubject();
+  const wrap=document.getElementById('predictPanel'); clear(wrap);
+  const pred=MQ.predict(subject);
+  if(!pred){
+    wrap.append(h('div',{class:'predict predict-empty'},
+      h('div',{class:'predict-side'},
+        h('div',{class:'predict-lbl'},'🎯 צפי לציון במבחן'),
+        h('div',{class:'predict-conf'},'עדיין אין מספיק נתונים. פתרו תרגול אחד — ואחשב צפי לציון לפי הביצועים, עם תרגול ממוקד על הנושאים החלשים.'),
+        h('a',{class:'predict-btn',href:'focus.html?subject='+subject},'⚡ התחל תרגול ממוקד')
+      )
+    ));
+    return;
+  }
+  const confTxt={high:'ביטחון גבוה',medium:'ביטחון בינוני',low:'ביטחון נמוך — שווה עוד תרגול'}[pred.confidence];
+  wrap.append(h('div',{class:'predict'},
+    h('div',{class:'predict-num',style:'color:'+colorFor(pred.grade)},pred.grade),
+    h('div',{class:'predict-side'},
+      h('div',{class:'predict-lbl'},'🎯 צפי לציון במבחן'),
+      h('div',{class:'predict-conf'},confTxt+' · לפי '+pred.covered+'/'+pred.total+' נושאים'),
+      pred.weakest.length?h('div',{class:'predict-weak'},'מורידים את הצפי: '+pred.weakest.map(w=>w.name+' ('+w.mastery+'%)').join(' · ')):null,
+      h('a',{class:'predict-btn',href:'focus.html?subject='+subject},'⚡ בנה לי תרגול ממוקד')
+    )
+  ));
+}
 function renderAll(){
   renderSubjectTabs();
   renderProfileBar();
+  renderPrediction();
   renderExamCards(latestByExam(MQ.getAll(getSubject())));
   renderDash();
 }
