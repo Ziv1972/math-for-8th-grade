@@ -41,10 +41,13 @@ const EXAM = [
    parts:[
      {id:"a",label:"",text:'מהו המחיר החדש (בש"ח)?',type:"number",answer:90,points:11,hint:"120 · 0.75",solution:'120 · 0.75 = <b>90 ש"ח</b>'}
    ]},
-  {id:"q6",topic:"percent",points:11,title:"אחוז שינוי",
-   stem:'מחיר עלה מ-80 ש"ח ל-100 ש"ח.',
+  {id:"q6",topic:"polygons",points:11,title:"משו\"ש, תיכון וזוויות",
+   stem:'במשולש שווה-שוקיים ABC (<span class="formula" dir="ltr">AB = AC</span>), <span class="formula" dir="ltr">AD</span> תיכון לבסיס <span class="formula" dir="ltr">BC</span>. נתון <span class="formula" dir="ltr">∠B = 65°</span> ו-<span class="formula" dir="ltr">BC = 12</span> ס"מ.',
+   svg:'<svg viewBox="0 0 280 235" style="max-width:250px"><polygon points="140,30 50,200 230,200" fill="none" stroke="#23201a" stroke-width="2"/><line x1="140" y1="30" x2="140" y2="200" stroke="#b8763e" stroke-width="1.5" stroke-dasharray="5,4"/><rect x="132" y="192" width="8" height="8" fill="none" stroke="#b8763e" stroke-width="1.2"/><line x1="90" y1="110" x2="98" y2="118" stroke="#c4453a" stroke-width="2"/><line x1="182" y1="118" x2="190" y2="110" stroke="#c4453a" stroke-width="2"/><text x="134" y="22" font-size="15" font-weight="bold">A</text><text x="32" y="213" font-size="15" font-weight="bold">B</text><text x="234" y="213" font-size="15" font-weight="bold">C</text><text x="143" y="216" font-size="12" fill="#b8763e">D</text><text x="62" y="194" font-size="11" fill="#0f6e5c">65°</text><text x="88" y="214" font-size="10" fill="#555">12</text></svg>',
    parts:[
-     {id:"a",label:"",text:'בכמה אחוזים עלה המחיר?',type:"number",answer:25,points:11,hint:"(העלייה ÷ המחיר המקורי) · 100",solution:'(20 ÷ 80)·100 = <b>25%</b>'}
+     {id:"a",label:"(א)",text:'כמה מעלות <span class="formula" dir="ltr">∠C</span>?',type:"number",answer:65,points:4,hint:"זוויות הבסיס במשו\"ש שוות",solution:'זוויות הבסיס שוות → <b>∠C = 65°</b>'},
+     {id:"b",label:"(ב)",text:'כמה מעלות <span class="formula" dir="ltr">∠BAD</span>?',type:"number",answer:25,points:4,hint:"זווית הראש = 180−65−65=50; התיכון חוצה אותה",solution:'זווית הראש = 180 − 65 − 65 = 50°. התיכון חוצה אותה: 50 ÷ 2 = <b>25°</b>'},
+     {id:"c",label:"(ג)",text:'מהו אורך <span class="formula" dir="ltr">BD</span> (בס"מ)?',type:"number",answer:6,points:3,hint:"במשו\"ש התיכון לבסיס חוצה אותו",solution:'התיכון חוצה את הבסיס: 12 ÷ 2 = <b>6 ס"מ</b>'}
    ]},
   {id:"q7",topic:"pythagoras",points:12,title:"אלכסון מלבן",
    stem:'במלבן הצלעות הן <span class="formula" dir="ltr">12</span> ס"מ ו-<span class="formula" dir="ltr">9</span> ס"מ.',

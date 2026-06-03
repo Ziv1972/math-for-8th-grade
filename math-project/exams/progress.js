@@ -32,14 +32,14 @@
     { id: "exam1", file: "exam.html",  title: "מבחן מסכם · א'",   level: 2, kind: "exam", topics: ["congruence","lineeq","systems","percent","pythagoras","stats"] },
     { id: "exam2", file: "exam2.html", title: "מבחן מסכם · ב'",   level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
     { id: "exam5", file: "exam5.html", title: "מבחן + מעקב · ה'", level: 2, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    { id: "exam3", file: "exam3.html", title: "מבחן מתקדם · ג'",  level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
-    { id: "exam4", file: "exam4.html", title: "מבחן אתגר · ד'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam3", file: "exam3.html", title: "מבחן מסכם · ג'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
+    { id: "exam4", file: "exam4.html", title: "מבחן מסכם · ד'",   level: 3, kind: "exam", topics: ["polygons","lineeq","systems","percent","pythagoras"] },
     // מבחני תרגול חדשים — רמה (level) פנימית בלבד, לא מוצגת לתלמיד
-    { id: "exam_l1a", file: "exam-l1a.html", title: "מבחן תרגול · ו'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","linear"] },
-    { id: "exam_l1b", file: "exam-l1b.html", title: "מבחן תרגול · ז'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","stats"] },
-    { id: "exam_l2a", file: "exam-l2a.html", title: "מבחן תרגול · ח'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","lineeq"] },
-    { id: "exam_l2b", file: "exam-l2b.html", title: "מבחן תרגול · ט'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","stats"] },
-    { id: "exam_l3a", file: "exam-l3a.html", title: "מבחן תרגול · י'", level: 3, kind: "exam", topics: ["systems","percent","pythagoras","lineeq"] }
+    { id: "exam_l1a", file: "exam-l1a.html", title: "מבחן תרגול · ו'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","linear","polygons"] },
+    { id: "exam_l1b", file: "exam-l1b.html", title: "מבחן תרגול · ז'", level: 1, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
+    { id: "exam_l2a", file: "exam-l2a.html", title: "מבחן תרגול · ח'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] },
+    { id: "exam_l2b", file: "exam-l2b.html", title: "מבחן תרגול · ט'", level: 2, kind: "exam", topics: ["systems","percent","pythagoras","stats","congruence"] },
+    { id: "exam_l3a", file: "exam-l3a.html", title: "מבחן תרגול · י'", level: 3, kind: "exam", topics: ["systems","percent","pythagoras","lineeq","polygons"] }
   ];
 
   // ---- עזרי localStorage ----

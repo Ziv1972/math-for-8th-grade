@@ -35,10 +35,12 @@ const EXAM = [
      {id:"a",label:"(א)",text:'מהו מחיר ק"ג גבינה המקורי (בש"ח)?',type:"number",answer:20,points:7,hint:"3g + 2z = 80 ; אחרי ייקור 3·(1.2g) + 2z = 92. חסרו את המשוואות",solution:'3g+2z=80 ; 3.6g+2z=92. חיסור: 0.6g = 12 → <b>g = 20 ש"ח</b>'},
      {id:"b",label:"(ב)",text:'מהו מחיר ק"ג זיתים (בש"ח)?',type:"number",answer:10,points:7,hint:"הציבו g=20 ב-3g + 2z = 80",solution:'3·20 + 2z = 80 → 2z = 20 → <b>z = 10 ש"ח</b>'}
    ]},
-  {id:"q5",topic:"percent",points:12,title:"מציאת המחיר המקורי",
-   stem:'לאחר הנחה של <span class="formula" dir="ltr">20%</span> מחיר מוצר הוא 160 ש"ח.',
+  {id:"q5",topic:"congruence",points:12,title:"חפיפת משולשים — משפט ונימוק",
+   stem:'בציור שני משולשים, <span class="formula" dir="ltr">BC</span> צלע משותפת לשניהם. נתון <span class="formula" dir="ltr">∠ABC = ∠DBC</span> ו-<span class="formula" dir="ltr">∠ACB = ∠DCB</span>.',
+   svg:'<svg viewBox="0 0 260 200" style="max-width:240px"><line x1="40" y1="150" x2="220" y2="150" stroke="#23201a" stroke-width="2"/><polygon points="40,150 220,150 110,40" fill="none" stroke="#23201a" stroke-width="2"/><polygon points="40,150 220,150 150,180" fill="none" stroke="#23201a" stroke-width="2"/><text x="28" y="165" font-size="14" font-weight="bold">B</text><text x="224" y="165" font-size="14" font-weight="bold">C</text><text x="104" y="34" font-size="14" font-weight="bold">A</text><text x="150" y="196" font-size="14" font-weight="bold">D</text><line x1="126" y1="150" x2="134" y2="150" stroke="#0f6e5c" stroke-width="2"/></svg>',
    parts:[
-     {id:"a",label:"",text:'מהו המחיר המקורי (בש"ח)?',type:"number",answer:200,points:12,hint:"160 = 0.8 · X",solution:'160 ÷ 0.8 = <b>200 ש"ח</b>'}
+     {id:"a",label:"(א)",text:'לפי איזה משפט חפיפה <span class="formula" dir="ltr">△ABC ≅ △DBC</span>?',type:"mcq",options:['צ.צ.צ (SSS)','צ.ז.צ (SAS)','ז.צ.ז (ASA)'],correct:2,points:6,solution:'שתי זוויות (∠B, ∠C) והצלע <b>שביניהן</b> (BC) → <b>ז.צ.ז (ASA)</b>'},
+     {id:"b",label:"(ב)",text:'מהו הנימוק לכך ש-<span class="formula" dir="ltr">BC = BC</span>?',type:"mcq",options:['נתון','צלע משותפת','זוויות קודקודיות'],correct:1,points:6,solution:'BC מופיעה בשני המשולשים → <b>צלע משותפת</b>'}
    ]},
   {id:"q6",topic:"percent",points:10,title:"אי-שוויון",
    stem:'פתרו את אי-השוויון <span class="formula" dir="ltr">−2x > −10</span>.',

@@ -35,10 +35,12 @@ const EXAM = [
    parts:[
      {id:"a",label:"",text:'התשובה:',type:"number",answer:30,points:12,hint:"0.20 · 150",solution:'0.20 · 150 = <b>30</b>'}
    ]},
-  {id:"q5",topic:"percent",points:12,title:"הנחה",
-   stem:'מעיל עלה 80 ש"ח, וירד בהנחה של <span class="formula" dir="ltr">25%</span>.',
+  {id:"q5",topic:"polygons",points:12,title:"משולש שווה-שוקיים וזוויות",
+   stem:'במשולש שווה-שוקיים ABC מתקיים <span class="formula" dir="ltr">AB = AC</span>, וזווית הראש <span class="formula" dir="ltr">∠A = 40°</span>.',
+   svg:'<svg viewBox="0 0 280 230" style="max-width:230px"><polygon points="140,30 50,200 230,200" fill="none" stroke="#23201a" stroke-width="2"/><line x1="90" y1="110" x2="98" y2="118" stroke="#c4453a" stroke-width="2"/><line x1="182" y1="118" x2="190" y2="110" stroke="#c4453a" stroke-width="2"/><text x="134" y="22" font-size="15" font-weight="bold">A</text><text x="36" y="213" font-size="15" font-weight="bold">B</text><text x="234" y="213" font-size="15" font-weight="bold">C</text><text x="123" y="54" font-size="12" fill="#0f6e5c">40°</text></svg>',
    parts:[
-     {id:"a",label:"",text:'מהו המחיר החדש (בש"ח)?',type:"number",answer:60,points:12,hint:"80 · 0.75",solution:'80 · 0.75 = <b>60 ש"ח</b>'}
+     {id:"a",label:"(א)",text:'כמה מעלות כל אחת מזוויות הבסיס?',type:"number",answer:70,points:8,hint:"זוויות הבסיס שוות; (180−40) מתחלק בין שתיהן",solution:'(180 − 40) ÷ 2 = <b>70°</b>'},
+     {id:"b",label:"(ב)",text:'מהי הזווית החיצונית לאחת מזוויות הבסיס? (במעלות)',type:"number",answer:110,points:4,hint:"זווית חיצונית + הזווית הצמודה = 180°",solution:'180 − 70 = <b>110°</b>'}
    ]},
   {id:"q6",topic:"pythagoras",points:14,title:"משפט פיתגורס",
    stem:'במשולש ישר-זווית הניצבים הם <span class="formula" dir="ltr">3</span> ו-<span class="formula" dir="ltr">4</span> ס"מ.',

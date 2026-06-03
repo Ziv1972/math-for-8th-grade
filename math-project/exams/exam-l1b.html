@@ -39,10 +39,11 @@ const EXAM = [
    parts:[
      {id:"a",label:"",text:'מהו המספר?',type:"number",answer:150,points:12,hint:"45 ÷ 0.30",solution:'45 ÷ 0.30 = <b>150</b>'}
    ]},
-  {id:"q6",topic:"percent",points:12,title:"ייקור",
-   stem:'מוצר עלה 200 ש"ח והתייקר ב-<span class="formula" dir="ltr">10%</span>.',
+  {id:"q6",topic:"congruence",points:12,title:"חפיפת משולשים — משפט",
+   stem:'בשני המשולשים שבציור שתי צלעות והזווית הכלואה ביניהן שוות בהתאמה (סימון: צלע אחת ✓, צלע שנייה ✓✓, והזווית שביניהן).',
+   svg:'<svg viewBox="0 0 360 200" style="max-width:340px"><polygon points="40,40 20,160 130,160" fill="none" stroke="#23201a" stroke-width="2"/><text x="30" y="34" font-size="14" font-weight="bold">A</text><text x="4" y="174" font-size="14" font-weight="bold">B</text><text x="132" y="174" font-size="14" font-weight="bold">C</text><polygon points="240,40 220,160 330,160" fill="none" stroke="#23201a" stroke-width="2"/><text x="230" y="34" font-size="14" font-weight="bold">D</text><text x="204" y="174" font-size="14" font-weight="bold">E</text><text x="332" y="174" font-size="14" font-weight="bold">F</text><line x1="26" y1="100" x2="34" y2="100" stroke="#c4453a" stroke-width="2"/><line x1="226" y1="100" x2="234" y2="100" stroke="#c4453a" stroke-width="2"/><line x1="70" y1="155" x2="74" y2="165" stroke="#c4453a" stroke-width="2"/><line x1="80" y1="155" x2="84" y2="165" stroke="#c4453a" stroke-width="2"/><line x1="270" y1="155" x2="274" y2="165" stroke="#c4453a" stroke-width="2"/><line x1="280" y1="155" x2="284" y2="165" stroke="#c4453a" stroke-width="2"/><path d="M 30 150 A 16 16 0 0 1 38 158" fill="none" stroke="#0f6e5c" stroke-width="1.5"/><path d="M 230 150 A 16 16 0 0 1 238 158" fill="none" stroke="#0f6e5c" stroke-width="1.5"/></svg>',
    parts:[
-     {id:"a",label:"",text:'מהו המחיר החדש (בש"ח)?',type:"number",answer:220,points:12,hint:"200 · 1.10",solution:'200 · 1.10 = <b>220 ש"ח</b>'}
+     {id:"a",label:"",text:'לפי איזה משפט חפיפה המשולשים חופפים?',type:"mcq",options:['צ.צ.צ (SSS)','צ.ז.צ (SAS)','ז.צ.ז (ASA)'],correct:1,points:12,solution:'שתי צלעות + הזווית <b>שביניהן</b> → <b>צ.ז.צ (SAS)</b>'}
    ]},
   {id:"q7",topic:"pythagoras",points:14,title:"משפט פיתגורס",
    stem:'במשולש ישר-זווית הניצבים הם <span class="formula" dir="ltr">6</span> ו-<span class="formula" dir="ltr">8</span> ס"מ.',

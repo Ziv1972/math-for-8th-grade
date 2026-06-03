@@ -103,21 +103,6 @@ a.card.game .name{color:#fff;}
 
   <div class="profile-bar" id="profileBar"></div>
 
-  <div class="section-title">🚀 להתחיל לתרגל <span class="line"></span></div>
-  <div class="grid tools-grid">
-    <a class="card game" href="game.html">
-      <span class="ico">🎮</span>
-      <span class="name">המשחק — מסע המתמטיקה</span>
-      <span class="desc">8 עולמות, XP, רצף ותגים. לתרגול שוטף וכיפי.</span>
-      <span class="last none" id="gameLast">—</span>
-    </a>
-    <a class="card" href="tirgul.html">
-      <span class="ico">📖</span>
-      <span class="name">תרגול והסבר</span>
-      <span class="desc">הסברים קצרים + תרגילים לכל אחד מ-8 הנושאים.</span>
-    </a>
-  </div>
-
   <div class="section-title">📝 מבחנים <span class="line"></span></div>
   <div class="grid exams-grid" id="examCards"></div>
 
@@ -156,14 +141,14 @@ function clear(el){ while(el.firstChild) el.removeChild(el.firstChild); }
 const EXAMS=[
   {id:"exam1",file:"exam.html",name:"מבחן מסכם · א'",tag:"מסכם",desc:"7 שאלות, 100 נק'."},
   {id:"exam2",file:"exam2.html",name:"מבחן מסכם · ב'",tag:"דגש מערכות",desc:"8 שאלות, 4 על מערכות."},
-  {id:"exam3",file:"exam3.html",name:"מבחן מתקדם · ג'",tag:"קשה",desc:"פתרון נעול, מעקב הצצות."},
-  {id:"exam4",file:"exam4.html",name:"מבחן אתגר · ד'",tag:"קשה מאוד",desc:"שברים כפולים, מקדמים שליליים."},
+  {id:"exam3",file:"exam3.html",name:"מבחן מסכם · ג'",tag:"מסכם",desc:"8 שאלות, 100 נק'."},
+  {id:"exam4",file:"exam4.html",name:"מבחן מסכם · ד'",tag:"מסכם",desc:"8 שאלות, 100 נק'."},
   {id:"exam5",file:"exam5.html",name:"מבחן + מעקב · ה'",tag:"מעקב מלא",desc:"זמן, טעויות ודוח AI."},
-  {id:"exam_l1a",file:"exam-l1a.html",name:"מבחן תרגול · ו'",tag:"תרגול",desc:"דגש מערכות + אחוזים, פיתגורס, קו."},
-  {id:"exam_l1b",file:"exam-l1b.html",name:"מבחן תרגול · ז'",tag:"תרגול",desc:"דגש מערכות + אחוזים, פיתגורס, סטטיסטיקה."},
-  {id:"exam_l2a",file:"exam-l2a.html",name:"מבחן תרגול · ח'",tag:"תרגול",desc:"דגש מערכות + שטח על צירים, פיתגורס."},
-  {id:"exam_l2b",file:"exam-l2b.html",name:"מבחן תרגול · ט'",tag:"תרגול",desc:"דגש מערכות + אי-שוויון, פיתגורס, חציון."},
-  {id:"exam_l3a",file:"exam-l3a.html",name:"מבחן תרגול · י'",tag:"תרגול",desc:"דגש מערכות (שברים) + מעוין, שטח על צירים."}
+  {id:"exam_l1a",file:"exam-l1a.html",name:"מבחן תרגול · ו'",tag:"תרגול",desc:"מערכות, משו\"ש, אחוזים, פיתגורס, קו."},
+  {id:"exam_l1b",file:"exam-l1b.html",name:"מבחן תרגול · ז'",tag:"תרגול",desc:"מערכות, חפיפת משולשים, אחוזים, פיתגורס."},
+  {id:"exam_l2a",file:"exam-l2a.html",name:"מבחן תרגול · ח'",tag:"תרגול",desc:"מערכות, משו\"ש+תיכון, שטח על צירים, פיתגורס."},
+  {id:"exam_l2b",file:"exam-l2b.html",name:"מבחן תרגול · ט'",tag:"תרגול",desc:"מערכות, חפיפת משולשים, אי-שוויון, פיתגורס."},
+  {id:"exam_l3a",file:"exam-l3a.html",name:"מבחן תרגול · י'",tag:"תרגול",desc:"מערכות (שברים), מצולעים, מעוין, שטח על צירים."}
 ];
 const TOPIC_ORDER=["polygons","linear","lineeq","systems","percent","congruence","pythagoras","stats"];
 
@@ -202,14 +187,6 @@ function renderExamCards(latest){
 function renderDash(){
   const attempts=MQ.getAll();
   const dash=document.getElementById('dash'); clear(dash);
-  const game=MQ.readGameState();
-
-  if(game){
-    const cleared=Object.keys(game.cleared||{}).length;
-    const gl=document.getElementById('gameLast');
-    gl.className='last'; clear(gl);
-    gl.append(numSpan(game.xp||0),' XP · '+cleared+'/8 עולמות · רצף שיא ',numSpan(game.bestStreak||0),' 🔥');
-  }
 
   if(!attempts.length){
     dash.append(h('div',{class:'dash-empty'},
@@ -273,7 +250,7 @@ function renderDash(){
     if(rec.resource){
       body.append('כדאי לתרגל עם ',h('a',{href:rec.resource.file},rec.resource.title),'.');
     } else {
-      body.append('שחק/י את העולם המתאים ב',h('a',{href:'game.html'},'משחק'),' או רענן/י עם ',h('a',{href:'tirgul.html'},'ההסבר'),'.');
+      body.append('המשך/י להתאמן במבחנים שלמטה.');
     }
     dash.append(h('div',{class:'reco'},h('h4',{},'👉 הצעד הבא'),body));
   }

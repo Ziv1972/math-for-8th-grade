@@ -41,10 +41,12 @@ const EXAM = [
    parts:[
      {id:"a",label:"",text:'מהו המחיר הסופי (בש"ח)?',type:"number",answer:100,points:10,hint:"100 · 1.25 · 0.8",solution:'100 · 1.25 = 125 ; 125 · 0.8 = <b>100 ש"ח</b>'}
    ]},
-  {id:"q6",topic:"percent",points:12,title:"מציאת המקור אחרי ייקור",
-   stem:'לאחר ייקור של <span class="formula" dir="ltr">15%</span> מחיר מוצר הוא 230 ש"ח.',
+  {id:"q6",topic:"polygons",points:12,title:"מצולע משוכלל",
+   stem:'נתון מחומש משוכלל (5 צלעות, כל הזוויות שוות).',
+   svg:'<svg viewBox="0 0 260 215" style="max-width:200px"><polygon points="130,30 206,86 177,176 83,176 54,86" fill="none" stroke="#23201a" stroke-width="2"/></svg>',
    parts:[
-     {id:"a",label:"",text:'מהו המחיר המקורי (בש"ח)?',type:"number",answer:200,points:12,hint:"230 = 1.15 · X",solution:'230 ÷ 1.15 = <b>200 ש"ח</b>'}
+     {id:"a",label:"(א)",text:'מהו סכום הזוויות הפנימיות של המחומש (במעלות)?',type:"number",answer:540,points:6,hint:"סכום הזוויות במצולע בעל n צלעות = (n−2)·180",solution:'(5 − 2) · 180 = 3 · 180 = <b>540°</b>'},
+     {id:"b",label:"(ב)",text:'כמה מעלות כל זווית פנימית?',type:"number",answer:108,points:6,hint:"במצולע משוכלל כל הזוויות שוות — חלקו את הסכום ב-5",solution:'540 ÷ 5 = <b>108°</b>'}
    ]},
   {id:"q7",topic:"pythagoras",points:12,title:"מעוין ואלכסונים",
    stem:'במעוין האלכסונים הם <span class="formula" dir="ltr">6</span> ו-<span class="formula" dir="ltr">8</span> ס"מ. האלכסונים חוצים זה את זה בניצב.',
