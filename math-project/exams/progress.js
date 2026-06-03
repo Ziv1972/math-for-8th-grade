@@ -62,8 +62,22 @@
     { id: "sci5", file: "science-5.html", subject: "science", title: "תרגול מדעים · 5", level: 2, kind: "exam", topics: ["elec_resistance","elec_wire","elec_series_parallel","elec_power","elec_safety","forces_contact","forces_distance","forces_newton3"] },
     { id: "sci6", file: "science-6.html", subject: "science", title: "תרגול מדעים · 6", level: 2, kind: "exam", topics: ["elec_voltage","elec_power","elec_series_parallel","elec_resistance","elec_safety","forces_contact","forces_distance","forces_newton3"] },
     { id: "sci7", file: "science-7.html", subject: "science", title: "תרגול מדעים · 7", level: 3, kind: "exam", topics: ["elec_power","elec_current","elec_voltage","elec_wire","elec_series_parallel","elec_safety"] },
-    { id: "sci8", file: "science-8.html", subject: "science", title: "תרגול מדעים · 8", level: 3, kind: "exam", topics: ["elec_power","elec_safety","elec_series_parallel","elec_resistance","forces_contact","forces_distance","forces_newton3"] }
+    { id: "sci8", file: "science-8.html", subject: "science", title: "תרגול מדעים · 8", level: 3, kind: "exam", topics: ["elec_power","elec_safety","elec_series_parallel","elec_resistance","forces_contact","forces_distance","forces_newton3"] },
+    // ---- תרגול ממוקד דינמי (focus.html) — מתייג מקצוע בלבד; topics ריק כדי שלא ישמש כיעד המלצה ----
+    { id: "focus_math",    file: "focus.html", subject: "math",    title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] },
+    { id: "focus_science", file: "focus.html", subject: "science", title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] }
   ];
+
+  // ---- משקלי נושאים במבחן אמיתי (לחיזוי ציון). סכום=1 לכל מקצוע. ----
+  // (ניתן לכיול מחדש ע"י סוכן ה-curriculum-expert לפי מבחני משרד החינוך)
+  var EXAM_WEIGHTS = {
+    math: { systems: 0.22, percent: 0.14, lineeq: 0.13, pythagoras: 0.12, polygons: 0.12, congruence: 0.10, linear: 0.09, stats: 0.08 },
+    science: {
+      elec_circuit: 0.10, elec_current: 0.10, elec_voltage: 0.10, elec_resistance: 0.10,
+      elec_wire: 0.08, elec_series_parallel: 0.12, elec_power: 0.12, elec_safety: 0.08,
+      forces_contact: 0.07, forces_distance: 0.07, forces_newton3: 0.06
+    }
+  };
 
   // ---- עזרי localStorage ----
   function readJSON(k, fallback) {
@@ -210,6 +224,28 @@
     return { topic: t.topic, name: t.name, last: t.last, band: band, resource: cands[0] || null };
   }
 
+  // ---- חיזוי ציון במבחן: ממוצע משוקלל של שליטה לפי נושא ----
+  function predict(subject) {
+    var agg = aggregate(subject);
+    var weights = EXAM_WEIGHTS[subject] || {};
+    var keys = Object.keys(weights);
+    var coveredW = 0, sum = 0, per = [];
+    keys.forEach(function (t) {
+      var a = agg[t]; if (!a) return;                 // אין נתונים → לא נכלל, מוריד ביטחון
+      var m = Math.round(0.7 * a.last + 0.3 * a.best); // שליטה: נוטה לאחרון, מתגמל שיא
+      coveredW += weights[t]; sum += weights[t] * m;
+      per.push({ topic: t, name: a.name, mastery: m, weight: weights[t] });
+    });
+    if (!per.length) return null;
+    var grade = Math.round(sum / coveredW);            // נרמול מעל הנושאים שנבדקו
+    var attemptsCount = getAll(subject).length;
+    var conf = (coveredW >= 0.8 && attemptsCount >= 4) ? "high"
+             : ((coveredW >= 0.5 && attemptsCount >= 2) ? "medium" : "low");
+    per.sort(function (a, b) { return a.mastery - b.mastery; });
+    return { grade: grade, confidence: conf, weakest: per.slice(0, 3),
+             covered: per.length, total: keys.length, coverageW: Math.round(coveredW * 100) };
+  }
+
   function readGameState() { return readJSON(GAME_KEY, null); }
   function clearAll() { try { localStorage.removeItem(userKey(activeUser())); } catch (e) {} }
 
@@ -220,6 +256,8 @@
     getAll: getAll,
     aggregate: aggregate,
     recommend: recommend,
+    predict: predict,
+    EXAM_WEIGHTS: EXAM_WEIGHTS,
     readGameState: readGameState,
     clearAll: clearAll,
     // משתמשים

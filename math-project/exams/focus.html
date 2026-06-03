@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול ממוקד — לפי הצפי</title>
+<link rel="stylesheet" href="exam-engine.css">
+</head>
+<body></body>
+<script src="progress.js"></script>
+<script src="license.js"></script>
+<script src="science-svg.js"></script>
+<script src="generators.js"></script>
+<script src="bank.js"></script>
+<script src="exam-engine.js"></script>
+<script>
+(function(){
+  var subject = new URLSearchParams(location.search).get('subject') || 'math';
+  if (subject !== 'science') subject = 'math';
+
+  var weights = MQ.EXAM_WEIGHTS[subject] || {};
+  var topics = Object.keys(weights);
+  var agg = MQ.aggregate(subject);
+
+  // ניקוד נושאים: נבחנו עם ציון נמוך / לא נבחנו כלל → עדיפות גבוהה לתרגול
+  var scored = topics.map(function(t){ return { t: t, m: agg[t] ? agg[t].last : 0, tested: !!agg[t] }; });
+  scored.sort(function(a,b){ return a.m - b.m; });           // החלש ביותר קודם
+  var weak = scored.slice(0, 4).map(function(s){ return s.t; });
+  if (!weak.length) weak = topics.slice(0, 4);
+
+  function levelFor(t){ var a = agg[t]; if (!a) return 1; return a.last < 60 ? 1 : (a.last < 85 ? 2 : 3); }
+  function makeQ(t){
+    var q = GEN.has(t) ? GEN.make(t) : (BANK.has(t) ? BANK.pick(t, levelFor(t)) : null);
+    if (!q) q = GEN.make('systems');   // fallback בטוח
+    return q;
+  }
+
+  var PTS = [13,13,12,13,12,13,12,12];   // סכום 100
+  var EXAM = [];
+  for (var i = 0; i < 8; i++) {
+    var q = makeQ(weak[i % weak.length]);
+    q.id = 'q' + (i + 1);
+    q.parts.forEach(function(p, j){ p.id = String.fromCharCode(97 + j); p.points = PTS[i]; });
+    EXAM.push(q);
+  }
+
+  MQExam.run({
+    examId: 'focus_' + subject,
+    title: 'תרגול ממוקד',
+    kicker: 'תרגול ממוקד לפי הצפי · ' + (subject === 'science' ? 'מדעים' : 'מתמטיקה'),
+    EXAM: EXAM
+  });
+})();
+</script>
+</html>
