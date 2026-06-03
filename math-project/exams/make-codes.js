@@ -35,6 +35,11 @@ for (const u of USERS) {
 
 console.log("=== קודים לחלוקה (שמור/י בנפרד — לא נכנס לקובץ המופץ) ===");
 handout.forEach(h => console.log(`  ${h.name.padEnd(12)} ${h.code}   (תוקף: ${h.expires || "ללא"})`));
-console.log("\n=== הדבק/י את זה בתוך codes: { ... } ב-license.js ===");
+
+console.log("\n=== מצב online: הדבק/י שורות אלה ב-Google Sheet (כולל הכותרת) ===");
+console.log(["code", "name", "expires", "status", "device", "activatedAt", "lastSeen"].join("\t"));
+handout.forEach(h => console.log([h.code, h.name, h.expires || "", "active", "", "", ""].join("\t")));
+
+console.log("\n=== מצב local: הדבק/י את זה בתוך codes: { ... } ב-license.js ===");
 const lines = Object.keys(codesObj).map(h => `      "${h}": { name: "${codesObj[h].name}", expires: ${codesObj[h].expires ? `"${codesObj[h].expires}"` : "null"} }`);
 console.log(lines.join(",\n"));
