@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מקיף למבחן מתמטיקה — כיתה ח' מועד ב'</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Heebo:wght@400;500;700;900&family=Secular+One&display=swap');
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'Heebo', sans-serif;
+  background: linear-gradient(160deg, #fef6e4 0%, #f3eeff 100%);
+  min-height: 100vh; color: #1a1a2e; padding-bottom: 50px;
+}
+.hero {
+  background: linear-gradient(135deg, #ff6b35 0%, #f7444e 60%, #c73866 100%);
+  color: #fff; padding: 46px 24px 56px; text-align: center;
+  border-radius: 0 0 40px 40px; box-shadow: 0 10px 30px rgba(199,56,102,0.3);
+}
+.hero-badge {
+  display: inline-block; background: rgba(255,255,255,0.25);
+  padding: 6px 18px; border-radius: 20px; font-weight: 700;
+  font-size: 0.85rem; margin-bottom: 14px;
+}
+.hero h1 { font-family: 'Secular One', sans-serif; font-size: 2.1rem; margin-bottom: 10px; }
+.hero-sub { opacity: 0.95; font-size: 1rem; }
+.tabs {
+  display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;
+  max-width: 1050px; margin: -28px auto 0; padding: 0 16px;
+  position: relative; z-index: 2;
+}
+.tab {
+  background: #fff; border: 2px solid transparent; border-radius: 16px;
+  padding: 12px 14px; cursor: pointer; transition: all 0.2s;
+  display: flex; flex-direction: column; align-items: center;
+  min-width: 104px; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.tab:hover { transform: translateY(-3px); box-shadow: 0 8px 20px rgba(0,0,0,0.12); }
+.tab.active { border-color: #ff6b35; background: #fff7f3; }
+.tab-icon { font-size: 1.4rem; }
+.tab-num {
+  background: #ff6b35; color: #fff; width: 22px; height: 22px;
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.75rem; font-weight: 700; margin: 4px 0;
+}
+.tab.active .tab-num { background: #c73866; }
+.tab-title { font-size: 0.74rem; font-weight: 500; text-align: center; line-height: 1.2; }
+.content { max-width: 820px; margin: 32px auto 0; padding: 0 20px; }
+.ch-head { display: flex; align-items: center; gap: 14px; margin-bottom: 20px; }
+.ch-icon {
+  font-size: 2rem; background: #fff; width: 56px; height: 56px;
+  border-radius: 16px; display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+}
+.ch-head h2 { font-family: 'Secular One', sans-serif; font-size: 1.55rem; color: #c73866; }
+.intro {
+  background: #fff; border-radius: 20px; padding: 24px;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.06); line-height: 1.8;
+  border-right: 5px solid #ff6b35;
+}
+.intro p { margin-bottom: 10px; }
+.intro ul { margin: 8px 22px; }
+.intro li { margin-bottom: 6px; }
+.formula { background:#f3eeff; padding:4px 10px; border-radius:8px; font-weight:700; display:inline-block; }
+.ex-header {
+  font-family: 'Secular One', sans-serif; margin: 32px 0 16px;
+  font-size: 1.3rem; color: #1a1a2e;
+}
+.ex-list { display: flex; flex-direction: column; gap: 16px; }
+.ex { background: #fff; border-radius: 18px; padding: 20px; box-shadow: 0 3px 12px rgba(0,0,0,0.05); }
+.ex-q { display: flex; gap: 10px; font-size: 1.05rem; line-height: 1.6; margin-bottom: 14px; }
+.ex-num {
+  background: #f3eeff; color: #7c3aed; min-width: 28px; height: 28px;
+  border-radius: 8px; display: flex; align-items: center; justify-content: center;
+  font-weight: 700; flex-shrink: 0;
+}
+.ex-row { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.ex-input {
+  font-family: 'Heebo'; font-size: 1rem; padding: 10px 14px;
+  border: 2px solid #e0e0e0; border-radius: 12px; width: 170px;
+  transition: all 0.2s; text-align: center;
+}
+.ex-input:focus { outline: none; border-color: #7c3aed; }
+.ex-input.ok { border-color: #16a34a; background: #f0fdf4; }
+.ex-input.no { border-color: #dc2626; background: #fef2f2; }
+.btn-check {
+  background: #7c3aed; color: #fff; border: none; padding: 10px 22px;
+  border-radius: 12px; font-family: 'Heebo'; font-weight: 700;
+  font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+}
+.btn-check:hover { background: #6d28d9; }
+.feedback { font-weight: 700; font-size: 0.95rem; }
+.feedback.ok { color: #16a34a; }
+.feedback.no { color: #dc2626; }
+.hint { margin-top: 12px; }
+.hint summary { cursor: pointer; color: #ff6b35; font-weight: 500; font-size: 0.9rem; }
+.hint .hint-body { display: block; margin-top: 6px; color: #555; font-size: 0.92rem; }
+.btn-sol {
+  display: block; margin-top: 12px; background: none; border: none;
+  color: #7c3aed; font-family: 'Heebo'; font-weight: 700; font-size: 0.9rem;
+  cursor: pointer; text-decoration: underline;
+}
+.solution {
+  margin-top: 12px; padding: 14px 16px; background: #f3eeff;
+  border-radius: 12px; line-height: 1.7; font-size: 0.95rem;
+  border-right: 4px solid #7c3aed; display: none;
+}
+.solution.show { display: block; }
+.mcq { display: flex; flex-direction: column; gap: 10px; }
+.mcq-opt {
+  background: #faf8ff; border: 2px solid #e6e0f5; border-radius: 12px;
+  padding: 12px 16px; text-align: right; font-family: 'Heebo';
+  font-size: 1rem; cursor: pointer; transition: all 0.2s;
+}
+.mcq-opt:hover { border-color: #7c3aed; }
+.mcq-opt.ok { border-color: #16a34a; background: #f0fdf4; }
+.mcq-opt.no { border-color: #dc2626; background: #fef2f2; }
+.mcq-opt.reveal { border-color: #16a34a; background:#f0fdf4; }
+.extra-sol {
+  margin-top: 24px; background: #fff; border-radius: 18px; padding: 22px;
+  box-shadow: 0 3px 12px rgba(0,0,0,0.05);
+}
+.proof-example h4 { color: #c73866; margin-bottom: 12px; font-size: 1.1rem; }
+.proof-example p { line-height: 1.7; margin-bottom: 8px; }
+.proof-table { width: 100%; border-collapse: collapse; margin: 12px 0; }
+.proof-table th, .proof-table td { border: 1px solid #e0d8f0; padding: 10px 14px; text-align: right; }
+.proof-table th { background: #f3eeff; color: #7c3aed; }
+.nav-btns { display: flex; align-items: center; justify-content: space-between; margin-top: 36px; gap: 12px; }
+.nav-btn {
+  background: #1a1a2e; color: #fff; border: none; padding: 12px 24px;
+  border-radius: 14px; font-family: 'Heebo'; font-weight: 700;
+  font-size: 0.95rem; cursor: pointer; transition: all 0.2s;
+}
+.nav-btn:hover:not(:disabled) { background: #c73866; }
+.nav-btn:disabled { opacity: 0.3; cursor: not-allowed; }
+.progress { font-weight: 700; color: #7c3aed; }
+.foot { text-align: center; margin-top: 40px; color: #888; font-weight: 500; }
+.src-note {
+  max-width: 820px; margin: 20px auto 0; padding: 12px 20px;
+  font-size: 0.8rem; color: #999; text-align: center; line-height:1.6;
+}
+@media (max-width: 600px) {
+  .hero h1 { font-size: 1.5rem; }
+  .tab { min-width: 84px; padding: 10px 8px; }
+  .tab-title { font-size: 0.64rem; }
+  .ch-head h2 { font-size: 1.25rem; }
+}
+</style>
+</head>
+<body>
+<div class="hero">
+  <div class="hero-badge">מתמטיקה · כיתה ח'</div>
+  <h1>תרגול מקיף למבחן — מועד ב'</h1>
+  <p class="hero-sub">8 פרקים · הסבר, תרגול ובדיקה אוטומטית · פתרונות מלאים</p>
+</div>
+
+<nav class="tabs" id="tabs"></nav>
+<main class="content" id="content"></main>
+<div class="src-note">
+  התרגילים נבנו בהתאמה לרמת מבחני כיתה ח' בישראל, על בסיס נושאי תוכנית הלימודים ומאגרי תרגול מוכרים (לומדים מתמטיקה, מטיק, גיא קורן, קרנפים).
+</div>
+<div class="foot">בהצלחה במבחן! 💪</div>
+
+<script>
+// ===== עזרי בדיקה =====
+function parseNum(s){
+  if(s==null) return NaN;
+  let c = String(s).trim().replace(/\s/g,'').replace(',','.');
+  if(c==='') return NaN;
+  if(c.includes('/')){ const p=c.split('/'); return Number(p[0])/Number(p[1]); }
+  return Number(c);
+}
+function approxEq(a,b,tol){ tol=tol||0.001; return Math.abs(a-b)<=tol; }
+
+// ===== נתוני הפרקים =====
+const CHAPTERS = [
+{
+  id:"polygons", icon:"△", title:"זוויות, שטח, היקף ומשולש שו\"ש",
+  type:"num",
+  intro:`
+    <p><b>סכום הזוויות:</b> במשולש 180°, במרובע 360°, ובמצולע בעל n צלעות: <span class="formula">(n−2)·180°</span></p>
+    <p><b>משולש שווה-שוקיים:</b> שתי השוקיים שוות, וזוויות הבסיס שוות זו לזו. התיכון לבסיס הוא גם גובה וגם חוצה זווית הראש.</p>
+    <p><b>זווית חיצונית</b> למשולש שווה לסכום שתי הזוויות הפנימיות שאינן צמודות לה.</p>
+    <p><b>שטחים:</b> מלבן = אורך·רוחב · משולש = (בסיס·גובה)÷2 · מקבילית = בסיס·גובה · טרפז = ((בסיס+בסיס)·גובה)÷2 · היקף = סכום הצלעות.</p>
+  `,
+  exercises:[
+    {q:"במשולש זווית אחת 70° ושנייה 55°. כמה מעלות הזווית השלישית?", answer:55, hint:"סכום הזוויות במשולש = 180°", solution:"180 − 70 − 55 = <b>55°</b>"},
+    {q:"במשולש שווה-שוקיים זווית הראש 40°. כמה מעלות כל אחת מזוויות הבסיס?", answer:70, hint:"זוויות הבסיס שוות. (180−40) מתחלק בין שתיהן.", solution:"(180 − 40) ÷ 2 = 140 ÷ 2 = <b>70°</b>"},
+    {q:"במשולש שווה-שוקיים זווית בסיס אחת היא 65°. כמה מעלות זווית הראש?", answer:50, hint:"שתי זוויות הבסיס שוות (65° כל אחת). הראש = 180 פחות שתיהן.", solution:"180 − 65 − 65 = <b>50°</b>"},
+    {q:"זווית חיצונית למשולש היא 120°, ואחת הזוויות הפנימיות הרחוקות 50°. כמה מעלות הזווית הפנימית הרחוקה השנייה?", answer:70, hint:"זווית חיצונית = סכום שתי הפנימיות הרחוקות", solution:"120 − 50 = <b>70°</b>"},
+    {q:"מלבן באורך 12 ס\"מ ורוחב 5 ס\"מ. מה שטחו (סמ\"ר)?", answer:60, hint:"שטח מלבן = אורך · רוחב", solution:"12 · 5 = <b>60 סמ\"ר</b>"},
+    {q:"מלבן באורך 12 ס\"מ ורוחב 5 ס\"מ. מה היקפו (ס\"מ)?", answer:34, hint:"היקף = 2·(אורך+רוחב)", solution:"2 · (12 + 5) = 2 · 17 = <b>34 ס\"מ</b>"},
+    {q:"משולש בעל בסיס 8 ס\"מ וגובה 6 ס\"מ. מה שטחו (סמ\"ר)?", answer:24, hint:"שטח משולש = (בסיס · גובה) ÷ 2", solution:"(8 · 6) ÷ 2 = 48 ÷ 2 = <b>24 סמ\"ר</b>"},
+    {q:"שטח טרפז הוא 30 סמ\"ר, גובהו 4 ס\"מ וסכום שני הבסיסים שלו... כמה ס\"מ סכום הבסיסים?", answer:15, hint:"שטח טרפז = (סכום הבסיסים · גובה) ÷ 2 → 30 = (S·4)/2", solution:"30 = (S · 4) ÷ 2 → 60 = 4S → S = <b>15 ס\"מ</b>"},
+    {q:"סכום הזוויות במחומש (5 צלעות) — כמה מעלות?", answer:540, hint:"(n−2)·180 כאשר n=5", solution:"(5 − 2) · 180 = 3 · 180 = <b>540°</b>"},
+  ]
+},
+{
+  id:"linear", icon:"📈", title:"הפונקציה הקווית y = mx + b",
+  type:"num",
+  intro:`
+    <p>בפונקציה <span class="formula">y = mx + b</span>: <b>m</b> השיפוע (קצב השינוי), <b>b</b> נקודת החיתוך עם ציר y.</p>
+    <p><b>שיפוע m:</b> m&gt;0 ⟵ עולה · m&lt;0 ⟵ יורדת · m=0 ⟵ ישר אופקי (קבוע). השיפוע הוא השינוי ב-y כאשר x גדל ב-1.</p>
+    <p><b>חיתוך עם ציר y:</b> בנקודה (0, b). <b>חיתוך עם ציר x:</b> מציבים y=0 ופותרים.</p>
+    <p><b>נקודה על הישר:</b> מציבים את ערכי הנקודה ובודקים אם המשוואה מתקיימת.</p>
+  `,
+  exercises:[
+    {q:"בפונקציה y = 3x − 6, מהו השיפוע?", answer:3, hint:"השיפוע הוא המקדם של x", solution:"השיפוע הוא המקדם של x: <b>m = 3</b>"},
+    {q:"בפונקציה y = 3x − 6, מהו ערך ה-y בנקודת החיתוך עם ציר y?", answer:-6, hint:"מציבים x=0", solution:"y = 3·0 − 6 = <b>−6</b>. החיתוך ב-(0, −6)"},
+    {q:"בפונקציה y = 3x − 6, באיזה ערך x היא חותכת את ציר x?", answer:2, hint:"מציבים y=0: 3x−6=0", solution:"0 = 3x − 6 → 3x = 6 → <b>x = 2</b>"},
+    {q:"מהו קצב השינוי (השיפוע) של y = −2x + 7?", answer:-2, hint:"קצב השינוי = המקדם של x", solution:"קצב השינוי = השיפוע = <b>−2</b>"},
+    {q:"האם הנקודה (2, 5) נמצאת על הישר y = 2x + 1? (רשום 1 לכן, 0 ללא)", answer:1, hint:"הצב x=2 ובדוק אם מתקבל y=5", solution:"2·2 + 1 = 5 ✓ הנקודה על הישר. תשובה: <b>1</b>"},
+    {q:"פונקציה קבועה (אופקית) עוברת דרך (0, 4). מהו השיפוע שלה?", answer:0, hint:"ישר אופקי", solution:"ישר אופקי → השיפוע <b>0</b> (המשוואה y = 4)"},
+    {q:"האם y = −5x + 1 עולה או יורדת? (1 = עולה, 0 = יורדת)", answer:0, hint:"m שלילי → יורדת", solution:"m = −5 &lt; 0 → <b>יורדת</b> (תשובה: 0)"},
+    {q:"שני ישרים מקבילים. שיפוע הראשון 4. מהו שיפוע השני?", answer:4, hint:"לישרים מקבילים אותו שיפוע", solution:"ישרים מקבילים ⟵ שיפועים שווים → <b>4</b>"},
+  ]
+},
+{
+  id:"lineeq", icon:"📐", title:"מציאת משוואת קו ישר",
+  type:"num",
+  intro:`
+    <p><b>שיפוע משתי נקודות</b> (x₁,y₁), (x₂,y₂): <span class="formula">m = (y₂−y₁)/(x₂−x₁)</span></p>
+    <p><b>משוואת ישר מנקודה ושיפוע:</b> <span class="formula">y − y₁ = m(x − x₁)</span>, או מציבים ב-y=mx+b כדי למצוא b.</p>
+    <p><b>תחום חיוביות:</b> ערכי x שבהם y&gt;0 (הגרף מעל ציר x). <b>תחום שליליות:</b> y&lt;0 (מתחת לציר x).</p>
+    <p><b>נקודת חיתוך בין שני ישרים:</b> משווים את שתי המשוואות (פתרון מערכת).</p>
+  `,
+  exercises:[
+    {q:"מהו שיפוע הישר העובר דרך (1, 2) ו-(3, 8)?", answer:3, hint:"m = (8−2)/(3−1)", solution:"m = (8 − 2) / (3 − 1) = 6 / 2 = <b>3</b>"},
+    {q:"ישר עם שיפוע 2 עובר דרך (1, 5). מהו b ב-y=2x+b?", answer:3, hint:"5 = 2·1 + b", solution:"5 = 2 + b → <b>b = 3</b> (המשוואה: y = 2x + 3)"},
+    {q:"הישר y = 2x − 8 חותך את ציר x ב-x = ?", answer:4, hint:"y=0 → 2x−8=0", solution:"0 = 2x − 8 → x = 4. עבור x&gt;4 הפונקציה חיובית. <b>x = 4</b>"},
+    {q:"מהו שיפוע הישר העובר דרך (−2, 3) ו-(2, −5)?", answer:-2, hint:"m = (−5−3)/(2−(−2)) = −8/4", solution:"m = (−5 − 3) / (2 − (−2)) = −8 / 4 = <b>−2</b>"},
+    {q:"שני ישרים: y = x + 1 ו-y = −x + 5. מהו ערך ה-x של נקודת החיתוך?", answer:2, hint:"השווה: x+1 = −x+5", solution:"x + 1 = −x + 5 → 2x = 4 → <b>x = 2</b> (ואז y = 3)"},
+    {q:"ישר עובר דרך (0, −3) ושיפועו 5. מהו ערך b?", answer:-3, hint:"b = ערך y כש-x=0", solution:"הישר חותך את ציר y ב-(0,−3) → <b>b = −3</b>"},
+    {q:"הישר y = −3x + 12 חיובי עבור x קטן מ-? (מצא את נקודת החיתוך עם ציר x)", answer:4, hint:"y=0 → −3x+12=0", solution:"0 = −3x + 12 → x = 4. מאחר שהשיפוע שלילי, הפונקציה חיובית עבור x&lt;4. נקודת החיתוך: <b>x = 4</b>"},
+  ]
+},
+{
+  id:"systems", icon:"⚖️", title:"מערכת משוואות ובעיות מילוליות",
+  type:"num",
+  intro:`
+    <p>פתרון מערכת = זוג (x, y) שמקיים את <b>שתי</b> המשוואות יחד.</p>
+    <p><b>שיטת ההצבה:</b> מבודדים נעלם אחד ומציבים במשוואה השנייה.</p>
+    <p><b>שיטת ההשוואה:</b> מבודדים את אותו נעלם בשתי המשוואות ומשווים.</p>
+    <p><b>שיטת החיבור/חיסור (השוואת מקדמים):</b> מחברים או מחסירים את המשוואות כדי לבטל נעלם.</p>
+    <p><b>בעיה מילולית:</b> מגדירים נעלמים, בונים שתי משוואות לפי הנתונים, פותרים ובודקים שהפתרון הגיוני.</p>
+  `,
+  exercises:[
+    {q:"פתור: x + y = 10 ; x − y = 4. מהו x?", answer:7, hint:"חבר את המשוואות → 2x = 14", solution:"(x+y)+(x−y) = 14 → 2x = 14 → <b>x = 7</b> (ואז y = 3)"},
+    {q:"פתור: x + y = 10 ; x − y = 4. מהו y?", answer:3, hint:"הצב x=7 בראשונה", solution:"7 + y = 10 → <b>y = 3</b>"},
+    {q:"פתור: y = 2x ; x + y = 9. מהו x?", answer:3, hint:"הצבה: x + 2x = 9", solution:"x + 2x = 9 → 3x = 9 → <b>x = 3</b> (ואז y = 6)"},
+    {q:"פתור: 2x + y = 7 ; x = 2. מהו y?", answer:3, hint:"הצב x=2", solution:"2·2 + y = 7 → y = <b>3</b>"},
+    {q:"פתור: 3x + 2y = 16 ; x = 4. מהו y?", answer:2, hint:"הצב x=4: 12 + 2y = 16", solution:"12 + 2y = 16 → 2y = 4 → <b>y = 2</b>"},
+    {q:"בעיה: לדינה ולגיא יחד 20 ש\"ח. לדינה פי 3 מגיא. כמה ש\"ח לגיא?", answer:5, hint:"גיא=x, דינה=3x → x+3x=20", solution:"x + 3x = 20 → 4x = 20 → <b>גיא = 5 ש\"ח</b> (ודינה 15)"},
+    {q:"בעיה: עט ומחברת עולים יחד 12 ש\"ח. המחברת יקרה מהעט ב-4 ש\"ח. כמה עולה העט (ש\"ח)?", answer:4, hint:"עט=x, מחברת=x+4 → x+(x+4)=12", solution:"x + x + 4 = 12 → 2x = 8 → <b>העט = 4 ש\"ח</b> (המחברת 8)"},
+    {q:"בעיה: בחווה יש תרנגולות וכבשים, סה\"כ 10 ראשים ו-26 רגליים. כמה כבשים? (תרנגולת=2 רגליים, כבשה=4)", answer:3, hint:"תרנגולות=t, כבשים=k → t+k=10, 2t+4k=26", solution:"t+k=10, 2t+4k=26. מהראשונה t=10−k, נציב: 2(10−k)+4k=26 → 20+2k=26 → 2k=6 → <b>k = 3 כבשים</b> (ו-7 תרנגולות)"},
+  ]
+},
+{
+  id:"percent", icon:"％", title:"אחוזים, משוואות ואי-שוויונות",
+  type:"num",
+  intro:`
+    <p><b>אחוז מערך:</b> <span class="formula">p% מ-X = (p/100)·X</span>. דוגמה: 25% מ-80 = 0.25·80 = 20.</p>
+    <p><b>ייקור/הנחה:</b> ייקור ב-p% → כפל ב-(1 + p/100) · הנחה ב-p% → כפל ב-(1 − p/100).</p>
+    <p><b>מציאת השלם:</b> אם p% מ-X שווה לערך נתון V, אז X = V ÷ (p/100).</p>
+    <p><b>אי-שוויון:</b> פותרים כמו משוואה, אבל בכפל/חילוק במספר <b>שלילי הופכים את כיוון האי-שוויון</b>.</p>
+  `,
+  exercises:[
+    {q:"כמה זה 20% מתוך 150?", answer:30, hint:"0.20 · 150", solution:"0.20 · 150 = <b>30</b>"},
+    {q:"חולצה עלתה 80 ש\"ח וירדה ב-25%. מה המחיר החדש (ש\"ח)?", answer:60, hint:"80 · (1 − 0.25)", solution:"80 · 0.75 = <b>60 ש\"ח</b>"},
+    {q:"מוצר עלה 200 ש\"ח והתייקר ב-10%. מה מחירו החדש (ש\"ח)?", answer:220, hint:"200 · 1.10", solution:"200 · 1.10 = <b>220 ש\"ח</b>"},
+    {q:"30% ממספר שווה 45. מהו המספר?", answer:150, hint:"X = 45 ÷ 0.30", solution:"X = 45 / 0.30 = <b>150</b>"},
+    {q:"בכיתה 25 תלמידים, 60% מהם בנות. כמה בנות בכיתה?", answer:15, hint:"0.60 · 25", solution:"0.60 · 25 = <b>15 בנות</b>"},
+    {q:"מחיר לאחר הנחה של 20% הוא 160 ש\"ח. מה היה המחיר המקורי (ש\"ח)?", answer:200, hint:"המחיר אחרי הנחה = 80% מהמקורי → 160 = 0.8·X", solution:"160 = 0.80 · X → X = 160 / 0.8 = <b>200 ש\"ח</b>"},
+    {q:"פתור את אי-השוויון: 3x &lt; 21. מהו הערך השלם הגדול ביותר של x שמקיים אותו?", answer:6, hint:"x &lt; 7", solution:"3x &lt; 21 → x &lt; 7. הערך השלם הגדול ביותר: <b>6</b>"},
+    {q:"פתור: −2x &gt; −10. מהו הערך השלם הגדול ביותר של x? (שים לב להיפוך הסימן)", answer:4, hint:"חלק ב-(−2) והפוך: x &lt; 5", solution:"−2x &gt; −10 → x &lt; 5 (הסימן התהפך). הערך השלם הגדול ביותר: <b>4</b>"},
+  ]
+},
+{
+  id:"congruence", icon:"≅", title:"חפיפת משולשים (טענה ונימוק)",
+  type:"mcq",
+  intro:`
+    <p>שני משולשים <b>חופפים</b> (△ABC ≅ △DEF) אם הם זהים בצורה ובגודל — אפשר להניח אחד על השני כך שיכסה אותו בדיוק.</p>
+    <p><b>שלושת משפטי החפיפה:</b></p>
+    <ul>
+      <li><b>צ.צ.צ (SSS):</b> שלוש צלעות שוות בהתאמה.</li>
+      <li><b>צ.ז.צ (SAS):</b> שתי צלעות והזווית <u>הכלואה ביניהן</u> שוות.</li>
+      <li><b>ז.צ.ז (ASA):</b> שתי זוויות והצלע <u>שביניהן</u> שוות.</li>
+    </ul>
+    <p><b>חשוב:</b> מול צלעות שוות במשולשים חופפים מונחות זוויות שוות, ולהפך. בהוכחה כותבים <b>טענה</b> ולצדה <b>נימוק</b> (נתון / צלע משותפת / משפט), ובשורה האחרונה את משפט החפיפה.</p>
+    <p><b>נימוקים נפוצים:</b> נתון · צלע משותפת (אותה צלע בשני המשולשים) · זווית משותפת · זוויות קודקודיות שוות · תכונות משולש שווה-שוקיים.</p>
+  `,
+  exercises:[
+    {q:"נתון: שתי צלעות שוות בהתאמה, והזווית <b>שביניהן</b> שווה. איזה משפט חפיפה?",
+     options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"], correct:1,
+     solution:"שתי צלעות + הזווית הכלואה ביניהן → <b>צ.ז.צ (SAS)</b>. הזווית חייבת להיות <u>בין</u> שתי הצלעות."},
+    {q:"נתון: שלוש הצלעות שוות בהתאמה. איזה משפט?",
+     options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"], correct:0,
+     solution:"שלוש צלעות שוות → <b>צ.צ.צ (SSS)</b>."},
+    {q:"נתון: שתי זוויות שוות והצלע <b>שביניהן</b> שווה. איזה משפט?",
+     options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"], correct:2,
+     solution:"שתי זוויות + הצלע שביניהן → <b>ז.צ.ז (ASA)</b>."},
+    {q:"שני משולשים חולקים צלע משותפת. מהו הנימוק הנכון לכך שצלע זו שווה לעצמה?",
+     options:["נתון","צלע משותפת","זוויות קודקודיות"], correct:1,
+     solution:"כשאותה צלע מופיעה בשני המשולשים, הנימוק הוא <b>צלע משותפת</b>."},
+    {q:"שני ישרים נחתכים ויוצרים שתי זוויות זו מול זו. מהו הנימוק לכך שהן שוות?",
+     options:["זוויות קודקודיות","זוויות צמודות","נתון"], correct:0,
+     solution:"זוויות הנמצאות זו מול זו בהצטלבות ישרים נקראות <b>זוויות קודקודיות</b> והן שוות."},
+    {q:"במשולש שווה-שוקיים מורידים תיכון לבסיס. מהו הנימוק לכך ששתי השוקיים שוות?",
+     options:["נתון (המשולש שווה-שוקיים)","משפט פיתגורס","זוויות צמודות"], correct:0,
+     solution:"שוויון השוקיים נובע מהנתון שהמשולש שווה-שוקיים. זה משמש כ<b>נתון</b> בהוכחה."},
+  ],
+  extraSolution:`
+    <div class="proof-example">
+      <h4>דוגמה להוכחה מלאה — טענה ונימוק</h4>
+      <p><b>נתון:</b> AB = AC · &nbsp; AD חוצה את זווית A (כלומר ∠BAD = ∠CAD).</p>
+      <p><b>צריך להוכיח:</b> △ABD ≅ △ACD</p>
+      <table class="proof-table">
+        <tr><th>טענה</th><th>נימוק</th></tr>
+        <tr><td>AB = AC</td><td>נתון</td></tr>
+        <tr><td>∠BAD = ∠CAD</td><td>נתון (AD חוצה את זווית A)</td></tr>
+        <tr><td>AD = AD</td><td>צלע משותפת</td></tr>
+        <tr><td>△ABD ≅ △ACD</td><td>לפי צ.ז.צ (SAS)</td></tr>
+      </table>
+      <p style="margin-top:14px"><b>דוגמה שנייה (חיבור צלעות):</b></p>
+      <p><b>נתון:</b> AB = CD (על ישר אחד), BE = DF, ∠B = ∠D.</p>
+      <table class="proof-table">
+        <tr><th>טענה</th><th>נימוק</th></tr>
+        <tr><td>AB = CD</td><td>נתון</td></tr>
+        <tr><td>∠B = ∠D</td><td>נתון</td></tr>
+        <tr><td>BE = DF</td><td>נתון</td></tr>
+        <tr><td>△ABE ≅ △CDF</td><td>לפי צ.ז.צ (SAS)</td></tr>
+      </table>
+      <p style="margin-top:10px;color:#7c3aed"><b>טיפ:</b> תמיד מסמנים על השרטוט כל נתון, מחפשים מה משותף, ובודקים לאיזה משפט (SSS / SAS / ASA) הנתונים מתאימים.</p>
+    </div>
+  `
+},
+{
+  id:"pythagoras", icon:"📏", title:"משפט פיתגורס",
+  type:"num",
+  intro:`
+    <p>במשולש <b>ישר-זווית</b>: ריבוע היתר = סכום ריבועי הניצבים.</p>
+    <p style="text-align:center;font-size:1.15em"><span class="formula">a² + b² = c²</span> &nbsp;(c = היתר, הצלע מול הזווית הישרה)</p>
+    <p><b>מציאת היתר:</b> c = √(a² + b²) · <b>מציאת ניצב:</b> a = √(c² − b²).</p>
+    <p><b>שלשות פיתגוריות מוכרות:</b> (3,4,5) · (6,8,10) · (5,12,13) · (8,15,17) · (9,12,15).</p>
+  `,
+  exercises:[
+    {q:"במשולש ישר-זווית הניצבים 3 ו-4. מהו היתר?", answer:5, hint:"c = √(9+16)", solution:"c = √(9 + 16) = √25 = <b>5</b>"},
+    {q:"הניצבים 6 ו-8. מהו היתר?", answer:10, hint:"√(36+64)", solution:"c = √(36 + 64) = √100 = <b>10</b>"},
+    {q:"היתר 13, ניצב אחד 5. מהו הניצב השני?", answer:12, hint:"a = √(169−25)", solution:"a = √(169 − 25) = √144 = <b>12</b>"},
+    {q:"הניצבים 5 ו-12. מהו היתר?", answer:13, hint:"√(25+144)", solution:"c = √(25 + 144) = √169 = <b>13</b>"},
+    {q:"היתר 17, ניצב אחד 8. מהו הניצב השני?", answer:15, hint:"√(289−64)", solution:"a = √(289 − 64) = √225 = <b>15</b>"},
+    {q:"הניצבים 9 ו-12. מהו היתר?", answer:15, hint:"√(81+144)", solution:"c = √(81 + 144) = √225 = <b>15</b>"},
+    {q:"בריבוע שאורך צלעו 6, מהו אורך האלכסון? (עגל למספר שלם הקרוב; השתמש ב-√72≈8.49 → תשובה מעוגלת)", answer:[8.49,8.5,8], hint:"האלכסון = √(6²+6²) = √72", solution:"האלכסון = √(36+36) = √72 ≈ <b>8.49</b>"},
+  ]
+},
+{
+  id:"stats", icon:"📊", title:"סטטיסטיקה",
+  type:"num",
+  intro:`
+    <p><b>שכיחות:</b> כמה פעמים מופיע ערך. <b>שכיחות יחסית:</b> שכיחות ÷ סך המקרים (לרוב באחוזים).</p>
+    <p><b>שכיח (מוֹדה):</b> הערך שמופיע הכי הרבה פעמים.</p>
+    <p><b>ממוצע:</b> סכום כל הערכים ÷ מספרם.</p>
+    <p><b>חציון:</b> הערך האמצעי לאחר סידור בסדר עולה. במספר זוגי של ערכים — ממוצע שני האמצעיים.</p>
+  `,
+  exercises:[
+    {q:"נתונים: 4, 6, 8, 10, 2. מהו הממוצע?", answer:6, hint:"(4+6+8+10+2) ÷ 5", solution:"30 ÷ 5 = <b>6</b>"},
+    {q:"נתונים מסודרים: 3, 5, 7, 9, 11. מהו החציון?", answer:7, hint:"הערך האמצעי", solution:"5 ערכים → האמצעי השלישי = <b>7</b>"},
+    {q:"נתונים: 2, 3, 3, 3, 5, 8. מהו השכיח?", answer:3, hint:"הערך שחוזר הכי הרבה", solution:"3 מופיע 3 פעמים — הכי הרבה → השכיח = <b>3</b>"},
+    {q:"בכיתה 20 תלמידים, 5 נוסעים באוטובוס. מהי השכיחות היחסית באחוזים?", answer:25, hint:"5/20 · 100", solution:"(5 ÷ 20) · 100 = <b>25%</b>"},
+    {q:"נתונים: 10, 20, 30, 40. מהו החציון? (מספר זוגי)", answer:25, hint:"ממוצע 20 ו-30", solution:"(20 + 30) ÷ 2 = <b>25</b>"},
+    {q:"בממוצע של 4 מבחנים קיבל תלמיד 80. סכום שלושת הראשונים 240. כמה קיבל ברביעי?", answer:80, hint:"סכום כל הארבעה = 80·4 = 320", solution:"סה\"כ = 80·4 = 320. הרביעי = 320 − 240 = <b>80</b>"},
+    {q:"נתונים: 1, 4, 4, 6, 10. מהו הממוצע?", answer:5, hint:"(1+4+4+6+10) ÷ 5", solution:"25 ÷ 5 = <b>5</b>"},
+  ]
+},
+];
+
+// ===== בנייה =====
+let active = 0;
+
+function buildTabs(){
+  const nav = document.getElementById('tabs');
+  nav.innerHTML = '';
+  CHAPTERS.forEach((c,i)=>{
+    const b = document.createElement('button');
+    b.className = 'tab' + (i===active?' active':'');
+    b.innerHTML = `<span class="tab-icon">${c.icon}</span><span class="tab-num">${i+1}</span><span class="tab-title">${c.title}</span>`;
+    b.onclick = ()=>{ active=i; render(); window.scrollTo(0,0); };
+    nav.appendChild(b);
+  });
+}
+
+function makeExercise(e, idx){
+  const wrap = document.createElement('div');
+  wrap.className = 'ex';
+  const answers = Array.isArray(e.answer)? e.answer : [e.answer];
+  wrap.innerHTML = `
+    <div class="ex-q"><span class="ex-num">${idx}</span><span>${e.q}</span></div>
+    <div class="ex-row">
+      <input class="ex-input" placeholder="התשובה שלי">
+      <button class="btn-check">בדיקה</button>
+      <span class="feedback"></span>
+    </div>
+    ${e.hint?`<details class="hint"><summary>רמז</summary><span class="hint-body">${e.hint}</span></details>`:''}
+    <button class="btn-sol">פתרון מלא</button>
+    <div class="solution">${e.solution}</div>
+  `;
+  const input = wrap.querySelector('.ex-input');
+  const fb = wrap.querySelector('.feedback');
+  const check = ()=>{
+    const u = parseNum(input.value);
+    if(isNaN(u)){ input.className='ex-input no'; fb.className='feedback no'; fb.textContent='✗ הזן מספר'; return; }
+    const ok = answers.some(a=>approxEq(u,a, Math.abs(a)<1?0.01:0.05));
+    if(ok){ input.className='ex-input ok'; fb.className='feedback ok'; fb.textContent='✓ מצוין!'; }
+    else { input.className='ex-input no'; fb.className='feedback no'; fb.textContent='✗ נסה שוב'; }
+  };
+  wrap.querySelector('.btn-check').onclick = check;
+  input.addEventListener('keydown', ev=>{ if(ev.key==='Enter') check(); });
+  input.addEventListener('input', ()=>{ input.className='ex-input'; fb.textContent=''; });
+  const sol = wrap.querySelector('.solution');
+  wrap.querySelector('.btn-sol').onclick = (ev)=>{
+    sol.classList.toggle('show');
+    ev.target.textContent = sol.classList.contains('show')? 'הסתר פתרון':'פתרון מלא';
+  };
+  return wrap;
+}
+
+function makeMCQ(e, idx){
+  const wrap = document.createElement('div');
+  wrap.className = 'ex';
+  let opts = e.options.map((o,i)=>`<button class="mcq-opt" data-i="${i}">${o}</button>`).join('');
+  wrap.innerHTML = `
+    <div class="ex-q"><span class="ex-num">${idx}</span><span>${e.q}</span></div>
+    <div class="mcq">${opts}</div>
+    <span class="feedback"></span>
+    <button class="btn-sol">הסבר</button>
+    <div class="solution">${e.solution}</div>
+  `;
+  const fb = wrap.querySelector('.feedback');
+  const btns = wrap.querySelectorAll('.mcq-opt');
+  let answered = false;
+  btns.forEach(b=>{
+    b.onclick = ()=>{
+      if(answered) return;
+      answered = true;
+      const i = +b.dataset.i;
+      if(i===e.correct){ b.className='mcq-opt ok'; fb.className='feedback ok'; fb.textContent='✓ נכון!'; }
+      else { b.className='mcq-opt no'; fb.className='feedback no'; fb.textContent='✗ לא מדויק'; btns[e.correct].classList.add('reveal'); }
+    };
+  });
+  const sol = wrap.querySelector('.solution');
+  wrap.querySelector('.btn-sol').onclick = (ev)=>{
+    sol.classList.toggle('show');
+    ev.target.textContent = sol.classList.contains('show')? 'הסתר הסבר':'הסבר';
+  };
+  return wrap;
+}
+
+function render(){
+  buildTabs();
+  const ch = CHAPTERS[active];
+  const main = document.getElementById('content');
+  main.innerHTML = `
+    <div class="ch-head"><span class="ch-icon">${ch.icon}</span><h2>${ch.title}</h2></div>
+    <section class="intro">${ch.intro}</section>
+    <h3 class="ex-header">תרגילים</h3>
+    <div class="ex-list" id="exlist"></div>
+    <div id="extra"></div>
+    <div class="nav-btns">
+      <button class="nav-btn" id="prev" ${active===0?'disabled':''}>→ הקודם</button>
+      <span class="progress">${active+1} / ${CHAPTERS.length}</span>
+      <button class="nav-btn" id="next" ${active===CHAPTERS.length-1?'disabled':''}>הבא ←</button>
+    </div>
+  `;
+  const list = document.getElementById('exlist');
+  ch.exercises.forEach((e,i)=>{
+    list.appendChild(ch.type==='mcq'? makeMCQ(e,i+1) : makeExercise(e,i+1));
+  });
+  if(ch.extraSolution){
+    const ex = document.getElementById('extra');
+    const d = document.createElement('div');
+    d.className='extra-sol'; d.innerHTML = ch.extraSolution;
+    ex.appendChild(d);
+  }
+  const prev = document.getElementById('prev'), next = document.getElementById('next');
+  if(prev) prev.onclick = ()=>{ if(active>0){active--; render(); window.scrollTo(0,0);} };
+  if(next) next.onclick = ()=>{ if(active<CHAPTERS.length-1){active++; render(); window.scrollTo(0,0);} };
+}
+
+render();
+</script>
+</body>
+</html>

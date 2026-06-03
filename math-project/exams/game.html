@@ -1,0 +1,1056 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מסע המתמטיקה — כיתה ח'</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@500;700;800;900&family=Assistant:wght@400;600;700&display=swap');
+
+:root{
+  --bg:#070014;
+  --panel:rgba(28,14,58,0.55);
+  --panel2:rgba(40,20,80,0.55);
+  --neon-pink:#ff2d95;
+  --neon-cyan:#00f0ff;
+  --neon-purple:#b14aff;
+  --neon-green:#39ff14;
+  --neon-yellow:#ffe600;
+  --text:#eafaff;
+  --dim:#9d8fce;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{
+  font-family:'Assistant',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+/* שכבת רקע חיה: ערפילית פועמת */
+.bg-layer{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 18% 12%, rgba(177,74,255,0.28), transparent 38%),
+    radial-gradient(circle at 82% 22%, rgba(0,240,255,0.20), transparent 40%),
+    radial-gradient(circle at 50% 92%, rgba(255,45,149,0.22), transparent 45%),
+    radial-gradient(circle at 70% 70%, rgba(57,255,20,0.10), transparent 40%);
+  animation:nebula 16s ease-in-out infinite alternate;
+}
+@keyframes nebula{
+  0%{transform:scale(1) translate(0,0);filter:hue-rotate(0deg);}
+  100%{transform:scale(1.15) translate(-2%,-1%);filter:hue-rotate(25deg);}
+}
+/* רשת פרספקטיבה נעה (תחושת ארקייד) */
+.bg-grid{
+  position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;
+  mask-image:radial-gradient(ellipse 80% 70% at center, #000 20%, transparent 75%);
+}
+.bg-grid::before{
+  content:"";position:absolute;left:-50%;right:-50%;top:0;bottom:0;
+  background-image:
+    linear-gradient(rgba(177,74,255,0.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,240,255,0.10) 1px, transparent 1px);
+  background-size:50px 50px;
+  animation:gridmove 5s linear infinite;
+}
+@keyframes gridmove{ from{background-position:0 0;} to{background-position:0 50px;} }
+/* כוכבים נצנוץ */
+#stars{position:fixed;inset:0;z-index:0;pointer-events:none;}
+/* קווי סריקה של מסך CRT */
+.scanlines{
+  position:fixed;inset:0;z-index:2;pointer-events:none;opacity:0.5;
+  background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,0.12) 3px,transparent 4px);
+}
+.app{position:relative;z-index:1;max-width:880px;margin:0 auto;padding:0 16px 60px;}
+
+/* ===== HUD עליון ===== */
+.hud{
+  position:sticky;top:0;z-index:50;
+  display:flex;align-items:center;gap:14px;flex-wrap:wrap;
+  background:rgba(13,5,33,0.85);backdrop-filter:blur(10px);
+  border-bottom:2px solid var(--neon-purple);
+  padding:12px 16px;margin:0 -16px 24px;
+  box-shadow:0 4px 30px rgba(177,74,255,0.25);
+}
+.hud-logo{
+  font-family:'Rubik',sans-serif;font-weight:900;font-size:1.05rem;letter-spacing:0.5px;
+  color:var(--neon-cyan);text-shadow:0 0 10px var(--neon-cyan),0 0 20px rgba(0,240,255,0.5);
+  animation:logoPulse 2.5s ease-in-out infinite;
+}
+@keyframes logoPulse{0%,100%{filter:brightness(1);}50%{filter:brightness(1.3);}}
+.hud-stat{display:flex;align-items:center;gap:6px;font-weight:700;font-size:0.95rem;}
+.hud-stat .ico{font-size:1.15rem;}
+.hud-xp{color:var(--neon-yellow);text-shadow:0 0 6px rgba(255,230,0,0.6);}
+.hud-streak{color:var(--neon-pink);text-shadow:0 0 6px rgba(255,45,149,0.6);}
+.hud-lives{color:#ff5b6e;}
+.hud-spacer{flex:1;}
+.btn-reset{
+  background:transparent;border:1px solid var(--dim);color:var(--dim);
+  font-family:'Assistant',sans-serif;font-size:0.75rem;padding:5px 12px;border-radius:8px;cursor:pointer;
+}
+.btn-reset:hover{border-color:var(--neon-pink);color:var(--neon-pink);}
+
+/* ===== כותרת ===== */
+.hero{text-align:center;padding:30px 10px 18px;}
+.hero h1{
+  font-family:'Rubik',sans-serif;font-weight:900;font-size:2.9rem;line-height:1.1;letter-spacing:1px;
+  background:linear-gradient(100deg,var(--neon-pink) 0%,var(--neon-cyan) 35%,var(--neon-purple) 60%,var(--neon-yellow) 80%,var(--neon-pink) 100%);
+  background-size:250% auto;
+  -webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 0 24px rgba(177,74,255,0.7));
+  animation:shimmer 4s linear infinite;
+}
+@keyframes shimmer{to{background-position:250% center;}}
+.hero p{color:var(--dim);margin-top:10px;font-weight:500;}
+
+/* ===== מפת עולמות ===== */
+.map-title{
+  font-family:'Rubik',sans-serif;font-weight:900;font-size:1rem;color:var(--neon-cyan);
+  text-align:center;margin:28px 0 18px;letter-spacing:1px;
+  text-shadow:0 0 10px var(--neon-cyan);
+}
+.worlds{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;perspective:1000px;}
+.world{
+  position:relative;background:var(--panel);
+  backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);
+  border:2px solid rgba(177,74,255,0.35);border-radius:20px;
+  padding:18px 10px;cursor:pointer;
+  transition:transform .35s cubic-bezier(.34,1.56,.64,1), box-shadow .35s, border-color .35s;
+  text-align:center;overflow:hidden;transform-style:preserve-3d;
+  box-shadow:0 6px 22px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.08);
+}
+/* סריקת אור שעוברת על הכרטיס */
+.world::before{
+  content:"";position:absolute;top:0;left:-120%;width:60%;height:100%;
+  background:linear-gradient(100deg,transparent,rgba(255,255,255,0.18),transparent);
+  transform:skewX(-20deg);transition:left .6s;pointer-events:none;
+}
+.world:hover::before{left:160%;}
+.world:hover{transform:translateY(-8px) scale(1.05) rotateX(6deg);
+  box-shadow:0 16px 40px rgba(177,74,255,0.45), 0 0 24px rgba(0,240,255,0.3);
+  border-color:var(--neon-cyan);}
+.world.locked{opacity:.4;cursor:not-allowed;filter:grayscale(.7);}
+.world.locked:hover{transform:none;box-shadow:0 6px 22px rgba(0,0,0,0.45);border-color:rgba(177,74,255,0.35);}
+/* העולם הבא שזמ ין לשחק - פועם להזמנה */
+.world.next-up{border-color:var(--neon-yellow);animation:nextPulse 1.8s ease-in-out infinite;}
+@keyframes nextPulse{
+  0%,100%{box-shadow:0 6px 22px rgba(0,0,0,0.45),0 0 0 rgba(255,230,0,0);}
+  50%{box-shadow:0 6px 22px rgba(0,0,0,0.45),0 0 26px rgba(255,230,0,0.55);}
+}
+.world.cleared{border-color:var(--neon-green);box-shadow:0 0 24px rgba(57,255,20,0.35),inset 0 1px 0 rgba(255,255,255,0.08);}
+.world.cleared::after{
+  content:"✓";position:absolute;top:6px;left:8px;
+  color:var(--neon-green);font-weight:900;font-size:1.1rem;
+  text-shadow:0 0 8px var(--neon-green);
+}
+.world-num{
+  font-family:'Rubik',sans-serif;font-weight:900;font-size:0.7rem;color:var(--dim);
+}
+.world-icon{font-size:2.3rem;margin:8px 0;display:block;filter:drop-shadow(0 0 10px rgba(0,240,255,0.5));animation:floaty 3s ease-in-out infinite;}
+@keyframes floaty{0%,100%{transform:translateY(0);}50%{transform:translateY(-5px);}}
+.world-name{font-size:0.78rem;font-weight:700;line-height:1.25;min-height:2.4em;display:flex;align-items:center;justify-content:center;}
+.world-stars{margin-top:8px;font-size:0.8rem;letter-spacing:2px;color:var(--neon-yellow);min-height:1em;}
+.world.locked .world-icon{filter:grayscale(1);}
+.lock-badge{position:absolute;top:6px;left:8px;font-size:1rem;}
+
+/* ===== מסך עולם ===== */
+.world-screen{display:none;}
+.world-screen.active{display:block;animation:slideIn .4s ease;}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+.back-btn{
+  background:var(--panel2);border:1px solid var(--neon-purple);color:var(--neon-cyan);
+  font-family:'Assistant',sans-serif;font-weight:700;padding:8px 18px;border-radius:10px;cursor:pointer;
+  margin-bottom:18px;transition:all .2s;
+}
+.back-btn:hover{box-shadow:0 0 14px rgba(177,74,255,0.5);}
+.ws-head{display:flex;align-items:center;gap:14px;margin-bottom:6px;}
+.ws-icon{
+  font-size:2.4rem;width:64px;height:64px;border-radius:16px;
+  background:var(--panel);display:flex;align-items:center;justify-content:center;
+  border:2px solid var(--neon-cyan);box-shadow:0 0 16px rgba(0,240,255,0.3);
+}
+.ws-head h2{font-family:'Rubik',sans-serif;font-weight:900;font-size:1.2rem;color:var(--text);}
+/* פס התקדמות העולם */
+.ws-progress{margin:16px 0 24px;}
+.bar{height:14px;background:#1a0e36;border-radius:20px;overflow:hidden;border:1px solid #2a1850;}
+.bar-fill{height:100%;width:0;background:linear-gradient(90deg,var(--neon-pink),var(--neon-cyan));
+  transition:width .5s cubic-bezier(.34,1.56,.64,1);box-shadow:0 0 12px rgba(0,240,255,0.6);}
+.bar-label{font-size:0.8rem;color:var(--dim);margin-top:6px;text-align:center;font-weight:500;}
+
+/* תיבת הסבר */
+.intro{
+  background:linear-gradient(135deg,var(--panel),var(--panel2));
+  border-radius:18px;padding:22px;line-height:1.85;
+  border-right:4px solid var(--neon-cyan);
+  box-shadow:0 4px 24px rgba(0,0,0,0.4);
+}
+.intro p{margin-bottom:10px;}
+.intro ul{margin:8px 22px;}
+.intro li{margin-bottom:6px;}
+.formula{
+  background:rgba(0,240,255,0.12);color:var(--neon-cyan);
+  padding:3px 10px;border-radius:8px;font-weight:700;display:inline-block;
+  border:1px solid rgba(0,240,255,0.3);
+}
+.intro u{text-decoration-color:var(--neon-pink);}
+
+.ex-header{
+  font-family:'Rubik',sans-serif;font-weight:900;font-size:1rem;color:var(--neon-pink);
+  margin:28px 0 16px;text-shadow:0 0 8px rgba(255,45,149,0.4);
+}
+.ex-list{display:flex;flex-direction:column;gap:16px;}
+
+/* כרטיס תרגיל */
+.ex{
+  background:var(--panel);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);
+  border:1px solid rgba(177,74,255,0.25);border-radius:18px;padding:20px;
+  transition:all .3s;position:relative;
+  box-shadow:0 4px 18px rgba(0,0,0,0.4),inset 0 1px 0 rgba(255,255,255,0.06);
+}
+.ex:hover{border-color:rgba(0,240,255,0.4);box-shadow:0 6px 24px rgba(0,0,0,0.5),0 0 16px rgba(0,240,255,0.12);}
+.ex.solved{border-color:var(--neon-green);box-shadow:0 0 22px rgba(57,255,20,0.3);animation:solvedFlash .6s ease;}
+@keyframes solvedFlash{0%{box-shadow:0 0 0 rgba(57,255,20,0);}40%{box-shadow:0 0 36px rgba(57,255,20,0.6);}100%{box-shadow:0 0 22px rgba(57,255,20,0.3);}}
+.ex-q{display:flex;gap:10px;font-size:1.05rem;line-height:1.6;margin-bottom:14px;}
+.ex-num{
+  background:rgba(177,74,255,0.2);color:var(--neon-purple);min-width:30px;height:30px;
+  border-radius:9px;display:flex;align-items:center;justify-content:center;
+  font-weight:900;flex-shrink:0;border:1px solid rgba(177,74,255,0.4);
+}
+.ex-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+.ex-input{
+  font-family:'Assistant',sans-serif;font-size:1rem;padding:11px 14px;width:170px;text-align:center;
+  background:#0d0522;border:2px solid #2a1850;border-radius:12px;color:var(--text);
+  transition:all .2s;
+}
+.ex-input:focus{outline:none;border-color:var(--neon-cyan);box-shadow:0 0 10px rgba(0,240,255,0.4);}
+.ex-input.ok{border-color:var(--neon-green);box-shadow:0 0 12px rgba(57,255,20,0.5);}
+.ex-input.no{border-color:#ff3b5b;box-shadow:0 0 12px rgba(255,59,91,0.4);}
+.btn-check{
+  background:linear-gradient(135deg,var(--neon-purple),var(--neon-pink));
+  color:#fff;border:none;padding:12px 28px;border-radius:12px;
+  font-family:'Rubik',sans-serif;font-weight:800;font-size:0.95rem;cursor:pointer;
+  transition:all .2s;letter-spacing:0.3px;
+  box-shadow:0 4px 0 #7a1252,0 6px 14px rgba(255,45,149,0.4);
+}
+.btn-check:hover{box-shadow:0 4px 0 #7a1252,0 0 22px rgba(255,45,149,0.7);transform:translateY(-2px);}
+.btn-check:active{transform:translateY(2px);box-shadow:0 1px 0 #7a1252,0 2px 8px rgba(255,45,149,0.4);}
+.feedback{font-weight:700;font-size:0.95rem;}
+.feedback.ok{color:var(--neon-green);}
+.feedback.no{color:#ff5b6e;}
+.xp-pop{
+  color:var(--neon-yellow);font-weight:900;font-size:0.9rem;
+  animation:xpPop 1s ease;text-shadow:0 0 8px var(--neon-yellow);
+}
+@keyframes xpPop{0%{opacity:0;transform:translateY(8px);}30%{opacity:1;}100%{opacity:0;transform:translateY(-14px);}}
+/* כפתור רמז */
+.btn-hint{
+  display:inline-block;margin-top:12px;margin-left:8px;
+  background:rgba(255,230,0,0.08);border:1px solid rgba(255,230,0,0.4);color:var(--neon-yellow);
+  font-family:'Assistant',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;
+  padding:7px 14px;border-radius:10px;transition:all .2s;
+}
+.btn-hint:hover{background:rgba(255,230,0,0.18);box-shadow:0 0 12px rgba(255,230,0,0.3);}
+.btn-hint.used{cursor:default;opacity:0.85;border-style:dashed;display:block;margin-left:0;}
+.hint-body{display:none;margin-top:8px;color:var(--neon-yellow);font-size:0.92rem;
+  padding:8px 12px;background:rgba(255,230,0,0.06);border-radius:8px;border-right:3px solid var(--neon-yellow);}
+.hint-body.show{display:block;}
+.cost{font-size:0.72rem;opacity:0.75;font-weight:500;}
+.btn-sol{
+  display:inline-block;margin-top:12px;background:rgba(177,74,255,0.08);border:1px solid rgba(177,74,255,0.4);
+  color:var(--neon-purple);font-family:'Assistant',sans-serif;font-weight:700;font-size:0.85rem;cursor:pointer;
+  padding:7px 14px;border-radius:10px;transition:all .2s;
+}
+.btn-sol:hover{background:rgba(177,74,255,0.18);box-shadow:0 0 12px rgba(177,74,255,0.3);}
+.solution{
+  margin-top:12px;padding:14px 16px;background:#0d0522;border-radius:12px;
+  line-height:1.7;font-size:0.95rem;border-right:3px solid var(--neon-purple);display:none;
+}
+.solution.show{display:block;}
+.solution b{color:var(--neon-cyan);}
+/* כרטיס רזרבה / אתגר בונוס */
+.reserve-tag{
+  background:linear-gradient(90deg,var(--neon-yellow),var(--neon-pink));
+  color:#1a0533;font-weight:800;font-size:0.8rem;padding:7px 12px;border-radius:10px;
+  margin-bottom:14px;text-align:center;
+}
+.ex.reserve-new{border-color:var(--neon-yellow);box-shadow:0 0 24px rgba(255,230,0,0.35);animation:reserveIn .6s ease;}
+@keyframes reserveIn{from{opacity:0;transform:scale(0.9);}to{opacity:1;transform:scale(1);}}
+
+/* בחירה מרובה */
+.mcq{display:flex;flex-direction:column;gap:10px;}
+.mcq-opt{
+  background:#0d0522;border:2px solid #2a1850;border-radius:12px;padding:13px 16px;
+  text-align:right;font-family:'Assistant',sans-serif;font-size:1rem;color:var(--text);cursor:pointer;transition:all .2s;
+}
+.mcq-opt:hover{border-color:var(--neon-cyan);}
+.mcq-opt.ok{border-color:var(--neon-green);background:rgba(57,255,20,0.08);box-shadow:0 0 12px rgba(57,255,20,0.3);}
+.mcq-opt.no{border-color:#ff3b5b;background:rgba(255,59,91,0.08);}
+.mcq-opt.reveal{border-color:var(--neon-green);background:rgba(57,255,20,0.08);}
+
+.extra-sol{
+  margin-top:24px;background:var(--panel);border:1px solid #2a1850;border-radius:16px;padding:22px;
+}
+.proof-example h4{color:var(--neon-pink);margin-bottom:12px;}
+.proof-example p{line-height:1.7;margin-bottom:8px;}
+.proof-table{width:100%;border-collapse:collapse;margin:12px 0;}
+.proof-table th,.proof-table td{border:1px solid #2a1850;padding:10px 14px;text-align:right;}
+.proof-table th{background:rgba(177,74,255,0.15);color:var(--neon-purple);}
+.proof-table b{color:var(--neon-cyan);}
+
+/* באנר ניצחון עולם */
+.clear-banner{
+  display:none;margin-top:26px;padding:24px;text-align:center;border-radius:18px;
+  background:linear-gradient(135deg,rgba(57,255,20,0.12),rgba(0,240,255,0.12));
+  border:2px solid var(--neon-green);box-shadow:0 0 30px rgba(57,255,20,0.3);
+}
+.clear-banner.show{display:block;animation:slideIn .5s ease;}
+.clear-banner h3{font-family:'Rubik',sans-serif;font-weight:900;color:var(--neon-green);font-size:1.3rem;margin-bottom:8px;text-shadow:0 0 12px var(--neon-green);}
+.clear-banner p{color:var(--text);margin-bottom:14px;}
+.btn-next-world{
+  background:linear-gradient(135deg,var(--neon-cyan),var(--neon-purple));
+  color:#06121a;border:none;padding:13px 30px;border-radius:12px;
+  font-family:'Assistant',sans-serif;font-weight:900;font-size:1rem;cursor:pointer;transition:all .2s;
+}
+.btn-next-world:hover{box-shadow:0 0 22px rgba(0,240,255,0.6);transform:translateY(-2px);}
+
+/* badge popup */
+.badge-pop{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(120px);
+  background:linear-gradient(135deg,var(--panel2),var(--panel));
+  border:2px solid var(--neon-yellow);border-radius:16px;padding:14px 22px;
+  display:flex;align-items:center;gap:12px;z-index:200;
+  box-shadow:0 0 30px rgba(255,230,0,0.4);transition:transform .5s cubic-bezier(.34,1.56,.64,1);
+}
+.badge-pop.show{transform:translateX(-50%) translateY(0);}
+.badge-pop .bico{font-size:1.8rem;}
+.badge-pop .btxt b{color:var(--neon-yellow);display:block;font-size:0.95rem;}
+.badge-pop .btxt span{color:var(--dim);font-size:0.8rem;}
+
+/* קונפטי */
+#confetti{position:fixed;inset:0;pointer-events:none;z-index:150;}
+
+/* תגים */
+.trophy-room{margin-top:30px;text-align:center;}
+.trophy-room h3{font-family:'Rubik',sans-serif;font-weight:900;font-size:0.85rem;color:var(--neon-yellow);margin-bottom:12px;}
+.badges{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;}
+.badge{
+  width:50px;height:50px;border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:1.4rem;background:var(--panel);border:2px solid #2a1850;opacity:.3;filter:grayscale(1);transition:all .3s;
+}
+.badge.earned{opacity:1;filter:none;border-color:var(--neon-yellow);box-shadow:0 0 14px rgba(255,230,0,0.4);}
+
+@media (max-width:600px){
+  .hero h1{font-size:1.5rem;}
+  .worlds{grid-template-columns:repeat(2,1fr);}
+  .hud{gap:10px;padding:10px;}
+  .hud-logo{font-size:0.75rem;}
+  .hud-stat{font-size:0.85rem;}
+}
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+<canvas id="stars"></canvas>
+<div class="scanlines"></div>
+<canvas id="confetti"></canvas>
+
+<div class="app">
+  <!-- HUD -->
+  <div class="hud">
+    <span class="hud-logo">◢ MATH QUEST ◣</span>
+    <span class="hud-spacer"></span>
+    <span class="hud-stat hud-xp"><span class="ico">⚡</span><span id="hudXp">0</span> XP</span>
+    <span class="hud-stat hud-streak"><span class="ico">🔥</span><span id="hudStreak">0</span></span>
+    <span class="hud-stat hud-lives"><span id="hudLives">❤️❤️❤️❤️❤️</span></span>
+    <button class="btn-reset" id="btnReset">איפוס</button>
+  </div>
+
+  <!-- מסך מפה -->
+  <div id="mapScreen">
+    <div class="hero">
+      <h1>מסע המתמטיקה</h1>
+      <p>כבוש 8 עולמות · אסוף XP · שמור על הרצף הבוער 🔥</p>
+    </div>
+    <div class="map-title">▸ מפת העולמות ◂</div>
+    <div class="worlds" id="worlds"></div>
+
+    <div class="trophy-room">
+      <h3>🏆 חדר הגביעים</h3>
+      <div class="badges" id="badges"></div>
+    </div>
+  </div>
+
+  <!-- מסך עולם -->
+  <div id="worldScreen" class="world-screen"></div>
+</div>
+
+<div class="badge-pop" id="badgePop">
+  <span class="bico">🏅</span>
+  <span class="btxt"><b id="badgeTitle"></b><span id="badgeDesc"></span></span>
+</div>
+
+<script>
+// ============ נתוני העולמות ============
+const WORLDS = [
+{ id:"polygons", icon:"📐", name:"ממלכת הזוויות", type:"num",
+  intro:`<p><b>סכום הזוויות:</b> במשולש 180°, במרובע 360°, ובמצולע בעל n צלעות: <span class="formula">(n−2)·180°</span></p>
+  <p><b>משולש שווה-שוקיים:</b> שתי השוקיים שוות, וזוויות הבסיס שוות זו לזו.</p>
+  <p><b>זווית חיצונית</b> שווה לסכום שתי הזוויות הפנימיות הרחוקות.</p>
+  <p><b>שטחים:</b> מלבן=אורך·רוחב · משולש=(בסיס·גובה)÷2 · טרפז=((בסיס+בסיס)·גובה)÷2.</p>`,
+  exercises:[
+    {q:"במשולש זווית אחת 70° ושנייה 55°. כמה מעלות הזווית השלישית?",answer:55,hint:"סכום הזוויות = 180°",solution:"180 − 70 − 55 = <b>55°</b>"},
+    {q:"במשולש שווה-שוקיים זווית הראש 40°. כמה מעלות כל זווית בסיס?",answer:70,hint:"(180−40) מתחלק בין שתי זוויות הבסיס השוות",solution:"(180 − 40) ÷ 2 = <b>70°</b>"},
+    {q:"במשו\"ש זווית בסיס אחת 65°. כמה מעלות זווית הראש?",answer:50,hint:"שתי זוויות בסיס שוות (65° כ\"א)",solution:"180 − 65 − 65 = <b>50°</b>"},
+    {q:"זווית חיצונית 120°, פנימית רחוקה אחת 50°. כמה השנייה?",answer:70,hint:"חיצונית = סכום שתי הפנימיות הרחוקות",solution:"120 − 50 = <b>70°</b>"},
+    {q:"מלבן 12×5 ס\"מ. מה שטחו (סמ\"ר)?",answer:60,hint:"אורך·רוחב",solution:"12 · 5 = <b>60</b>"},
+    {q:"מלבן 12×5 ס\"מ. מה היקפו (ס\"מ)?",answer:34,hint:"2·(אורך+רוחב)",solution:"2·(12+5) = <b>34</b>"},
+    {q:"משולש בסיס 8 וגובה 6. מה שטחו (סמ\"ר)?",answer:24,hint:"(בסיס·גובה)÷2",solution:"(8·6)÷2 = <b>24</b>"},
+    {q:"סכום הזוויות במחומש (5 צלעות)?",answer:540,hint:"(n−2)·180, n=5",solution:"3·180 = <b>540°</b>"},
+  ]},
+{ id:"linear", icon:"📈", name:"עמק הפונקציה", type:"num",
+  intro:`<p>בפונקציה <span class="formula">y = mx + b</span>: <b>m</b> שיפוע (קצב שינוי), <b>b</b> חיתוך עם ציר y.</p>
+  <p>m&gt;0 ⟵ עולה · m&lt;0 ⟵ יורדת · m=0 ⟵ אופקית.</p>
+  <p><b>חיתוך עם ציר y:</b> (0, b) · <b>חיתוך עם ציר x:</b> מציבים y=0.</p>`,
+  exercises:[
+    {q:"בפונקציה y = 3x − 6, מהו השיפוע?",answer:3,hint:"המקדם של x",solution:"<b>m = 3</b>"},
+    {q:"y = 3x − 6 — מהו y בחיתוך עם ציר y?",answer:-6,hint:"הצב x=0",solution:"y = 3·0 − 6 = <b>−6</b>"},
+    {q:"y = 3x − 6 — באיזה x חותכת את ציר x?",answer:2,hint:"y=0 → 3x−6=0",solution:"3x = 6 → <b>x = 2</b>"},
+    {q:"מהו קצב השינוי של y = −2x + 7?",answer:-2,hint:"קצב שינוי = שיפוע",solution:"<b>−2</b>"},
+    {q:"האם (2, 5) על הישר y = 2x + 1? (1=כן, 0=לא)",answer:1,hint:"הצב x=2",solution:"2·2+1 = 5 ✓ → <b>1</b>"},
+    {q:"y = −5x + 1 עולה או יורדת? (1=עולה, 0=יורדת)",answer:0,hint:"m שלילי",solution:"m=−5&lt;0 → יורדת → <b>0</b>"},
+    {q:"שני ישרים מקבילים, שיפוע הראשון 4. מהו שיפוע השני?",answer:4,hint:"מקבילים = אותו שיפוע",solution:"<b>4</b>"},
+  ]},
+{ id:"lineeq", icon:"🛰️", name:"קו הכוכבים", type:"num",
+  intro:`<p><b>שיפוע משתי נקודות:</b> <span class="formula">m = (y₂−y₁)/(x₂−x₁)</span></p>
+  <p><b>משוואת ישר מנקודה ושיפוע:</b> <span class="formula">y − y₁ = m(x − x₁)</span></p>
+  <p><b>תחום חיוביות:</b> x שבהם y&gt;0. <b>חיתוך שני ישרים:</b> משווים את המשוואות.</p>`,
+  exercises:[
+    {q:"שיפוע הישר דרך (1, 2) ו-(3, 8)?",answer:3,hint:"(8−2)/(3−1)",solution:"6/2 = <b>3</b>"},
+    {q:"ישר שיפוע 2 דרך (1, 5). מהו b ב-y=2x+b?",answer:3,hint:"5 = 2·1 + b",solution:"<b>b = 3</b>"},
+    {q:"y = 2x − 8 חותך ציר x ב-x=?",answer:4,hint:"2x−8=0",solution:"<b>x = 4</b>"},
+    {q:"שיפוע הישר דרך (−2, 3) ו-(2, −5)?",answer:-2,hint:"(−5−3)/(2−(−2)) = −8/4",solution:"<b>−2</b>"},
+    {q:"חיתוך הישרים y=x+1 ו-y=−x+5. מהו x?",answer:2,hint:"x+1 = −x+5",solution:"2x=4 → <b>x = 2</b>"},
+    {q:"ישר דרך (0, −3) שיפוע 5. מהו b?",answer:-3,hint:"b = y כש-x=0",solution:"<b>b = −3</b>"},
+    {q:"y = −3x + 12 — באיזה x חותך ציר x? (מתחת לזה חיובי)",answer:4,hint:"−3x+12=0",solution:"<b>x = 4</b>"},
+  ]},
+{ id:"systems", icon:"⚔️", name:"זירת המשוואות", type:"num",
+  intro:`<p>פתרון מערכת = זוג (x, y) שמקיים את <b>שתי</b> המשוואות.</p>
+  <p><b>הצבה</b> · <b>השוואה</b> · <b>חיבור/חיסור</b> (השוואת מקדמים).</p>
+  <p><b>בעיה מילולית:</b> מגדירים נעלמים, בונים שתי משוואות, פותרים ובודקים היגיון.</p>`,
+  exercises:[
+    {q:"x + y = 10 ; x − y = 4. מהו x?",answer:7,hint:"חבר → 2x=14",solution:"2x=14 → <b>x=7</b>"},
+    {q:"x + y = 10 ; x − y = 4. מהו y?",answer:3,hint:"הצב x=7",solution:"<b>y=3</b>"},
+    {q:"y = 2x ; x + y = 9. מהו x?",answer:3,hint:"x+2x=9",solution:"3x=9 → <b>x=3</b>"},
+    {q:"3x + 2y = 16 ; x = 4. מהו y?",answer:2,hint:"12+2y=16",solution:"2y=4 → <b>y=2</b>"},
+    {q:"לדינה ולגיא יחד 20 ש\"ח. לדינה פי 3 מגיא. כמה לגיא?",answer:5,hint:"x+3x=20",solution:"4x=20 → <b>5 ש\"ח</b>"},
+    {q:"עט ומחברת יחד 12 ש\"ח. המחברת יקרה ב-4. כמה העט?",answer:4,hint:"x+(x+4)=12",solution:"2x=8 → <b>4 ש\"ח</b>"},
+    {q:"10 ראשים, 26 רגליים (תרנגולת=2, כבשה=4). כמה כבשים?",answer:3,hint:"t+k=10, 2t+4k=26",solution:"2(10−k)+4k=26 → 2k=6 → <b>3 כבשים</b>"},
+  ]},
+{ id:"percent", icon:"💎", name:"מכרה האחוזים", type:"num",
+  intro:`<p><b>אחוז מערך:</b> <span class="formula">p% מ-X = (p/100)·X</span></p>
+  <p><b>הנחה/ייקור:</b> ×(1−p/100) או ×(1+p/100). <b>מציאת השלם:</b> X = הערך ÷ (p/100).</p>
+  <p><b>אי-שוויון:</b> בכפל/חילוק במספר <u>שלילי הופכים את הסימן</u>.</p>`,
+  exercises:[
+    {q:"כמה זה 20% מתוך 150?",answer:30,hint:"0.20·150",solution:"<b>30</b>"},
+    {q:"חולצה 80 ש\"ח, הנחה 25%. מחיר חדש?",answer:60,hint:"80·0.75",solution:"<b>60 ש\"ח</b>"},
+    {q:"מוצר 200 ש\"ח, ייקור 10%. מחיר חדש?",answer:220,hint:"200·1.10",solution:"<b>220 ש\"ח</b>"},
+    {q:"30% ממספר = 45. מהו המספר?",answer:150,hint:"45 ÷ 0.30",solution:"<b>150</b>"},
+    {q:"25 תלמידים, 60% בנות. כמה בנות?",answer:15,hint:"0.60·25",solution:"<b>15</b>"},
+    {q:"אחרי הנחה 20% המחיר 160 ש\"ח. מה היה המקורי?",answer:200,hint:"160 = 0.8·X",solution:"160/0.8 = <b>200 ש\"ח</b>"},
+    {q:"פתור 3x &lt; 21. הערך השלם הגדול ביותר של x?",answer:6,hint:"x &lt; 7",solution:"<b>6</b>"},
+    {q:"פתור −2x &gt; −10. הערך השלם הגדול ביותר? (הפוך סימן!)",answer:4,hint:"x &lt; 5",solution:"הסימן מתהפך → x&lt;5 → <b>4</b>"},
+  ]},
+{ id:"congruence", icon:"🛡️", name:"מבצר החפיפה", type:"mcq",
+  intro:`<p>משולשים <b>חופפים</b> (△ABC ≅ △DEF) = זהים בצורה ובגודל.</p>
+  <ul><li><b>צ.צ.צ (SSS):</b> שלוש צלעות שוות.</li>
+  <li><b>צ.ז.צ (SAS):</b> שתי צלעות + הזווית <u>שביניהן</u>.</li>
+  <li><b>ז.צ.ז (ASA):</b> שתי זוויות + הצלע <u>שביניהן</u>.</li></ul>
+  <p>בהוכחה: <b>טענה</b> + <b>נימוק</b> (נתון / צלע משותפת / זוויות קודקודיות), ובסוף משפט החפיפה.</p>`,
+  exercises:[
+    {q:"שתי צלעות והזווית <b>שביניהן</b> שוות. איזה משפט?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:1,solution:"הזווית כלואה בין הצלעות → <b>צ.ז.צ (SAS)</b>"},
+    {q:"שלוש צלעות שוות בהתאמה. איזה משפט?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:0,solution:"<b>צ.צ.צ (SSS)</b>"},
+    {q:"שתי זוויות והצלע <b>שביניהן</b> שוות. איזה משפט?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:2,solution:"<b>ז.צ.ז (ASA)</b>"},
+    {q:"אותה צלע מופיעה בשני המשולשים. מהו הנימוק?",options:["נתון","צלע משותפת","זוויות קודקודיות"],correct:1,solution:"<b>צלע משותפת</b>"},
+    {q:"שתי זוויות זו מול זו בהצטלבות ישרים. הנימוק לשוויונן?",options:["זוויות קודקודיות","זוויות צמודות","נתון"],correct:0,solution:"<b>זוויות קודקודיות</b> שוות"},
+    {q:"במשו\"ש מורידים תיכון לבסיס. הנימוק לשוויון השוקיים?",options:["נתון (המשולש שו\"ש)","משפט פיתגורס","זוויות צמודות"],correct:0,solution:"נובע מה<b>נתון</b> שהמשולש שווה-שוקיים"},
+  ],
+  extraSolution:`<div class="proof-example"><h4>🎯 דוגמת הוכחה מלאה — טענה ונימוק</h4>
+  <p><b>נתון:</b> AB = AC · AD חוצה את זווית A.</p><p><b>צריך להוכיח:</b> △ABD ≅ △ACD</p>
+  <table class="proof-table"><tr><th>טענה</th><th>נימוק</th></tr>
+  <tr><td>AB = AC</td><td>נתון</td></tr><tr><td>∠BAD = ∠CAD</td><td>נתון (AD חוצה זווית)</td></tr>
+  <tr><td>AD = AD</td><td>צלע משותפת</td></tr><tr><td>△ABD ≅ △ACD</td><td>לפי צ.ז.צ (SAS)</td></tr></table>
+  <p style="color:var(--neon-cyan)"><b>טיפ:</b> סמן כל נתון על השרטוט, חפש מה משותף, ובדוק לאיזה משפט (SSS/SAS/ASA) הנתונים מתאימים.</p></div>`
+},
+{ id:"pythagoras", icon:"🏯", name:"מגדל פיתגורס", type:"num",
+  intro:`<p>במשולש <b>ישר-זווית</b>: <span class="formula">a² + b² = c²</span> (c = היתר).</p>
+  <p>היתר: c = √(a²+b²) · ניצב: a = √(c²−b²).</p>
+  <p><b>שלשות מוכרות:</b> (3,4,5) · (6,8,10) · (5,12,13) · (8,15,17) · (9,12,15).</p>`,
+  exercises:[
+    {q:"ניצבים 3 ו-4. מהו היתר?",answer:5,hint:"√(9+16)",solution:"√25 = <b>5</b>"},
+    {q:"ניצבים 6 ו-8. מהו היתר?",answer:10,hint:"√(36+64)",solution:"√100 = <b>10</b>"},
+    {q:"היתר 13, ניצב 5. מהו הניצב השני?",answer:12,hint:"√(169−25)",solution:"√144 = <b>12</b>"},
+    {q:"ניצבים 5 ו-12. מהו היתר?",answer:13,hint:"√(25+144)",solution:"√169 = <b>13</b>"},
+    {q:"היתר 17, ניצב 8. מהו הניצב השני?",answer:15,hint:"√(289−64)",solution:"√225 = <b>15</b>"},
+    {q:"ניצבים 9 ו-12. מהו היתר?",answer:15,hint:"√(81+144)",solution:"√225 = <b>15</b>"},
+    {q:"אלכסון ריבוע שצלעו 6 (עגל: √72≈8.49)?",answer:[8.49,8.5,8],hint:"√(6²+6²)=√72",solution:"√72 ≈ <b>8.49</b>"},
+  ]},
+{ id:"stats", icon:"📊", name:"מצפה הנתונים", type:"num",
+  intro:`<p><b>שכיחות יחסית:</b> שכיחות ÷ סך המקרים (×100 לאחוזים).</p>
+  <p><b>שכיח:</b> הערך הנפוץ ביותר. <b>ממוצע:</b> סכום ÷ מספר.</p>
+  <p><b>חציון:</b> הערך האמצעי בסדר עולה (זוגי → ממוצע השניים האמצעיים).</p>`,
+  exercises:[
+    {q:"נתונים: 4, 6, 8, 10, 2. מהו הממוצע?",answer:6,hint:"סכום ÷ 5",solution:"30÷5 = <b>6</b>"},
+    {q:"מסודרים: 3, 5, 7, 9, 11. מהו החציון?",answer:7,hint:"הערך האמצעי",solution:"<b>7</b>"},
+    {q:"נתונים: 2, 3, 3, 3, 5, 8. מהו השכיח?",answer:3,hint:"הנפוץ ביותר",solution:"<b>3</b>"},
+    {q:"20 תלמידים, 5 באוטובוס. שכיחות יחסית באחוזים?",answer:25,hint:"5/20·100",solution:"<b>25%</b>"},
+    {q:"נתונים: 10, 20, 30, 40. מהו החציון? (זוגי)",answer:25,hint:"ממוצע 20 ו-30",solution:"(20+30)÷2 = <b>25</b>"},
+    {q:"ממוצע 4 מבחנים 80. סכום 3 הראשונים 240. כמה ברביעי?",answer:80,hint:"סה\"כ = 320",solution:"320−240 = <b>80</b>"},
+    {q:"נתונים: 1, 4, 4, 6, 10. מהו הממוצע?",answer:5,hint:"סכום ÷ 5",solution:"25÷5 = <b>5</b>"},
+  ]},
+];
+
+// ============ מאגר רזרבה: שאלה חדשה נמשכת בכל פתיחת "פתרון מלא" ============
+const RESERVES = {
+  polygons:[
+    {q:"במשולש זווית אחת 90° ושנייה 30°. כמה מעלות השלישית?",answer:60,hint:"180−90−30",solution:"180−90−30 = <b>60°</b>"},
+    {q:"במשו\"ש זווית הראש 80°. כמה מעלות כל זווית בסיס?",answer:50,hint:"(180−80)÷2",solution:"(180−80)÷2 = <b>50°</b>"},
+    {q:"מלבן 10×7 ס\"מ. מה שטחו (סמ\"ר)?",answer:70,hint:"10·7",solution:"<b>70</b>"},
+    {q:"משולש בסיס 12 וגובה 5. מה שטחו (סמ\"ר)?",answer:30,hint:"(12·5)÷2",solution:"<b>30</b>"},
+    {q:"סכום הזוויות במשושה (6 צלעות)?",answer:720,hint:"(6−2)·180",solution:"4·180 = <b>720°</b>"},
+    {q:"במשו\"ש זווית בסיס 72°. כמה מעלות זווית הראש?",answer:36,hint:"180−72−72",solution:"<b>36°</b>"},
+  ],
+  linear:[
+    {q:"בפונקציה y = 5x + 2, מהו השיפוע?",answer:5,hint:"המקדם של x",solution:"<b>5</b>"},
+    {q:"y = 4x − 8 — מהו y בחיתוך עם ציר y?",answer:-8,hint:"הצב x=0",solution:"<b>−8</b>"},
+    {q:"y = 2x − 10 — באיזה x חותכת את ציר x?",answer:5,hint:"2x−10=0",solution:"<b>x = 5</b>"},
+    {q:"האם (3, 7) על הישר y = 2x + 1? (1=כן, 0=לא)",answer:1,hint:"2·3+1=7",solution:"<b>1</b>"},
+    {q:"y = 6x − 3 עולה או יורדת? (1=עולה, 0=יורדת)",answer:1,hint:"m=6>0",solution:"<b>1</b>"},
+    {q:"שני ישרים מקבילים, שיפוע הראשון −2. מהו שיפוע השני?",answer:-2,hint:"מקבילים=אותו שיפוע",solution:"<b>−2</b>"},
+  ],
+  lineeq:[
+    {q:"שיפוע הישר דרך (0, 0) ו-(2, 6)?",answer:3,hint:"(6−0)/(2−0)",solution:"<b>3</b>"},
+    {q:"ישר שיפוע 3 דרך (2, 7). מהו b ב-y=3x+b?",answer:1,hint:"7=3·2+b",solution:"<b>b = 1</b>"},
+    {q:"y = 4x − 12 חותך ציר x ב-x=?",answer:3,hint:"4x−12=0",solution:"<b>x = 3</b>"},
+    {q:"שיפוע הישר דרך (1, 1) ו-(4, 7)?",answer:2,hint:"(7−1)/(4−1)",solution:"<b>2</b>"},
+    {q:"חיתוך הישרים y=2x ו-y=x+3. מהו x?",answer:3,hint:"2x=x+3",solution:"<b>x = 3</b>"},
+    {q:"ישר דרך (0, 5) שיפוע −2. מהו b?",answer:5,hint:"b=y כש-x=0",solution:"<b>b = 5</b>"},
+  ],
+  systems:[
+    {q:"x + y = 12 ; x − y = 2. מהו x?",answer:7,hint:"חבר → 2x=14",solution:"<b>x = 7</b>"},
+    {q:"y = 3x ; x + y = 8. מהו x?",answer:2,hint:"x+3x=8",solution:"4x=8 → <b>x = 2</b>"},
+    {q:"2x + y = 11 ; x = 3. מהו y?",answer:5,hint:"6+y=11",solution:"<b>y = 5</b>"},
+    {q:"שני מספרים סכומם 15 והפרשם 3. מהו הגדול?",answer:9,hint:"x+y=15, x−y=3",solution:"2x=18 → <b>9</b>"},
+    {q:"כרטיס ופופקורן יחד 30 ש\"ח. הכרטיס יקר ב-10. כמה הכרטיס?",answer:20,hint:"x+(x−10)=30",solution:"2x=40 → <b>20 ש\"ח</b>"},
+    {q:"8 ראשים, 22 רגליים (תרנגולת=2, ארנב=4). כמה ארנבים?",answer:3,hint:"t+a=8, 2t+4a=22",solution:"2a=6 → <b>3 ארנבים</b>"},
+  ],
+  percent:[
+    {q:"כמה זה 30% מתוך 200?",answer:60,hint:"0.30·200",solution:"<b>60</b>"},
+    {q:"מעיל 120 ש\"ח, הנחה 50%. מחיר חדש?",answer:60,hint:"120·0.5",solution:"<b>60 ש\"ח</b>"},
+    {q:"מוצר 50 ש\"ח, ייקור 20%. מחיר חדש?",answer:60,hint:"50·1.2",solution:"<b>60 ש\"ח</b>"},
+    {q:"40% ממספר = 80. מהו המספר?",answer:200,hint:"80÷0.4",solution:"<b>200</b>"},
+    {q:"פתור 4x < 28. הערך השלם הגדול ביותר של x?",answer:6,hint:"x<7",solution:"<b>6</b>"},
+    {q:"פתור −3x > −18. הערך השלם הגדול ביותר? (הפוך סימן!)",answer:5,hint:"x<6",solution:"<b>5</b>"},
+  ],
+  congruence:[
+    {q:"נתון: AB=DE, ∠A=∠D, AC=DF. איזה משפט חפיפה?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:1,solution:"שתי צלעות + זווית ביניהן → <b>צ.ז.צ (SAS)</b>"},
+    {q:"נתון: ∠A=∠D, AB=DE, ∠B=∠E. איזה משפט?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:2,solution:"שתי זוויות + הצלע שביניהן → <b>ז.צ.ז (ASA)</b>"},
+    {q:"נתון: AB=DE, BC=EF, AC=DF. איזה משפט?",options:["צ.צ.צ (SSS)","צ.ז.צ (SAS)","ז.צ.ז (ASA)"],correct:0,solution:"<b>צ.צ.צ (SSS)</b>"},
+    {q:"זווית המשותפת לשני משולשים. מהו הנימוק לשוויונה?",options:["נתון","זווית משותפת","זוויות קודקודיות"],correct:1,solution:"<b>זווית משותפת</b>"},
+    {q:"במשו\"ש, מהו הנימוק לכך שזוויות הבסיס שוות?",options:["זוויות בסיס במשו\"ש שוות","צלע משותפת","נתון"],correct:0,solution:"תכונת המשו\"ש: <b>זוויות הבסיס שוות</b>"},
+    {q:"נתון תיכון לבסיס במשו\"ש. הנימוק לשוויון שני חצאי הבסיס?",options:["התיכון חוצה את הבסיס","פיתגורס","זוויות צמודות"],correct:0,solution:"<b>התיכון חוצה את הבסיס</b> לשני חלקים שווים"},
+  ],
+  pythagoras:[
+    {q:"ניצבים 8 ו-6. מהו היתר?",answer:10,hint:"√(64+36)",solution:"√100 = <b>10</b>"},
+    {q:"היתר 5, ניצב 3. מהו הניצב השני?",answer:4,hint:"√(25−9)",solution:"√16 = <b>4</b>"},
+    {q:"ניצבים 12 ו-16. מהו היתר?",answer:20,hint:"√(144+256)",solution:"√400 = <b>20</b>"},
+    {q:"היתר 25, ניצב 7. מהו הניצב השני?",answer:24,hint:"√(625−49)",solution:"√576 = <b>24</b>"},
+    {q:"ניצבים 10 ו-24. מהו היתר?",answer:26,hint:"√(100+576)",solution:"√676 = <b>26</b>"},
+    {q:"ניצבים 15 ו-20. מהו היתר?",answer:25,hint:"√(225+400)",solution:"√625 = <b>25</b>"},
+  ],
+  stats:[
+    {q:"נתונים: 5, 10, 15. מהו הממוצע?",answer:10,hint:"30÷3",solution:"<b>10</b>"},
+    {q:"מסודרים: 2, 4, 6, 8, 10. מהו החציון?",answer:6,hint:"האמצעי",solution:"<b>6</b>"},
+    {q:"נתונים: 7, 7, 7, 2, 5. מהו השכיח?",answer:7,hint:"הנפוץ ביותר",solution:"<b>7</b>"},
+    {q:"40 תלמידים, 10 הולכים ברגל. שכיחות יחסית באחוזים?",answer:25,hint:"10/40·100",solution:"<b>25%</b>"},
+    {q:"נתונים: 4, 8, 12, 16. מהו החציון? (זוגי)",answer:10,hint:"ממוצע 8 ו-12",solution:"(8+12)÷2 = <b>10</b>"},
+    {q:"ממוצע 5 מספרים 12. סכום 4 מהם 50. מהו החמישי?",answer:10,hint:"סה\"כ=60",solution:"60−50 = <b>10</b>"},
+  ],
+};
+const BADGES = [
+  {id:"first", icon:"🌟", title:"צעד ראשון", desc:"פתרת תרגיל ראשון"},
+  {id:"streak5", icon:"🔥", title:"בוער!", desc:"5 נכונים ברצף"},
+  {id:"streak10", icon:"⚡", title:"על אש!", desc:"10 נכונים ברצף"},
+  {id:"world1", icon:"🏅", title:"כובש עולמות", desc:"סיימת עולם ראשון"},
+  {id:"half", icon:"🎖️", title:"חצי הדרך", desc:"4 עולמות הושלמו"},
+  {id:"xp200", icon:"💰", title:"אספן XP", desc:"200 XP"},
+  {id:"champion", icon:"👑", title:"אלוף", desc:"כל 8 העולמות!"},
+];
+
+// ============ State (נשמר ב-localStorage) ============
+const SKEY = "mathquest_v2";
+const MAX_LIVES = 5;
+let state = loadState();
+function loadState(){
+  try{
+    const s = JSON.parse(localStorage.getItem(SKEY));
+    if(s){
+      // השלמת שדות חדשים למשתמשים קיימים
+      if(typeof s.lives!=='number') s.lives=MAX_LIVES;
+      if(!s.extra) s.extra={};      // שאלות רזרבה שנמשכו לכל עולם
+      if(!s.usedReserve) s.usedReserve={}; // כמה רזרבות נוצלו לכל עולם
+      return s;
+    }
+  }catch(e){}
+  return { xp:0, streak:0, bestStreak:0, lives:MAX_LIVES, cleared:{}, badges:{}, solved:{}, extra:{}, usedReserve:{} };
+}
+function saveState(){ try{ localStorage.setItem(SKEY, JSON.stringify(state)); }catch(e){} }
+
+let currentWorld = null;
+
+// ============ עזרי בדיקה ============
+function parseNum(s){
+  if(s==null) return NaN;
+  let c = String(s).trim().replace(/\s/g,'').replace(',','.');
+  if(c==='') return NaN;
+  if(c.includes('/')){ const p=c.split('/'); return Number(p[0])/Number(p[1]); }
+  return Number(c);
+}
+function approxEq(a,b,tol){ return Math.abs(a-b)<=tol; }
+
+// ============ HUD ============
+function updateHUD(){
+  document.getElementById('hudXp').textContent = state.xp;
+  document.getElementById('hudStreak').textContent = state.streak;
+  const lifeEl=document.getElementById('hudLives');
+  lifeEl.textContent = '❤️'.repeat(state.lives) + '🖤'.repeat(Math.max(0,MAX_LIVES-state.lives));
+}
+// איבוד לב; אם נגמרו - מתחדשים אוטומטית (לא Game Over אמיתי)
+function loseLife(){
+  state.lives -= 1;
+  if(state.lives<=0){
+    state.lives = MAX_LIVES;
+    saveState(); updateHUD();
+    toast('💔 נגמרו החיים — מתמלאים מחדש! המשך/י לתרגל');
+    return;
+  }
+  saveState(); updateHUD();
+}
+// הודעה צפה קצרה
+let toastTimer=null;
+function toast(msg){
+  let t=document.getElementById('toast');
+  if(!t){
+    t=document.createElement('div'); t.id='toast';
+    t.style.cssText='position:fixed;top:70px;left:50%;transform:translateX(-50%) translateY(-20px);background:linear-gradient(135deg,#1d0f3d,#2a1850);border:2px solid var(--neon-pink);color:#fff;padding:12px 22px;border-radius:14px;z-index:300;font-weight:700;box-shadow:0 0 24px rgba(255,45,149,0.5);opacity:0;transition:all .4s;pointer-events:none;';
+    document.body.appendChild(t);
+  }
+  t.textContent=msg;
+  requestAnimationFrame(()=>{ t.style.opacity='1'; t.style.transform='translateX(-50%) translateY(0)'; });
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>{ t.style.opacity='0'; t.style.transform='translateX(-50%) translateY(-20px)'; },2600);
+}
+
+// ============ תגים ============
+function awardBadge(id){
+  if(state.badges[id]) return;
+  state.badges[id]=true; saveState();
+  const b = BADGES.find(x=>x.id===id); if(!b) return;
+  const pop = document.getElementById('badgePop');
+  document.getElementById('badgeTitle').textContent = "תג חדש: "+b.title;
+  document.getElementById('badgeDesc').textContent = b.desc;
+  pop.querySelector('.bico').textContent = b.icon;
+  pop.classList.add('show');
+  setTimeout(()=>pop.classList.remove('show'), 3200);
+  renderBadges();
+}
+function renderBadges(){
+  const wrap = document.getElementById('badges'); wrap.innerHTML='';
+  BADGES.forEach(b=>{
+    const d=document.createElement('div');
+    d.className='badge'+(state.badges[b.id]?' earned':'');
+    d.textContent = b.icon; d.title = b.title+" — "+b.desc;
+    wrap.appendChild(d);
+  });
+}
+
+// ============ XP ורצף ============
+function gainXP(n, anchorEl){
+  state.xp += n; state.streak += 1;
+  if(state.streak>state.bestStreak) state.bestStreak=state.streak;
+  saveState(); updateHUD();
+  if(anchorEl){
+    const pop=document.createElement('span'); pop.className='xp-pop'; pop.textContent='+'+n+' XP';
+    anchorEl.appendChild(pop); setTimeout(()=>pop.remove(),1000);
+  }
+  // תגים
+  awardBadge('first');
+  if(state.streak>=5) awardBadge('streak5');
+  if(state.streak>=10) awardBadge('streak10');
+  if(state.xp>=200) awardBadge('xp200');
+}
+function breakStreak(){ state.streak=0; saveState(); updateHUD(); }
+
+// ============ מפת עולמות ============
+function worldUnlocked(i){
+  if(i===0) return true;
+  return !!state.cleared[WORLDS[i-1].id];
+}
+function renderMap(){
+  const wrap=document.getElementById('worlds'); wrap.innerHTML='';
+  WORLDS.forEach((w,i)=>{
+    const unlocked=worldUnlocked(i);
+    const cleared=!!state.cleared[w.id];
+    const nextUp=unlocked && !cleared;
+    const d=document.createElement('div');
+    d.className='world'+(unlocked?'':' locked')+(cleared?' cleared':'')+(nextUp?' next-up':'');
+    const solvedCount = Object.keys(state.solved[w.id]||{}).length;
+    const total = fullExercises(w).length;
+    const stars = cleared? '★★★' : (solvedCount>0? '☆☆☆':'');
+    d.innerHTML=`
+      ${unlocked?'':'<span class="lock-badge">🔒</span>'}
+      <span class="world-num">עולם ${i+1}</span>
+      <span class="world-icon">${w.icon}</span>
+      <span class="world-name">${w.name}</span>
+      <span class="world-stars">${cleared?'★★★':(solvedCount+'/'+total)}</span>
+    `;
+    if(unlocked) d.onclick=()=>openWorld(i);
+    wrap.appendChild(d);
+  });
+  renderBadges();
+}
+
+// ============ ניהול תרגילים + רזרבות ============
+// רשימת התרגילים המלאה של עולם = בסיס + רזרבות שכבר נמשכו
+function fullExercises(w){
+  const base=w.exercises.slice();
+  const extra=(state.extra[w.id]||[]).map(ri=> (RESERVES[w.id]||[])[ri]).filter(Boolean);
+  return base.concat(extra);
+}
+// כמה רזרבות זמינות עוד לעולם
+function reservesLeft(w){
+  const total=(RESERVES[w.id]||[]).length;
+  const used=(state.usedReserve[w.id]||0);
+  return total-used;
+}
+// משיכת שאלת רזרבה חדשה (כשפותחים פתרון). מחזיר אינדקס הרזרבה או null אם אזל המאגר.
+function drawReserve(w){
+  if(reservesLeft(w)<=0) return null;
+  const ri=(state.usedReserve[w.id]||0);
+  state.usedReserve[w.id]=ri+1;
+  if(!state.extra[w.id]) state.extra[w.id]=[];
+  state.extra[w.id].push(ri);
+  saveState();
+  return ri;
+}
+
+// ============ מסך עולם ============
+function openWorld(i){
+  currentWorld=i;
+  const w=WORLDS[i];
+  document.getElementById('mapScreen').style.display='none';
+  const screen=document.getElementById('worldScreen');
+  screen.className='world-screen active';
+  if(!state.solved[w.id]) state.solved[w.id]={};
+
+  screen.innerHTML=`
+    <button class="back-btn" id="backBtn">← חזרה למפה</button>
+    <div class="ws-head"><div class="ws-icon">${w.icon}</div><h2>עולם ${i+1}: ${w.name}</h2></div>
+    <div class="ws-progress">
+      <div class="bar"><div class="bar-fill" id="barFill"></div></div>
+      <div class="bar-label" id="barLabel"></div>
+    </div>
+    <section class="intro">${w.intro}</section>
+    <h3 class="ex-header">▸ אתגרים</h3>
+    <div class="ex-list" id="exlist"></div>
+    <div id="extra"></div>
+    <div class="clear-banner" id="clearBanner">
+      <h3>🎉 העולם נכבש!</h3>
+      <p>סיימת את <b>${w.name}</b> והרווחת ★★★</p>
+      <button class="btn-next-world" id="nextWorldBtn"></button>
+    </div>
+  `;
+  document.getElementById('backBtn').onclick=goMap;
+  const list=document.getElementById('exlist');
+  const exs=fullExercises(w);
+  exs.forEach((e,idx)=>{
+    list.appendChild(w.type==='mcq'? makeMCQ(w,e,idx,list) : makeNum(w,e,idx,list));
+  });
+  if(w.extraSolution){
+    const ex=document.getElementById('extra');
+    const d=document.createElement('div'); d.className='extra-sol'; d.innerHTML=w.extraSolution; ex.appendChild(d);
+  }
+  updateWorldProgress();
+  window.scrollTo(0,0);
+}
+function goMap(){
+  document.getElementById('worldScreen').className='world-screen';
+  document.getElementById('mapScreen').style.display='block';
+  renderMap(); window.scrollTo(0,0);
+}
+
+function markSolved(worldId, idx){
+  if(!state.solved[worldId]) state.solved[worldId]={};
+  if(state.solved[worldId][idx]) return false; // כבר נפתר
+  state.solved[worldId][idx]=true; saveState();
+  return true;
+}
+
+function updateWorldProgress(){
+  const w=WORLDS[currentWorld];
+  const solved=Object.keys(state.solved[w.id]||{}).length;
+  const total=fullExercises(w).length;
+  const pct=Math.round(solved/total*100);
+  const fill=document.getElementById('barFill'), label=document.getElementById('barLabel');
+  if(fill) fill.style.width=pct+'%';
+  if(label) label.textContent=`${solved} / ${total} אתגרים הושלמו`;
+  if(solved>=total && !state.cleared[w.id]){
+    state.cleared[w.id]=true; saveState();
+    awardBadge('world1');
+    const clearedCount=Object.keys(state.cleared).length;
+    if(clearedCount>=4) awardBadge('half');
+    if(clearedCount>=WORLDS.length) awardBadge('champion');
+    showClearBanner();
+    bigConfetti();
+  }
+}
+function showClearBanner(){
+  const banner=document.getElementById('clearBanner');
+  if(!banner) return;
+  banner.classList.add('show');
+  const btn=document.getElementById('nextWorldBtn');
+  const next=currentWorld+1;
+  if(next<WORLDS.length){
+    btn.textContent=`➜ לעולם הבא: ${WORLDS[next].name}`;
+    btn.onclick=()=>openWorld(next);
+  } else {
+    btn.textContent='👑 סיימת את כל המסע! חזרה למפה';
+    btn.onclick=goMap;
+  }
+}
+
+// ============ כרטיס תרגיל מספרי ============
+function makeNum(w,e,idx,list){
+  const wrap=document.createElement('div'); wrap.className='ex';
+  if(state.solved[w.id] && state.solved[w.id][idx]) wrap.classList.add('solved');
+  const answers=Array.isArray(e.answer)?e.answer:[e.answer];
+  let usedHint=false; // האם נפתח רמז (מקטין XP ל-5)
+  wrap.innerHTML=`
+    <div class="ex-q"><span class="ex-num">${idx+1}</span><span>${e.q}</span></div>
+    <div class="ex-row">
+      <input class="ex-input" placeholder="התשובה שלי">
+      <button class="btn-check">בדיקה</button>
+      <span class="feedback"></span>
+    </div>
+    ${e.hint?`<button class="btn-hint">💡 רמז <span class="cost">(−1 ❤️, ושווי יורד ל-5 XP)</span></button><div class="hint-body"></div>`:''}
+    <button class="btn-sol">🔍 פתרון מלא <span class="cost">(מוסיף שאלה חדשה)</span></button>
+    <div class="solution">${e.solution}</div>
+  `;
+  const input=wrap.querySelector('.ex-input');
+  const fb=wrap.querySelector('.feedback');
+  const check=()=>{
+    const u=parseNum(input.value);
+    if(isNaN(u)){ input.className='ex-input no'; fb.className='feedback no'; fb.textContent='✗ הזן מספר'; return; }
+    const ok=answers.some(a=>approxEq(u,a, Math.abs(a)<1?0.01:0.05));
+    if(ok){
+      input.className='ex-input ok'; fb.className='feedback ok'; fb.textContent='✓ מעולה!';
+      wrap.classList.add('solved');
+      const isNew=markSolved(w.id, idx);
+      if(isNew){ gainXP(usedHint?5:10, fb); smallConfetti(wrap); updateWorldProgress(); }
+    } else {
+      input.className='ex-input no'; fb.className='feedback no'; fb.textContent='✗ נסה שוב';
+      breakStreak();
+    }
+  };
+  wrap.querySelector('.btn-check').onclick=check;
+  input.addEventListener('keydown',ev=>{ if(ev.key==='Enter') check(); });
+  input.addEventListener('input',()=>{ if(!input.classList.contains('ok')){ input.className='ex-input'; fb.textContent=''; } });
+
+  // רמז — עולה לב, מקטין שווי ל-5XP, פעם אחת
+  const hintBtn=wrap.querySelector('.btn-hint');
+  if(hintBtn){
+    const hintBody=wrap.querySelector('.hint-body');
+    hintBtn.onclick=()=>{
+      if(usedHint) return;
+      usedHint=true;
+      loseLife();
+      hintBody.innerHTML=e.hint; hintBody.classList.add('show');
+      hintBtn.classList.add('used'); hintBtn.innerHTML='💡 '+e.hint;
+    };
+  }
+  // פתרון מלא — מושך שאלת רזרבה חדשה (אם נותרו)
+  const sol=wrap.querySelector('.solution');
+  const solBtn=wrap.querySelector('.btn-sol');
+  solBtn.onclick=()=>{
+    const opening = !sol.classList.contains('show');
+    sol.classList.toggle('show');
+    solBtn.firstChild.textContent = sol.classList.contains('show')?'🔒 הסתר פתרון ':'🔍 פתרון מלא ';
+    if(opening && !solBtn.dataset.charged){
+      solBtn.dataset.charged="1"; // גובים פעם אחת בלבד לכל כרטיס
+      const ri=drawReserve(w);
+      if(ri!==null){
+        addReserveCard(w, list);
+        toast('🔍 פתחת פתרון — נוספה שאלה חדשה לתרגול!');
+      } else {
+        toast('מאגר השאלות הנוספות אזל — הפתרון פתוח חופשי');
+      }
+      updateWorldProgress();
+    }
+  };
+  return wrap;
+}
+
+// הוספת כרטיס רזרבה חדש לרשימה (נעול ויזואלית עד שנפתר)
+function addReserveCard(w, list){
+  const exs=fullExercises(w);
+  const idx=exs.length-1;          // האחרון שנוסף
+  const e=exs[idx];
+  const card=(w.type==='mcq')? makeMCQ(w,e,idx,list) : makeNum(w,e,idx,list);
+  card.classList.add('reserve-new');
+  // תווית "אתגר בונוס"
+  const tag=document.createElement('div'); tag.className='reserve-tag'; tag.textContent='⚡ אתגר בונוס — חובה לפתור כדי לכבוש את העולם';
+  card.insertBefore(tag, card.firstChild);
+  list.appendChild(card);
+  setTimeout(()=>card.scrollIntoView({behavior:'smooth',block:'center'}),200);
+}
+
+// ============ כרטיס בחירה מרובה ============
+function makeMCQ(w,e,idx,list){
+  const wrap=document.createElement('div'); wrap.className='ex';
+  if(state.solved[w.id] && state.solved[w.id][idx]) wrap.classList.add('solved');
+  const opts=e.options.map((o,i)=>`<button class="mcq-opt" data-i="${i}">${o}</button>`).join('');
+  wrap.innerHTML=`
+    <div class="ex-q"><span class="ex-num">${idx+1}</span><span>${e.q}</span></div>
+    <div class="mcq">${opts}</div>
+    <span class="feedback"></span>
+    <button class="btn-sol">🔍 הסבר <span class="cost">(מוסיף שאלה חדשה)</span></button>
+    <div class="solution">${e.solution}</div>
+  `;
+  const fb=wrap.querySelector('.feedback');
+  const btns=wrap.querySelectorAll('.mcq-opt');
+  let answered=false;
+  btns.forEach(b=>{
+    b.onclick=()=>{
+      if(answered) return; answered=true;
+      const i=+b.dataset.i;
+      if(i===e.correct){
+        b.className='mcq-opt ok'; fb.className='feedback ok'; fb.textContent='✓ נכון!';
+        wrap.classList.add('solved');
+        const isNew=markSolved(w.id, idx);
+        if(isNew){ gainXP(10, fb); smallConfetti(wrap); updateWorldProgress(); }
+      } else {
+        b.className='mcq-opt no'; fb.className='feedback no'; fb.textContent='✗ לא מדויק';
+        btns[e.correct].classList.add('reveal'); breakStreak();
+      }
+    };
+  });
+  const sol=wrap.querySelector('.solution');
+  const solBtn=wrap.querySelector('.btn-sol');
+  solBtn.onclick=()=>{
+    const opening = !sol.classList.contains('show');
+    sol.classList.toggle('show');
+    solBtn.firstChild.textContent = sol.classList.contains('show')?'🔒 הסתר הסבר ':'🔍 הסבר ';
+    if(opening && !solBtn.dataset.charged){
+      solBtn.dataset.charged="1";
+      const ri=drawReserve(w);
+      if(ri!==null){
+        addReserveCard(w, list);
+        toast('🔍 פתחת הסבר — נוספה שאלה חדשה לתרגול!');
+      } else {
+        toast('מאגר השאלות הנוספות אזל — ההסבר פתוח חופשי');
+      }
+      updateWorldProgress();
+    }
+  };
+  return wrap;
+}
+
+// ============ קונפטי ============
+// ============ כוכבים מנצנצים ברקע ============
+const starCanvas=document.getElementById('stars');
+const sctx=starCanvas.getContext('2d');
+let stars=[];
+function initStars(){
+  starCanvas.width=innerWidth; starCanvas.height=innerHeight;
+  stars=[];
+  const count=Math.floor(innerWidth*innerHeight/9000);
+  for(let i=0;i<count;i++){
+    stars.push({
+      x:Math.random()*starCanvas.width,
+      y:Math.random()*starCanvas.height,
+      r:Math.random()*1.6+0.4,
+      a:Math.random(),
+      tw:Math.random()*0.04+0.008,
+      c:['#ffffff','#00f0ff','#ff2d95','#b14aff'][Math.floor(Math.random()*4)]
+    });
+  }
+}
+function drawStars(){
+  sctx.clearRect(0,0,starCanvas.width,starCanvas.height);
+  stars.forEach(s=>{
+    s.a+=s.tw; const al=0.3+Math.abs(Math.sin(s.a))*0.7;
+    sctx.globalAlpha=al; sctx.fillStyle=s.c;
+    sctx.shadowBlur=6; sctx.shadowColor=s.c;
+    sctx.beginPath(); sctx.arc(s.x,s.y,s.r,0,Math.PI*2); sctx.fill();
+  });
+  sctx.globalAlpha=1; sctx.shadowBlur=0;
+  requestAnimationFrame(drawStars);
+}
+initStars(); drawStars();
+addEventListener('resize',initStars);
+
+// ============ קונפטי ============
+const canvas=document.getElementById('confetti');
+const ctx=canvas.getContext('2d');
+function resize(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+resize(); addEventListener('resize',resize);
+let parts=[];
+const COLORS=['#ff2d95','#00f0ff','#b14aff','#39ff14','#ffe600'];
+function smallConfetti(el){
+  const r=el.getBoundingClientRect();
+  const x=r.left+r.width/2, y=r.top+30;
+  for(let i=0;i<26;i++) parts.push(newPart(x,y,4));
+  if(!animating) animate();
+}
+function bigConfetti(){
+  for(let i=0;i<160;i++) parts.push(newPart(Math.random()*innerWidth, -20, 6, true));
+  if(!animating) animate();
+}
+function newPart(x,y,v,fall){
+  return { x,y,
+    vx:(Math.random()-0.5)*v*2,
+    vy:fall? Math.random()*3+2 : -(Math.random()*v+2),
+    g:0.15, size:Math.random()*6+3,
+    color:COLORS[Math.floor(Math.random()*COLORS.length)],
+    rot:Math.random()*6, vr:(Math.random()-0.5)*0.3, life:120 };
+}
+let animating=false;
+function animate(){
+  animating=true;
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  parts.forEach(p=>{
+    p.vy+=p.g; p.x+=p.vx; p.y+=p.vy; p.rot+=p.vr; p.life--;
+    ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.rot);
+    ctx.fillStyle=p.color; ctx.globalAlpha=Math.max(0,p.life/120);
+    ctx.fillRect(-p.size/2,-p.size/2,p.size,p.size); ctx.restore();
+  });
+  parts=parts.filter(p=>p.life>0 && p.y<canvas.height+40);
+  if(parts.length>0) requestAnimationFrame(animate);
+  else { animating=false; ctx.clearRect(0,0,canvas.width,canvas.height); }
+}
+
+// ============ איפוס ============
+document.getElementById('btnReset').onclick=()=>{
+  if(confirm('לאפס את כל ההתקדמות? (XP, עולמות שנכבשו ותגים יימחקו)')){
+    state={ xp:0, streak:0, bestStreak:0, lives:MAX_LIVES, cleared:{}, badges:{}, solved:{}, extra:{}, usedReserve:{} };
+    saveState(); updateHUD(); goMap();
+  }
+};
+
+// ============ הפעלה ============
+updateHUD();
+renderMap();
+</script>
+</body>
+</html>

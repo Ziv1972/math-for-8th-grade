@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן — מתמטיקה כיתה ח'</title>
+<!--
+  תבנית מבחן אינטראקטיבי. החלף את מערך EXAM בתרגילים אמיתיים.
+  מנוע הבדיקה תומך ב: number (כולל שברים), mcq.
+  ראה references/exercise-schema.md למבנה.
+-->
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Assistant:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --paper:#fbfaf6;
+  --ink:#23201a;
+  --accent:#0f6e5c;       /* ירוק עמוק */
+  --accent2:#b8763e;      /* חום-זהב */
+  --rule:#d9d4c5;         /* קווי מחברת */
+  --good:#0f8a4d;
+  --bad:#c4453a;
+  --soft:#6d675a;
+  --mark:#fef3c7;
+}
+body{
+  font-family:'Assistant',sans-serif;
+  background:var(--paper);
+  background-image:linear-gradient(var(--rule) 1px, transparent 1px);
+  background-size:100% 34px;
+  color:var(--ink);
+  line-height:1.7;
+  padding-bottom:80px;
+}
+.sheet{max-width:780px;margin:0 auto;padding:0 22px;}
+
+/* כותרת המבחן */
+.exam-head{
+  background:var(--paper);
+  border-bottom:3px double var(--ink);
+  padding:34px 0 20px;margin-bottom:8px;
+  text-align:center;
+}
+.exam-head .kicker{
+  font-size:0.8rem;letter-spacing:3px;color:var(--accent2);
+  font-weight:700;text-transform:uppercase;margin-bottom:8px;
+}
+.exam-head h1{
+  font-family:'Fraunces',serif;font-weight:700;font-size:2.2rem;color:var(--ink);
+}
+.exam-head .meta{
+  margin-top:12px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;
+  font-size:0.9rem;color:var(--soft);
+}
+.exam-head .meta b{color:var(--ink);}
+
+/* פס ציון דביק */
+.scorebar{
+  position:sticky;top:0;z-index:30;
+  background:rgba(251,250,246,0.95);backdrop-filter:blur(6px);
+  border-bottom:1px solid var(--rule);
+  display:flex;align-items:center;gap:16px;
+  padding:12px 22px;margin:0 -22px 26px;
+}
+.scorebar .label{font-weight:700;font-size:0.9rem;}
+.scorebar .track{flex:1;height:10px;background:#ece8db;border-radius:20px;overflow:hidden;}
+.scorebar .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.scorebar .pct{font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;color:var(--accent);min-width:74px;text-align:left;}
+
+/* תרגיל */
+.q{
+  background:rgba(255,255,255,0.5);
+  border:1px solid var(--rule);border-radius:4px;
+  padding:24px 26px;margin-bottom:26px;
+  box-shadow:2px 2px 0 rgba(35,32,26,0.04);
+}
+.q-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;
+  border-bottom:1px solid var(--rule);padding-bottom:12px;}
+.q-badge{
+  font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;color:#fff;
+  background:var(--accent);width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.q-title{font-weight:700;font-size:1.05rem;flex:1;}
+.q-points{font-size:0.82rem;color:var(--soft);background:var(--mark);padding:3px 10px;border-radius:12px;font-weight:600;}
+.q-stem{margin-bottom:14px;}
+.q-svg{text-align:center;margin:16px 0;padding:14px;background:#fff;border:1px solid var(--rule);border-radius:4px;}
+
+/* תת-סעיף */
+.part{padding:14px 0;border-top:1px dashed var(--rule);}
+.part:first-of-type{border-top:none;}
+.part-q{display:flex;gap:8px;margin-bottom:10px;}
+.part-label{font-weight:700;color:var(--accent2);flex-shrink:0;}
+.part-pts{font-size:0.74rem;color:var(--soft);margin-right:auto;}
+.part-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+input.ans{
+  font-family:'Assistant';font-size:1rem;padding:9px 14px;width:150px;text-align:center;
+  background:#fff;border:2px solid var(--rule);border-radius:4px;color:var(--ink);transition:all .2s;
+}
+input.ans:focus{outline:none;border-color:var(--accent);}
+input.ans.ok{border-color:var(--good);background:#f0faf3;}
+input.ans.bad{border-color:var(--bad);background:#fdf2f1;}
+.btn-check{
+  background:var(--ink);color:var(--paper);border:none;padding:9px 20px;border-radius:4px;
+  font-family:'Assistant';font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s;
+}
+.btn-check:hover{background:var(--accent);}
+.verdict{font-weight:700;font-size:0.9rem;}
+.verdict.ok{color:var(--good);}
+.verdict.bad{color:var(--bad);}
+
+/* בחירה מרובה */
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.opt{
+  background:#fff;border:2px solid var(--rule);border-radius:4px;padding:11px 15px;text-align:right;
+  font-family:'Assistant';font-size:0.98rem;color:var(--ink);cursor:pointer;transition:all .2s;
+}
+.opt:hover{border-color:var(--accent);}
+.opt.ok{border-color:var(--good);background:#f0faf3;}
+.opt.bad{border-color:var(--bad);background:#fdf2f1;}
+.opt.reveal{border-color:var(--good);background:#f0faf3;}
+
+/* רמז ופתרון */
+.tools{margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn-hint,.btn-sol{
+  background:none;border:none;font-family:'Assistant';font-weight:600;font-size:0.85rem;
+  cursor:pointer;padding:0;
+}
+.btn-hint{color:var(--accent2);}
+.btn-sol{color:var(--accent);text-decoration:underline;}
+.hint-box{display:none;margin-top:8px;padding:10px 14px;background:var(--mark);border-radius:4px;font-size:0.9rem;}
+.hint-box.show{display:block;}
+.sol-box{display:none;margin-top:10px;padding:14px 16px;background:#f3f6f4;border-right:3px solid var(--accent);border-radius:4px;font-size:0.93rem;line-height:1.75;}
+.sol-box.show{display:block;}
+.sol-box b{color:var(--accent);}
+
+/* נוסחה */
+.formula{direction:ltr;unicode-bidi:isolate;font-family:'Times New Roman',serif;font-weight:600;white-space:nowrap;}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;direction:ltr;}
+.frac .num{border-bottom:1.5px solid currentColor;padding:0 4px;}
+.frac .den{padding:0 4px;}
+
+/* סיכום סופי */
+.finish{
+  text-align:center;padding:30px;margin-top:30px;border:3px double var(--ink);border-radius:4px;background:#fff;
+}
+.finish h2{font-family:'Fraunces',serif;font-size:1.6rem;margin-bottom:10px;}
+.finish .final-score{font-family:'Fraunces',serif;font-size:3rem;font-weight:700;color:var(--accent);}
+.finish .msg{color:var(--soft);margin-top:8px;}
+.btn-finish{
+  background:var(--accent);color:#fff;border:none;padding:13px 32px;border-radius:4px;
+  font-family:'Assistant';font-weight:700;font-size:1rem;cursor:pointer;margin-top:16px;
+}
+.btn-finish:hover{background:var(--accent2);}
+
+@media print{
+  .scorebar,.tools,.btn-check,.verdict{display:none;}
+  .sol-box,.hint-box{display:none !important;}
+  body{background:#fff;}
+}
+@media (max-width:600px){
+  .exam-head h1{font-size:1.6rem;}
+  .q{padding:18px;}
+}
+</style>
+</head>
+<body>
+
+<div class="scorebar">
+  <span class="label">ציון</span>
+  <div class="track"><div class="fill" id="scoreFill"></div></div>
+  <span class="pct" id="scorePct">0 / 100</span>
+</div>
+
+<div class="sheet">
+  <div class="exam-head">
+    <div class="kicker">מתמטיקה · כיתה ח' · מועד ב'</div>
+    <h1>מבחן תרגול מסכם</h1>
+    <div class="meta">
+      <span>⏱ זמן מומלץ: <b>90 דקות</b></span>
+      <span>📝 <b>7 שאלות</b></span>
+      <span>💯 <b>100 נקודות</b></span>
+    </div>
+  </div>
+
+  <div id="examBody"></div>
+
+  <div class="finish" id="finishBox" style="display:none">
+    <h2>סיימת את המבחן! 🎓</h2>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="msg" id="finalMsg"></div>
+    <button class="btn-finish" onclick="location.reload()">התחל מחדש</button>
+  </div>
+</div>
+
+<script>
+// ============ מאגר התרגילים (החלף בתוכן אמיתי) ============
+const EXAM = [
+  // דוגמה מייצגת — תרגיל פיתגורס עם תת-סעיפים
+  {
+    id:"demo", topic:"pythagoras", points:12, title:"פיתגורס בריבוע",
+    stem:'ABCD הוא ריבוע ששטחו 576 סמ"ר. נקודה E על צלע DC כך ש-EC = 17 ס"מ.',
+    svg:'<svg viewBox="0 0 200 200" style="max-width:180px"><rect x="30" y="30" width="140" height="140" fill="none" stroke="#23201a" stroke-width="2"/><circle cx="130" cy="170" r="3" fill="#c4453a"/><line x1="30" y1="30" x2="130" y2="170" stroke="#0f6e5c" stroke-width="1.5"/><text x="20" y="26" font-size="13" font-weight="bold">A</text><text x="172" y="26" font-size="13" font-weight="bold">B</text><text x="172" y="186" font-size="13" font-weight="bold">C</text><text x="20" y="186" font-size="13" font-weight="bold">D</text><text x="126" y="188" font-size="12" fill="#c4453a">E</text></svg>',
+    parts:[
+      {id:"a",label:"(א)",text:'חשבו את אורך צלע הריבוע (בס"מ).',type:"number",answer:24,points:3,
+       hint:"שטח ריבוע = צלע²",solution:'צלע = √576 = <b>24 ס"מ</b>'},
+      {id:"b",label:"(ב)",text:'חשבו את אורך DE (בס"מ).',type:"number",answer:7,points:2,
+       hint:"DC = 24, EC = 17",solution:'DE = 24 − 17 = <b>7 ס"מ</b>'},
+      {id:"c",label:"(ג)",text:'חשבו את אורך AE (בס"מ).',type:"number",answer:25,points:4,
+       hint:"במשולש ADE ישר-זווית: AD=24, DE=7",solution:'AE² = 24² + 7² = 576 + 49 = 625 → AE = <b>25 ס"מ</b>'},
+      {id:"d",label:"(ד)",text:'חשבו את היקף המרובע ABCE (בס"מ).',type:"number",answer:90,points:3,
+       hint:"AB + BC + CE + EA",solution:'24 + 24 + 17 + 25 = <b>90 ס"מ</b>'}
+    ]
+  }
+];
+
+// ============ עזרי בדיקה ============
+function parseNum(s){
+  if(s==null) return NaN;
+  let c=String(s).trim().replace(/\s/g,'').replace(',','.');
+  if(c==='') return NaN;
+  if(c.includes('/')){const p=c.split('/');return Number(p[0])/Number(p[1]);}
+  return Number(c);
+}
+function approxEq(a,b,tol){return Math.abs(a-b)<=(tol||0.01);}
+
+// ============ מצב ============
+let earned={};          // points earned per part-id
+let totalPoints=0;
+EXAM.forEach(q=>q.parts.forEach(p=>totalPoints+=p.points));
+
+function updateScore(){
+  let sum=0; Object.values(earned).forEach(v=>sum+=v);
+  const pct=Math.round(sum/totalPoints*100);
+  document.getElementById('scoreFill').style.width=pct+'%';
+  document.getElementById('scorePct').textContent=sum+' / '+totalPoints;
+  // האם הכל נענה?
+  let answered=0; EXAM.forEach(q=>q.parts.forEach(p=>{if(earned[q.id+p.id]!==undefined)answered++;}));
+  let totalParts=0; EXAM.forEach(q=>totalParts+=q.parts.length);
+  if(answered>=totalParts) showFinish(sum,pct);
+}
+function showFinish(sum,pct){
+  const box=document.getElementById('finishBox');
+  box.style.display='block';
+  document.getElementById('finalScore').textContent=sum+' / '+totalPoints;
+  let msg;
+  if(pct>=90)msg='מצוין! שליטה מלאה בחומר 🌟';
+  else if(pct>=75)msg='כל הכבוד! רמה טובה מאוד';
+  else if(pct>=55)msg='לא רע — שווה לחזור על הסעיפים שטעית בהם';
+  else msg='כדאי לחזור על החומר ולתרגל שוב. אתה בדרך!';
+  document.getElementById('finalMsg').textContent=msg;
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+// ============ בנייה ============
+function build(){
+  const body=document.getElementById('examBody');
+  EXAM.forEach((q,qi)=>{
+    const card=document.createElement('div'); card.className='q';
+    let html=`
+      <div class="q-head">
+        <span class="q-badge">${qi+1}</span>
+        <span class="q-title">${q.title}</span>
+        <span class="q-points">${q.points} נק'</span>
+      </div>
+      <div class="q-stem">${q.stem}</div>
+      ${q.svg?`<div class="q-svg">${q.svg}</div>`:''}
+    `;
+    card.innerHTML=html;
+    q.parts.forEach(p=>card.appendChild(makePart(q,p)));
+    body.appendChild(card);
+  });
+}
+
+function makePart(q,p){
+  const div=document.createElement('div'); div.className='part';
+  const key=q.id+p.id;
+  if(p.type==='mcq'){
+    div.innerHTML=`<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק'</span></div>
+      <div class="opts"></div><span class="verdict"></span>
+      <div class="tools">${p.solution?'<button class="btn-sol">פתרון</button>':''}</div>
+      ${p.solution?`<div class="sol-box">${p.solution}</div>`:''}`;
+    const opts=div.querySelector('.opts');
+    const verdict=div.querySelector('.verdict');
+    let answered=false;
+    p.options.forEach((o,i)=>{
+      const b=document.createElement('button'); b.className='opt'; b.innerHTML=o;
+      b.onclick=()=>{
+        if(answered)return; answered=true;
+        if(i===p.correct){b.classList.add('ok');verdict.className='verdict ok';verdict.textContent='✓ נכון';earned[key]=p.points;}
+        else{b.classList.add('bad');verdict.className='verdict bad';verdict.textContent='✗ לא נכון';opts.children[p.correct].classList.add('reveal');earned[key]=0;}
+        updateScore();
+      };
+      opts.appendChild(b);
+    });
+  } else { // number
+    const answers=Array.isArray(p.answer)?p.answer:[p.answer];
+    div.innerHTML=`<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק'</span></div>
+      <div class="part-row"><input class="ans" placeholder="תשובה"><button class="btn-check">בדיקה</button><span class="verdict"></span></div>
+      <div class="tools">${p.hint?'<button class="btn-hint">💡 רמז</button>':''}${p.solution?'<button class="btn-sol">פתרון</button>':''}</div>
+      ${p.hint?`<div class="hint-box">${p.hint}</div>`:''}
+      ${p.solution?`<div class="sol-box">${p.solution}</div>`:''}`;
+    const input=div.querySelector('.ans');
+    const verdict=div.querySelector('.verdict');
+    const check=()=>{
+      const u=parseNum(input.value);
+      if(isNaN(u)){input.className='ans bad';verdict.className='verdict bad';verdict.textContent='הזן מספר';return;}
+      const ok=answers.some(a=>approxEq(u,a,p.tolerance||(Math.abs(a)<1?0.01:0.05)));
+      if(ok){input.className='ans ok';verdict.className='verdict ok';verdict.textContent='✓ נכון';earned[key]=p.points;}
+      else{input.className='ans bad';verdict.className='verdict bad';verdict.textContent='✗ נסה שוב';if(earned[key]===undefined)earned[key]=0;}
+      updateScore();
+    };
+    div.querySelector('.btn-check').onclick=check;
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  }
+  // רמז/פתרון toggles
+  const hintBtn=div.querySelector('.btn-hint');
+  if(hintBtn){const hb=div.querySelector('.hint-box');hintBtn.onclick=()=>hb.classList.toggle('show');}
+  const solBtn=div.querySelector('.btn-sol');
+  if(solBtn){const sb=div.querySelector('.sol-box');solBtn.onclick=()=>sb.classList.toggle('show');}
+  return div;
+}
+
+build();
+updateScore();
+</script>
+</body>
+</html>

@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>מבחן 5 + מעקב — מתמטיקה כיתה ח'</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Assistant:wght@400;500;600;700&display=swap');
+*{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --paper:#fbfaf6;--ink:#23201a;--accent:#0f6e5c;--accent2:#b8763e;
+  --rule:#d9d4c5;--good:#0f8a4d;--bad:#c4453a;--soft:#6d675a;--mark:#fef3c7;
+}
+body{font-family:'Assistant',sans-serif;background:var(--paper);background-image:linear-gradient(var(--rule) 1px,transparent 1px);background-size:100% 34px;color:var(--ink);line-height:1.7;padding-bottom:80px;}
+.sheet{max-width:780px;margin:0 auto;padding:0 22px;}
+.exam-head{background:var(--paper);border-bottom:3px double var(--ink);padding:34px 0 20px;margin-bottom:8px;text-align:center;}
+.exam-head .kicker{font-size:0.8rem;letter-spacing:3px;color:var(--accent2);font-weight:700;margin-bottom:8px;}
+.exam-head h1{font-family:'Fraunces',serif;font-weight:700;font-size:2.2rem;color:var(--ink);}
+.exam-head .meta{margin-top:12px;display:flex;gap:24px;justify-content:center;flex-wrap:wrap;font-size:0.9rem;color:var(--soft);}
+.exam-head .meta b{color:var(--ink);}
+.scorebar{position:sticky;top:0;z-index:30;background:rgba(251,250,246,0.95);backdrop-filter:blur(6px);border-bottom:1px solid var(--rule);display:flex;align-items:center;gap:14px;padding:12px 22px;margin:0 -22px 26px;}
+.scorebar .label{font-weight:700;font-size:0.9rem;}
+.scorebar .track{flex:1;height:10px;background:#ece8db;border-radius:20px;overflow:hidden;}
+.scorebar .fill{height:100%;width:0;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .5s ease;}
+.scorebar .pct{font-family:'Fraunces',serif;font-weight:700;font-size:1.05rem;color:var(--accent);min-width:74px;text-align:left;direction:ltr;}
+.scorebar .timer{font-family:'Fraunces',serif;font-weight:600;font-size:0.95rem;color:var(--soft);direction:ltr;min-width:56px;}
+.q{background:rgba(255,255,255,0.5);border:1px solid var(--rule);border-radius:4px;padding:24px 26px;margin-bottom:26px;box-shadow:2px 2px 0 rgba(35,32,26,0.04);}
+.q.active{border-color:var(--accent);box-shadow:0 0 0 2px rgba(15,110,92,0.15),2px 2px 0 rgba(35,32,26,0.04);}
+.q-head{display:flex;align-items:baseline;gap:12px;margin-bottom:14px;border-bottom:1px solid var(--rule);padding-bottom:12px;}
+.q-badge{font-family:'Fraunces',serif;font-weight:700;font-size:1.3rem;color:#fff;background:var(--accent);width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.q-title{font-weight:700;font-size:1.05rem;flex:1;}
+.q-points{font-size:0.82rem;color:var(--soft);background:var(--mark);padding:3px 10px;border-radius:12px;font-weight:600;white-space:nowrap;}
+.q-stem{margin-bottom:14px;}
+.q-svg{text-align:center;margin:16px 0;padding:14px;background:#fff;border:1px solid var(--rule);border-radius:4px;}
+.part{padding:14px 0;border-top:1px dashed var(--rule);}
+.part:first-of-type{border-top:none;}
+.part-q{display:flex;gap:8px;margin-bottom:10px;align-items:baseline;}
+.part-label{font-weight:700;color:var(--accent2);flex-shrink:0;}
+.part-pts{font-size:0.74rem;color:var(--soft);margin-right:auto;white-space:nowrap;}
+.part-row{display:flex;gap:10px;align-items:center;flex-wrap:wrap;}
+input.ans{font-family:'Assistant';font-size:1rem;padding:9px 14px;width:150px;text-align:center;background:#fff;border:2px solid var(--rule);border-radius:4px;color:var(--ink);transition:all .2s;direction:ltr;}
+input.ans:focus{outline:none;border-color:var(--accent);}
+input.ans.ok{border-color:var(--good);background:#f0faf3;}
+input.ans.bad{border-color:var(--bad);background:#fdf2f1;}
+.btn-check{background:var(--ink);color:var(--paper);border:none;padding:9px 20px;border-radius:4px;font-family:'Assistant';font-weight:700;font-size:0.9rem;cursor:pointer;transition:all .2s;}
+.btn-check:hover{background:var(--accent);}
+.verdict{font-weight:700;font-size:0.9rem;}
+.verdict.ok{color:var(--good);}
+.verdict.bad{color:var(--bad);}
+.attempts-tag{font-size:0.72rem;color:var(--soft);margin-right:6px;}
+.opts{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+.opt{background:#fff;border:2px solid var(--rule);border-radius:4px;padding:11px 15px;text-align:right;font-family:'Assistant';font-size:0.98rem;color:var(--ink);cursor:pointer;transition:all .2s;}
+.opt:hover{border-color:var(--accent);}
+.opt.ok{border-color:var(--good);background:#f0faf3;}
+.opt.bad{border-color:var(--bad);background:#fdf2f1;}
+.opt.reveal{border-color:var(--good);background:#f0faf3;}
+.tools{margin-top:12px;display:flex;gap:14px;flex-wrap:wrap;}
+.btn-hint,.btn-sol{background:none;border:none;font-family:'Assistant';font-weight:600;font-size:0.85rem;cursor:pointer;padding:0;}
+.btn-hint{color:var(--accent2);}
+.btn-sol{color:var(--accent);text-decoration:underline;}
+.btn-sol:disabled{color:var(--soft);text-decoration:none;cursor:not-allowed;opacity:0.6;}
+.hint-box{display:none;margin-top:8px;padding:10px 14px;background:var(--mark);border-radius:4px;font-size:0.9rem;}
+.hint-box.show{display:block;}
+.sol-box{display:none;margin-top:10px;padding:14px 16px;background:#f3f6f4;border-right:3px solid var(--accent);border-radius:4px;font-size:0.93rem;line-height:1.75;}
+.sol-box.show{display:block;}
+.sol-box b{color:var(--accent);}
+.formula{direction:ltr;unicode-bidi:isolate;font-family:'Times New Roman',serif;font-weight:600;white-space:nowrap;}
+.frac{display:inline-flex;flex-direction:column;text-align:center;vertical-align:middle;direction:ltr;}
+.frac .num{border-bottom:1.5px solid currentColor;padding:0 4px;}
+.frac .den{padding:0 4px;}
+.finish{padding:30px;margin-top:30px;border:3px double var(--ink);border-radius:4px;background:#fff;}
+.finish h2{font-family:'Fraunces',serif;font-size:1.6rem;margin-bottom:10px;text-align:center;}
+.finish .final-score{font-family:'Fraunces',serif;font-size:3rem;font-weight:700;color:var(--accent);text-align:center;direction:ltr;}
+.finish .msg{color:var(--soft);margin:8px 0 20px;text-align:center;}
+.btn-finish{background:var(--accent);color:#fff;border:none;padding:13px 32px;border-radius:4px;font-family:'Assistant';font-weight:700;font-size:1rem;cursor:pointer;margin-top:16px;display:block;margin-right:auto;margin-left:auto;}
+.btn-finish:hover{background:var(--accent2);}
+/* דוח ביצועים */
+.report{margin:20px 0;text-align:right;}
+.report h3{font-family:'Fraunces',serif;color:var(--accent2);font-size:1.2rem;margin:18px 0 12px;border-bottom:1px solid var(--rule);padding-bottom:6px;}
+.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:8px;}
+.stat{background:#f7f4ec;border-radius:6px;padding:12px;text-align:center;}
+.stat .v{font-family:'Fraunces',serif;font-size:1.5rem;font-weight:700;color:var(--accent);direction:ltr;}
+.stat .l{font-size:0.78rem;color:var(--soft);margin-top:2px;}
+.qtable{width:100%;border-collapse:collapse;font-size:0.86rem;margin-top:6px;}
+.qtable th,.qtable td{border:1px solid var(--rule);padding:7px 9px;text-align:center;}
+.qtable th{background:#f3eee2;color:var(--ink);font-weight:700;}
+.qtable .flag{color:var(--bad);font-weight:700;}
+.qtable .ok-row{background:#f7faf7;}
+.qtable .warn-row{background:#fdf6ed;}
+.topic-bars{display:flex;flex-direction:column;gap:8px;}
+.topic-bar{display:flex;align-items:center;gap:10px;}
+.topic-bar .name{min-width:130px;font-size:0.86rem;font-weight:600;}
+.topic-bar .bar-bg{flex:1;height:18px;background:#ece8db;border-radius:10px;overflow:hidden;}
+.topic-bar .bar-fg{height:100%;border-radius:10px;}
+.topic-bar .val{font-size:0.8rem;font-weight:700;min-width:46px;direction:ltr;text-align:left;}
+.weak-list{list-style:none;padding:0;margin:8px 0;}
+.weak-list li{padding:9px 13px;background:#fdf2f1;border-right:3px solid var(--bad);border-radius:4px;margin-bottom:6px;font-size:0.92rem;}
+.strong-box{padding:12px 14px;background:#f0faf3;border-right:3px solid var(--good);border-radius:4px;font-size:0.92rem;}
+/* אזור AI */
+.ai-zone{margin-top:24px;padding:20px;background:#f0f4f8;border:1px solid #9db8cc;border-radius:6px;}
+.ai-zone h3{font-family:'Fraunces',serif;color:#2c5d7c;font-size:1.15rem;margin-bottom:8px;}
+.ai-zone p{font-size:0.9rem;color:#3a5266;margin-bottom:12px;}
+.btn-ai{background:#2c5d7c;color:#fff;border:none;padding:12px 24px;border-radius:6px;font-family:'Assistant';font-weight:700;font-size:0.95rem;cursor:pointer;margin-left:10px;}
+.btn-ai:hover{background:#1d4865;}
+.btn-copy{background:#fff;color:#2c5d7c;border:2px solid #2c5d7c;padding:11px 22px;border-radius:6px;font-family:'Assistant';font-weight:700;font-size:0.95rem;cursor:pointer;}
+.btn-copy:hover{background:#eaf2f8;}
+.export-area{width:100%;margin-top:14px;height:200px;font-family:'Courier New',monospace;font-size:0.78rem;padding:12px;border:1px solid var(--rule);border-radius:4px;background:#fff;display:none;direction:ltr;text-align:left;white-space:pre;overflow:auto;}
+.export-area.show{display:block;}
+.ai-result{margin-top:16px;padding:18px;background:#fff;border-radius:6px;line-height:1.8;display:none;}
+.ai-result.show{display:block;}
+.ai-result h4{color:#2c5d7c;font-family:'Fraunces',serif;margin:12px 0 6px;}
+.ai-loading{display:none;margin-top:14px;color:#2c5d7c;font-weight:600;}
+.ai-loading.show{display:block;}
+@media (max-width:600px){.exam-head h1{font-size:1.6rem;}.q{padding:18px;}.stat-grid{grid-template-columns:repeat(3,1fr);gap:6px;}.stat .v{font-size:1.15rem;}.qtable{font-size:0.74rem;}.topic-bar .name{min-width:90px;font-size:0.76rem;}}
+</style>
+</head>
+<body>
+<div class="scorebar">
+  <span class="label">ציון</span>
+  <div class="track"><div class="fill" id="scoreFill"></div></div>
+  <span class="pct" id="scorePct">0 / 100</span>
+  <span class="timer" id="globalTimer">0:00</span>
+</div>
+<div class="sheet">
+  <div class="exam-head">
+    <div class="kicker">מתמטיקה · כיתה ח' · מבחן 5 + מעקב</div>
+    <h1>מבחן תרגול · ה'</h1>
+    <div class="meta">
+      <span>⏱ זמן מומלץ: <b>90 דקות</b></span>
+      <span>📝 <b>8 שאלות</b></span>
+      <span>💯 <b>100 נקודות</b></span>
+    </div>
+  </div>
+  <div id="examBody"></div>
+  <div class="finish" id="finishBox" style="display:none">
+    <h2>סיימת את המבחן! 🎓</h2>
+    <div class="final-score" id="finalScore">0</div>
+    <div class="msg" id="finalMsg"></div>
+    <div class="report" id="reportBox"></div>
+    <div class="ai-zone" id="aiZone"></div>
+    <button class="btn-finish" onclick="location.reload()">התחל מבחן מחדש</button>
+  </div>
+</div>
+
+<script>
+// ============ נתוני המבחן ============
+const EXAM = [
+  {id:"q1",topic:"polygons",points:14,title:"משולש שווה-שוקיים וזוויות",
+   stem:'במשולש שווה-שוקיים ABC מתקיים AB = AC, וזווית הראש <span class="formula" dir="ltr">∠A = 50°</span>.',
+   svg:'<svg viewBox="0 0 280 220" style="max-width:260px"><polygon points="140,28 50,190 230,190" fill="none" stroke="#23201a" stroke-width="2"/><line x1="88" y1="108" x2="96" y2="116" stroke="#c4453a" stroke-width="2"/><line x1="184" y1="116" x2="192" y2="108" stroke="#c4453a" stroke-width="2"/><text x="135" y="20" font-size="15" font-weight="bold">A</text><text x="36" y="203" font-size="15" font-weight="bold">B</text><text x="234" y="203" font-size="15" font-weight="bold">C</text></svg>',
+   parts:[
+     {id:"a",label:"(א)",text:'כמה מעלות כל אחת מזוויות הבסיס?',type:"number",answer:65,points:4,hint:"זוויות הבסיס שוות. (180−50) מתחלק בין שתיהן",solution:'(180 − 50) ÷ 2 = 130 ÷ 2 = <b>65°</b>'},
+     {id:"b",label:"(ב)",text:'מהי הזווית החיצונית לאחת מזוויות הבסיס? (במעלות)',type:"number",answer:115,points:5,hint:"זווית חיצונית + הזווית הצמודה = 180°",solution:'180 − 65 = <b>115°</b>'},
+     {id:"c",label:"(ג)",text:'אם השוק AB = 10 ס"מ והגובה מ-A לבסיס הוא 8 ס"מ, מהו אורך הבסיס BC? (בס"מ)',type:"number",answer:12,points:5,hint:"הגובה הוא גם תיכון. במשולש הישר-זווית: AB=10 יתר, הגובה=8 ניצב. מצא חצי בסיס ואז הכפל",solution:'חצי הבסיס = √(10²−8²) = √(100−64) = √36 = 6. הבסיס המלא = 2·6 = <b>12 ס"מ</b>'}
+   ]},
+  {id:"q2",topic:"lineeq",points:13,title:"פונקציה קווית ושטח",
+   stem:'נתון הישר <span class="formula" dir="ltr">y = 3x − 6</span>. הוא חותך את ציר x בנקודה A ואת ציר y בנקודה B. O היא ראשית הצירים.',
+   svg:'<svg viewBox="0 0 260 260" style="max-width:240px"><line x1="20" y1="130" x2="240" y2="130" stroke="#888" stroke-width="1.5"/><line x1="130" y1="20" x2="130" y2="240" stroke="#888" stroke-width="1.5"/><polygon points="240,130 232,126 232,134" fill="#888"/><polygon points="130,20 126,28 134,28" fill="#888"/><text x="243" y="134" font-size="12" fill="#888">x</text><text x="120" y="18" font-size="12" fill="#888">y</text><line x1="105" y1="265" x2="185" y2="25" stroke="#0f6e5c" stroke-width="2.5"/><circle cx="170" cy="130" r="3.5" fill="#c4453a"/><circle cx="130" cy="190" r="3.5" fill="#c4453a"/><text x="174" y="124" font-size="12" fill="#c4453a">A</text><text x="112" y="196" font-size="12" fill="#c4453a">B</text><text x="116" y="126" font-size="11" fill="#555">O</text></svg>',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו ערך ה-x של נקודה A (חיתוך עם ציר x)?',type:"number",answer:2,points:4,hint:"y=0",solution:'0 = 3x − 6 → <b>x = 2</b>'},
+     {id:"b",label:"(ב)",text:'מהו ערך ה-y של נקודה B (חיתוך עם ציר y)?',type:"number",answer:-6,points:4,hint:"x=0",solution:'y = 3·0 − 6 = <b>−6</b>'},
+     {id:"c",label:"(ג)",text:'חשבו את שטח המשולש AOB (ביחידות ריבועיות).',type:"number",answer:6,points:5,hint:"ניצבים OA=2 ו-OB=6. שטח=(ניצב·ניצב)/2",solution:'(2 · 6)/2 = <b>6 יח"ר</b>'}
+   ]},
+  {id:"q3",topic:"systems",points:14,title:"מערכת משוואות — שיטות",
+   stem:'פתרו את שתי מערכות המשוואות.',
+   parts:[
+     {id:"a1",label:"(א) x:",text:'<span class="formula" dir="ltr">3x + 2y = 13</span> , <span class="formula" dir="ltr">x − 2y = −1</span> — מהו x?',type:"number",answer:3,points:4,hint:"חברו את שתי המשוואות (יש +2y ו−2y)",solution:'חיבור: 4x = 12 → <b>x = 3</b>'},
+     {id:"a2",label:"(א) y:",text:'באותה מערכת — מהו y?',type:"number",answer:2,points:3,hint:"הציבו x=3",solution:'3·3 + 2y = 13 → 2y = 4 → <b>y = 2</b>'},
+     {id:"b1",label:"(ב) x:",text:'<span class="formula" dir="ltr">y = x − 1</span> , <span class="formula" dir="ltr">2x + y = 11</span> — מהו x?',type:"number",answer:4,points:4,hint:"הציבו y=x−1 בשנייה",solution:'2x + (x−1) = 11 → 3x = 12 → <b>x = 4</b>'},
+     {id:"b2",label:"(ב) y:",text:'באותה מערכת — מהו y?',type:"number",answer:3,points:3,hint:"y = x − 1",solution:'y = 4 − 1 = <b>3</b>'}
+   ]},
+  {id:"q4",topic:"systems",points:14,title:"מערכת — סוגריים ושברים",
+   stem:'מערכות הדורשות פישוט לפני הפתרון.',
+   parts:[
+     {id:"a1",label:"(א) x:",text:'<span class="formula" dir="ltr">3(x − 1) + 2y = 13</span> , <span class="formula" dir="ltr">x + y = 6</span> — מהו x?',type:"number",answer:4,points:5,hint:"פתחו: 3x−3+2y=13 → 3x+2y=16. מהשנייה y=6−x",solution:'3x+2y=16. הצבת y=6−x: 3x+2(6−x)=16 → 3x+12−2x=16 → <b>x = 4</b>'},
+     {id:"a2",label:"(א) y:",text:'באותה מערכת — מהו y?',type:"number",answer:2,points:2,hint:"y = 6 − x",solution:'y = 6 − 4 = <b>2</b>'},
+     {id:"b1",label:"(ב) x:",text:'<span class="frac"><span class="num">x</span><span class="den">2</span></span> + <span class="frac"><span class="num">y</span><span class="den">3</span></span> = 4 , <span class="formula" dir="ltr">x − y = 3</span> — מהו x?',type:"number",answer:6,points:5,hint:"ראשונה ×6: 3x+2y=24. מהשנייה x=y+3",solution:'×6: 3x+2y=24. הצבת x=y+3: 3(y+3)+2y=24 → 5y+9=24 → y=3, ולכן <b>x = 6</b>'},
+     {id:"b2",label:"(ב) y:",text:'באותה מערכת — מהו y?',type:"number",answer:3,points:2,hint:"מצאת 5y=15",solution:'y = <b>3</b>. בדיקה: 6/2+3/3=3+1=4 ✓'}
+   ]},
+  {id:"q5",topic:"systems",points:13,title:"בעיה מילולית — קנייה",
+   stem:'במשרד קנו 4 מחברות ו-3 עטים ושילמו יחד 50 ש"ח. מחיר מחברת יקר ב-2 ש"ח ממחיר עט.',
+   parts:[
+     {id:"a",label:"(א)",text:'אם מחיר עט הוא x, מהי המשוואה הנכונה?',type:"mcq",options:['<span class="formula" dir="ltr">4x + 3x = 50</span>','<span class="formula" dir="ltr">4(x+2) + 3x = 50</span>','<span class="formula" dir="ltr">4x + 3(x+2) = 50</span>'],correct:1,points:4,solution:'מחברת = x+2. 4 מחברות ו-3 עטים: <b>4(x+2) + 3x = 50</b>'},
+     {id:"b",label:"(ב)",text:'מהו מחיר עט (בש"ח)?',type:"number",answer:6,points:5,hint:"פתרו: 4(x+2)+3x=50",solution:'4x+8+3x=50 → 7x=42 → <b>x = 6 ש"ח</b>'},
+     {id:"c",label:"(ג)",text:'מהו מחיר מחברת (בש"ח)?',type:"number",answer:8,points:4,hint:"מחברת = עט + 2",solution:'6 + 2 = <b>8 ש"ח</b>. בדיקה: 4·8+3·6=32+18=50 ✓'}
+   ]},
+  {id:"q6",topic:"systems",points:13,title:"בעיה מילולית — מערכת ואחוזים",
+   stem:'קנו 3 ק"ג גבינה ו-2 ק"ג זיתים ושילמו יחד 80 ש"ח. לאחר שמחיר הגבינה התייקר ב-20% (הזיתים לא השתנו), עבור אותה כמות שילמו 92 ש"ח.',
+   parts:[
+     {id:"a",label:"(א)",text:'אם מחיר ק"ג גבינה המקורי הוא g, מהו מחירו אחרי ייקור 20%?',type:"mcq",options:['<span class="formula" dir="ltr">g + 20</span>','<span class="formula" dir="ltr">1.2·g</span>','<span class="formula" dir="ltr">0.8·g</span>'],correct:1,points:4,solution:'ייקור 20% = כפל ב-1.2, כלומר <b>1.2·g</b>'},
+     {id:"b",label:"(ב)",text:'מהו מחיר ק"ג גבינה המקורי (בש"ח)?',type:"number",answer:20,points:5,hint:"3g+2z=80 ו-3(1.2g)+2z=92. חסרו את המשוואות",solution:'3g+2z=80 ; 3.6g+2z=92. חיסור: 0.6g=12 → <b>g = 20 ש"ח</b>'},
+     {id:"c",label:"(ג)",text:'מהו מחיר ק"ג זיתים (בש"ח)?',type:"number",answer:10,points:4,hint:"הציבו g=20 ב-3g+2z=80",solution:'3·20+2z=80 → 2z=20 → <b>z = 10 ש"ח</b>. בדיקה: גבינה מיוקרת=24, 3·24+20=92 ✓'}
+   ]},
+  {id:"q7",topic:"percent",points:11,title:"אחוזים",
+   stem:'פתרו את הסעיפים בנושא אחוזים.',
+   parts:[
+     {id:"a",label:"(א)",text:'מעיל עלה 120 ש"ח וירד בהנחה של 25%. מהו מחירו החדש (בש"ח)?',type:"number",answer:90,points:4,hint:"120 · 0.75",solution:'120 · 0.75 = <b>90 ש"ח</b>'},
+     {id:"b",label:"(ב)",text:'40% ממספר מסוים שווה 60. מהו המספר?',type:"number",answer:150,points:4,hint:"X = 60 ÷ 0.40",solution:'60 ÷ 0.40 = <b>150</b>'},
+     {id:"c",label:"(ג)",text:'מחיר עלה מ-80 ש"ח ל-100 ש"ח. בכמה אחוזים עלה?',type:"number",answer:25,points:3,hint:"(העלייה ÷ המחיר המקורי)·100",solution:'(20 ÷ 80)·100 = <b>25%</b>'}
+   ]},
+  {id:"q8",topic:"pythagoras",points:8,title:"משפט פיתגורס",
+   stem:'במלבן ABCD הצלעות הן <span class="formula" dir="ltr">AB = 12</span> ס"מ ו-<span class="formula" dir="ltr">BC = 9</span> ס"מ. האלכסון AC מחלק אותו לשני משולשים ישרי-זווית.',
+   svg:'<svg viewBox="0 0 260 180" style="max-width:250px"><rect x="30" y="30" width="200" height="120" fill="none" stroke="#23201a" stroke-width="2"/><line x1="30" y1="30" x2="230" y2="150" stroke="#0f6e5c" stroke-width="1.8"/><text x="20" y="26" font-size="14" font-weight="bold">A</text><text x="232" y="26" font-size="14" font-weight="bold">B</text><text x="232" y="164" font-size="14" font-weight="bold">C</text><text x="20" y="164" font-size="14" font-weight="bold">D</text><text x="120" y="24" font-size="12" fill="#555">12</text><text x="236" y="95" font-size="12" fill="#555">9</text></svg>',
+   parts:[
+     {id:"a",label:"(א)",text:'מהו אורך האלכסון AC (בס"מ)?',type:"number",answer:15,points:5,hint:"AC² = AB² + BC² = 12² + 9²",solution:'AC² = 144 + 81 = 225 → AC = <b>15 ס"מ</b> (שלשה 9-12-15)'},
+     {id:"b",label:"(ב)",text:'מהו היקף המלבן (בס"מ)?',type:"number",answer:42,points:3,hint:"2·(אורך+רוחב)",solution:'2·(12+9) = <b>42 ס"מ</b>'}
+   ]}
+];
+
+// ============ עזרי בדיקה ============
+function parseNum(s){if(s==null)return NaN;let c=String(s).trim().replace(/\s/g,'').replace(',','.');if(c==='')return NaN;if(c.includes('/')){const p=c.split('/');return Number(p[0])/Number(p[1]);}return Number(c);}
+function approxEq(a,b,tol){return Math.abs(a-b)<=(tol||0.01);}
+const TOPIC_NAMES={polygons:'זוויות ומצולעים',linear:'פונקציה קווית',lineeq:'פונקציה קווית ושטח',systems:'מערכת משוואות',percent:'אחוזים',congruence:'חפיפת משולשים',pythagoras:'משפט פיתגורס',stats:'סטטיסטיקה'};
+
+// ============ מצב ומעקב ============
+let earned={};
+let totalPoints=0;
+EXAM.forEach(q=>q.parts.forEach(p=>totalPoints+=p.points));
+// log per part: {attempts, wrong, hintUsed, peeked, solved, timeMs, firstTryCorrect}
+let log={};
+EXAM.forEach(q=>q.parts.forEach(p=>{log[q.id+p.id]={qid:q.id,pid:p.id,topic:q.topic,qtitle:q.title,points:p.points,attempts:0,wrong:0,hintUsed:false,peeked:false,solved:false,timeMs:0,firstTryCorrect:false};}));
+let examStart=Date.now();
+let activePartKey=null;
+let activePartStart=0;
+
+// טיימר גלובלי
+setInterval(()=>{
+  const s=Math.floor((Date.now()-examStart)/1000);
+  const m=Math.floor(s/60), ss=String(s%60).padStart(2,'0');
+  document.getElementById('globalTimer').textContent=m+':'+ss;
+},1000);
+
+// מעקב זמן per שאלה: כשהקלט מקבל פוקוס מתחילים למדוד
+function focusPart(key){
+  if(activePartKey && activePartKey!==key) flushTime();
+  activePartKey=key; activePartStart=Date.now();
+}
+function flushTime(){
+  if(activePartKey && activePartStart){
+    log[activePartKey].timeMs += (Date.now()-activePartStart);
+    activePartStart=0;
+  }
+}
+
+function updateScore(){
+  flushTime(); activePartStart=Date.now();
+  let sum=0;Object.values(earned).forEach(v=>sum+=v);
+  const pct=Math.round(sum/totalPoints*100);
+  document.getElementById('scoreFill').style.width=pct+'%';
+  document.getElementById('scorePct').textContent=sum+' / '+totalPoints;
+  let answered=0;EXAM.forEach(q=>q.parts.forEach(p=>{if(earned[q.id+p.id]!==undefined)answered++;}));
+  let totalParts=0;EXAM.forEach(q=>totalParts+=q.parts.length);
+  if(answered>=totalParts)showFinish(sum,pct);
+}
+
+function showFinish(sum,pct){
+  flushTime();
+  const box=document.getElementById('finishBox');box.style.display='block';
+  document.getElementById('finalScore').textContent=sum+' / '+totalPoints;
+  let msg;
+  if(pct>=90)msg='מצוין! שליטה גבוהה בחומר 🌟';
+  else if(pct>=75)msg='כל הכבוד! רמה טובה מאוד';
+  else if(pct>=55)msg='לא רע — יש כמה נושאים לחזק';
+  else msg='שווה לחזור על החומר ולתרגל שוב';
+  document.getElementById('finalMsg').textContent=msg;
+  buildReport(sum,pct);
+  buildAIZone();
+  box.scrollIntoView({behavior:'smooth'});
+}
+
+// ============ דוח ביצועים מקומי ============
+function fmtTime(ms){const s=Math.round(ms/1000);const m=Math.floor(s/60);return m>0?`${m}:${String(s%60).padStart(2,'0')}`:`${s}ש'`;}
+function aggregateByQuestion(){
+  // צבירה לפי שאלה (q1..q8)
+  const byQ={};
+  EXAM.forEach(q=>{
+    const parts=q.parts.map(p=>log[q.id+p.id]);
+    const time=parts.reduce((s,l)=>s+l.timeMs,0);
+    const pts=parts.reduce((s,l)=>s+l.points,0);
+    const got=q.parts.reduce((s,p)=>s+(earned[q.id+p.id]||0),0);
+    const wrong=parts.reduce((s,l)=>s+l.wrong,0);
+    const hints=parts.filter(l=>l.hintUsed).length;
+    const peeks=parts.filter(l=>l.peeked).length;
+    byQ[q.id]={title:q.title,topic:q.topic,time,pts,got,wrong,hints,peeks,idx:EXAM.indexOf(q)+1};
+  });
+  return byQ;
+}
+function aggregateByTopic(){
+  const byT={};
+  Object.values(log).forEach(l=>{
+    if(!byT[l.topic])byT[l.topic]={pts:0,got:0,time:0,wrong:0};
+    byT[l.topic].pts+=l.points;
+    byT[l.topic].got+=(earned[l.qid+l.pid]||0);
+    byT[l.topic].time+=l.timeMs;
+    byT[l.topic].wrong+=l.wrong;
+  });
+  return byT;
+}
+
+function buildReport(sum,pct){
+  const byQ=aggregateByQuestion();
+  const byT=aggregateByTopic();
+  const totalTime=Date.now()-examStart;
+  const totalWrong=Object.values(log).reduce((s,l)=>s+l.wrong,0);
+  const totalPeeks=Object.values(log).filter(l=>l.peeked).length;
+
+  let html=`<h3>📊 דוח ביצועים</h3>
+    <div class="stat-grid">
+      <div class="stat"><div class="v">${pct}%</div><div class="l">ציון</div></div>
+      <div class="stat"><div class="v">${fmtTime(totalTime)}</div><div class="l">זמן כולל</div></div>
+      <div class="stat"><div class="v">${totalWrong}</div><div class="l">טעויות</div></div>
+    </div>`;
+
+  // פירוט לפי שאלה
+  html+=`<h3>⏱ פירוט לפי שאלה</h3><table class="qtable"><tr><th>#</th><th>נושא</th><th>ציון</th><th>זמן</th><th>טעויות</th><th>רמז/פתרון</th></tr>`;
+  Object.values(byQ).forEach(q=>{
+    const full=q.got===q.pts && q.wrong===0 && q.peeks===0;
+    const warn=q.wrong>0||q.peeks>0;
+    const rowCls=full?'ok-row':(warn?'warn-row':'');
+    const aids=[];if(q.hints)aids.push(`${q.hints} רמז`);if(q.peeks)aids.push(`${q.peeks} פתרון`);
+    html+=`<tr class="${rowCls}"><td>${q.idx}</td><td>${TOPIC_NAMES[q.topic]}</td><td>${q.got}/${q.pts}</td><td>${fmtTime(q.time)}</td><td class="${q.wrong>0?'flag':''}">${q.wrong||'—'}</td><td>${aids.join(', ')||'—'}</td></tr>`;
+  });
+  html+=`</table>`;
+
+  // אחוז הצלחה לפי נושא
+  html+=`<h3>🎯 שליטה לפי נושא</h3><div class="topic-bars">`;
+  const topicKeys=Object.keys(byT).sort((a,b)=>(byT[a].got/byT[a].pts)-(byT[b].got/byT[b].pts));
+  topicKeys.forEach(t=>{
+    const r=byT[t];const p=Math.round(r.got/r.pts*100);
+    const col=p>=90?'var(--good)':(p>=60?'var(--accent2)':'var(--bad)');
+    html+=`<div class="topic-bar"><span class="name">${TOPIC_NAMES[t]}</span><div class="bar-bg"><div class="bar-fg" style="width:${p}%;background:${col}"></div></div><span class="val">${p}%</span></div>`;
+  });
+  html+=`</div>`;
+
+  // ניתוח חולשות מקומי
+  const weak=[];
+  Object.values(byQ).forEach(q=>{
+    if(q.wrong>0)weak.push(`שאלה ${q.idx} (${TOPIC_NAMES[q.topic]}): ${q.wrong} טעויות`);
+    else if(q.peeks>0)weak.push(`שאלה ${q.idx} (${TOPIC_NAMES[q.topic]}): נדרש פתרון מלא`);
+  });
+  // זמן חריג: שאלה שלקחה הרבה מעל הממוצע
+  const times=Object.values(byQ).map(q=>q.time);
+  const avgT=times.reduce((a,b)=>a+b,0)/times.length;
+  Object.values(byQ).forEach(q=>{if(q.time>avgT*1.8 && q.time>60000)weak.push(`שאלה ${q.idx} (${TOPIC_NAMES[q.topic]}): זמן ארוך במיוחד (${fmtTime(q.time)})`);});
+
+  if(weak.length){
+    html+=`<h3>🔍 נקודות לחיזוק</h3><ul class="weak-list">${weak.map(w=>`<li>${w}</li>`).join('')}</ul>`;
+  }else{
+    html+=`<h3>🔍 נקודות לחיזוק</h3><div class="strong-box">🎉 ביצוע מצוין לכל אורך המבחן — אין נקודות חולשה בולטות! פתר/ה הכל באופן עצמאי וללא טעויות.</div>`;
+  }
+  document.getElementById('reportBox').innerHTML=html;
+}
+
+// ============ אזור AI: ייצוא + ניסיון API ============
+function buildDataPacket(){
+  const byQ=aggregateByQuestion();
+  const byT=aggregateByTopic();
+  let sum=0;Object.values(earned).forEach(v=>sum+=v);
+  const packet={
+    מבחן:"מבחן 5 - כיתה ח'",
+    ציון:`${sum}/${totalPoints}`,
+    זמן_כולל_שניות:Math.round((Date.now()-examStart)/1000),
+    לפי_שאלה:Object.values(byQ).map(q=>({
+      שאלה:q.idx,נושא:TOPIC_NAMES[q.topic],ציון:`${q.got}/${q.pts}`,
+      זמן_שניות:Math.round(q.time/1000),טעויות:q.wrong,רמזים:q.hints,הצצות_בפתרון:q.peeks
+    })),
+    לפי_נושא:Object.keys(byT).map(t=>({
+      נושא:TOPIC_NAMES[t],אחוז_הצלחה:Math.round(byT[t].got/byT[t].pts*100),טעויות:byT[t].wrong,זמן_שניות:Math.round(byT[t].time/1000)
+    }))
+  };
+  return packet;
+}
+function buildPrompt(packet){
+  return `אתה מומחה להוראת מתמטיקה לכיתה ח' בישראל. להלן נתוני ביצוע של תלמיד במבחן תרגול (8 שאלות, 100 נק', בדגש על מערכות משוואות). נתח את הביצועים וזהה נקודות חוזק וחולשה.
+
+נתוני המבחן (JSON):
+${JSON.stringify(packet,null,2)}
+
+אנא ספק:
+1. סיכום קצר של רמת התלמיד (2-3 משפטים).
+2. זיהוי הנושאים החזקים והחלשים, בהתבסס על אחוזי הצלחה, טעויות וזמן.
+3. 3 המלצות קונקרטיות לתרגול ממוקד.
+4. הצעה לאיזה נושא כדאי לבנות מבחן תרגול נוסף.
+
+ענה בעברית, בצורה תמציתית ומעשית להורה.`;
+}
+function buildAIZone(){
+  const zone=document.getElementById('aiZone');
+  zone.innerHTML=`
+    <h3>🤖 ניתוח GEN AI ותרגול ממוקד</h3>
+    <p>הפק דוח חכם על הביצועים. אם הקובץ רץ דרך claude.ai — הניתוח יתבצע אוטומטית. אחרת, העתק/י את חבילת הנתונים והדבק/י בשיחה עם Claude לקבלת ניתוח ובניית תרגול ממוקד.</p>
+    <button class="btn-ai" id="btnAI">✨ הפק ניתוח אוטומטי</button>
+    <button class="btn-copy" id="btnCopy">📋 העתק נתונים לניתוח ידני</button>
+    <div class="ai-loading" id="aiLoading">⏳ מנתח את הביצועים...</div>
+    <textarea class="export-area" id="exportArea" readonly></textarea>
+    <div class="ai-result" id="aiResult"></div>
+  `;
+  const packet=buildDataPacket();
+  document.getElementById('exportArea').value=buildPrompt(packet);
+
+  document.getElementById('btnCopy').onclick=()=>{
+    const area=document.getElementById('exportArea');
+    area.classList.add('show');
+    area.select();
+    try{document.execCommand('copy');}catch(e){}
+    document.getElementById('btnCopy').textContent='✓ הועתק! הדבק בשיחה עם Claude';
+  };
+
+  document.getElementById('btnAI').onclick=async()=>{
+    const loading=document.getElementById('aiLoading');
+    const result=document.getElementById('aiResult');
+    loading.classList.add('show');result.classList.remove('show');
+    try{
+      const resp=await fetch("https://api.anthropic.com/v1/messages",{
+        method:"POST",headers:{"Content-Type":"application/json"},
+        body:JSON.stringify({model:"claude-sonnet-4-20250514",max_tokens:1200,messages:[{role:"user",content:buildPrompt(packet)}]})
+      });
+      if(!resp.ok)throw new Error('API לא זמין');
+      const data=await resp.json();
+      const text=data.content.filter(b=>b.type==='text').map(b=>b.text).join('\n');
+      loading.classList.remove('show');
+      result.innerHTML=text.replace(/\n/g,'<br>').replace(/\*\*(.+?)\*\*/g,'<b>$1</b>');
+      result.classList.add('show');
+    }catch(e){
+      loading.classList.remove('show');
+      result.innerHTML='<b>הניתוח האוטומטי לא זמין כאן</b> (כנראה הקובץ רץ מקומית ולא דרך claude.ai).<br>במקום זאת — לחץ/י על "העתק נתונים לניתוח ידני", הדבק/י את הטקסט בשיחה עם Claude, ותקבל/י ניתוח מלא + תרגול ממוקד על נקודות החולשה.';
+      result.classList.add('show');
+      // הצג גם את הנתונים להעתקה
+      const area=document.getElementById('exportArea');area.classList.add('show');
+    }
+  };
+}
+
+// ============ בנייה ============
+function build(){
+  const body=document.getElementById('examBody');
+  EXAM.forEach((q,qi)=>{
+    const card=document.createElement('div');card.className='q';card.id='card-'+q.id;
+    card.innerHTML=`<div class="q-head"><span class="q-badge">${qi+1}</span><span class="q-title">${q.title}</span><span class="q-points">${q.points} נק'</span></div><div class="q-stem">${q.stem}</div>${q.svg?`<div class="q-svg">${q.svg}</div>`:''}`;
+    q.parts.forEach(p=>card.appendChild(makePart(q,p)));
+    body.appendChild(card);
+  });
+}
+function makePart(q,p){
+  const div=document.createElement('div');div.className='part';
+  const key=q.id+p.id;
+  if(p.type==='mcq'){
+    div.innerHTML=`<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק'</span></div><div class="opts"></div><span class="verdict"></span><div class="tools">${p.solution?'<button class="btn-sol" disabled title="זמין אחרי שתענה">🔒 פתרון</button>':''}</div>${p.solution?`<div class="sol-box">${p.solution}</div>`:''}`;
+    const opts=div.querySelector('.opts');const verdict=div.querySelector('.verdict');const solBtn=div.querySelector('.btn-sol');let answered=false;
+    p.options.forEach((o,i)=>{
+      const b=document.createElement('button');b.className='opt';b.innerHTML=o;
+      b.onclick=()=>{
+        focusPart(key);
+        if(answered)return;answered=true;
+        const L=log[key];L.attempts++;
+        if(i===p.correct){b.classList.add('ok');verdict.className='verdict ok';verdict.textContent='✓ נכון';earned[key]=p.points;L.solved=true;L.firstTryCorrect=true;}
+        else{b.classList.add('bad');verdict.className='verdict bad';verdict.textContent='✗ לא נכון';opts.children[p.correct].classList.add('reveal');earned[key]=0;L.wrong++;}
+        if(solBtn){solBtn.disabled=false;solBtn.innerHTML='פתרון';}
+        flushTime();updateScore();
+      };
+      opts.appendChild(b);
+    });
+  }else{
+    const answers=Array.isArray(p.answer)?p.answer:[p.answer];
+    div.innerHTML=`<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק'</span></div><div class="part-row"><input class="ans" placeholder="תשובה" inputmode="decimal"><button class="btn-check">בדיקה</button><span class="verdict"></span></div><div class="tools">${p.hint?'<button class="btn-hint">💡 רמז</button>':''}${p.solution?'<button class="btn-sol" disabled title="זמין אחרי ניסיון">🔒 פתרון</button>':''}</div>${p.hint?`<div class="hint-box">${p.hint}</div>`:''}${p.solution?`<div class="sol-box">${p.solution}</div>`:''}`;
+    const input=div.querySelector('.ans');const verdict=div.querySelector('.verdict');const solBtn=div.querySelector('.btn-sol');
+    input.addEventListener('focus',()=>focusPart(key));
+    const check=()=>{
+      focusPart(key);
+      const L=log[key];
+      const u=parseNum(input.value);
+      if(solBtn&&solBtn.disabled){solBtn.disabled=false;solBtn.innerHTML='פתרון';}
+      if(isNaN(u)){input.className='ans bad';verdict.className='verdict bad';verdict.textContent='הזן מספר';return;}
+      L.attempts++;
+      const ok=answers.some(a=>approxEq(u,a,p.tolerance||(Math.abs(a)<1?0.01:0.05)));
+      if(ok){input.className='ans ok';verdict.className='verdict ok';verdict.textContent='✓ נכון';earned[key]=p.points;if(!L.solved&&L.wrong===0)L.firstTryCorrect=true;L.solved=true;}
+      else{input.className='ans bad';verdict.className='verdict bad';verdict.textContent='✗ נסה שוב';L.wrong++;if(earned[key]===undefined)earned[key]=0;}
+      flushTime();updateScore();
+    };
+    div.querySelector('.btn-check').onclick=check;
+    input.addEventListener('keydown',e=>{if(e.key==='Enter')check();});
+  }
+  const hintBtn=div.querySelector('.btn-hint');
+  if(hintBtn){const hb=div.querySelector('.hint-box');hintBtn.onclick=()=>{focusPart(key);hb.classList.toggle('show');if(hb.classList.contains('show'))log[key].hintUsed=true;};}
+  const solBtn=div.querySelector('.btn-sol');
+  if(solBtn){const sb=div.querySelector('.sol-box');solBtn.onclick=()=>{if(solBtn.disabled)return;focusPart(key);sb.classList.toggle('show');if(sb.classList.contains('show'))log[key].peeked=true;};}
+  return div;
+}
+build();
+</script>
+</body>
+</html>
