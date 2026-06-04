@@ -131,6 +131,7 @@
     var msg = el("div", "min-height:20px;color:#c4453a;font-size:0.86rem;font-weight:700;margin:2px 0 10px;"); card.appendChild(msg);
     var btn = el("button", "width:100%;background:#0f6e5c;color:#fff;border:none;padding:13px;border-radius:8px;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;", "כניסה"); card.appendChild(btn);
     card.appendChild(el("p", "color:#a8a294;font-size:0.74rem;margin-top:14px;", userpass ? "אין לך פרטי כניסה? פנה/י למי ששלח/ה לך את התרגול." : "אין לך קוד? פנה/י למי ששלח/ה לך את התרגול."));
+    card.appendChild(el("p", "color:#a8a294;font-size:0.68rem;line-height:1.5;margin-top:10px;border-top:1px solid #ece8dd;padding-top:10px;", "כלי תרגול פרטי, בהתנדבות וללא מטרת רווח. אינו כלי לימודי רשמי ואין לו קשר או אישור ממשרד החינוך. השימוש באחריות המשתמש."));
     ov.appendChild(card); document.body.appendChild(ov); (userpass ? userIn : codeIn).focus();
 
     var submit = function () {
