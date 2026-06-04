@@ -20,7 +20,13 @@
     endpoint: "",                         // online: כתובת ה-Web app של Apps Script
     // userpass — שם משתמש → sha256(סיסמה). הסיסמה עצמה לא נשמרת בקובץ, רק ה-hash.
     users: {
-      "demo": "1fc2210b9be582476c36820060ac77f04f6b274bb00b06f0b7b2069dc9a0f99a"  // סיסמה: math2026
+      "demo": "1fc2210b9be582476c36820060ac77f04f6b274bb00b06f0b7b2069dc9a0f99a",  // סיסמה: math2026
+      // פיילוט — 5 גישות אישיות (הסיסמאות נשלחו בנפרד; לא נשמרות בקובץ)
+      "student1": "30b73c3eba2083558e93618e7c5d799cbbb90fad94d1924e75683579b34492f6",
+      "student2": "489567945606fd4646e8a968672538d9cfd316ebe35fd38951449b2f66ae735b",
+      "student3": "0f798a2653c710f07da3cfd29926027c879f1d8002d64cf65c5d7eaaff1b30af",
+      "student4": "a78f0b7a07046586875c84baa503f1b504b6b0b8792a086273bc61d494996d88",
+      "student5": "827a6a8a21211ce40865b9f988d4f0d4b9e846678ca636ce21b5594906d554b1"
     },
     // local בלבד — hash(code) → { name, expires } ; expires="YYYY-MM-DD" או null
     codes: {
