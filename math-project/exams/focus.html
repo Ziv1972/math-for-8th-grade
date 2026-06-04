@@ -15,39 +15,62 @@
 <script src="exam-engine.js"></script>
 <script>
 (function(){
-  var subject = new URLSearchParams(location.search).get('subject') || 'math';
+  var params = new URLSearchParams(location.search);
+  var subject = params.get('subject') || 'math';
   if (subject !== 'science') subject = 'math';
 
   var weights = MQ.EXAM_WEIGHTS[subject] || {};
   var topics = Object.keys(weights);
   var agg = MQ.aggregate(subject);
 
-  // ניקוד נושאים: נבחנו עם ציון נמוך / לא נבחנו כלל → עדיפות גבוהה לתרגול
-  var scored = topics.map(function(t){ return { t: t, m: agg[t] ? agg[t].last : 0, tested: !!agg[t] }; });
+  // ---- בחירת נושאים: ?topics=a,b,c (בחירת המשתמש) → גובר על אוטו-חלשים ----
+  var reqTopics = (params.get('topics') || '').split(',')
+    .map(function(s){ return s.trim(); })
+    .filter(function(t){ return t && topics.indexOf(t) >= 0; });
+  var custom = reqTopics.length > 0;
+
+  // ברירת מחדל (ללא בחירה): 4 הנושאים החלשים לפי הציון האחרון
+  var scored = topics.map(function(t){ return { t: t, m: agg[t] ? agg[t].last : 0 }; });
   scored.sort(function(a,b){ return a.m - b.m; });           // החלש ביותר קודם
   var weak = scored.slice(0, 4).map(function(s){ return s.t; });
   if (!weak.length) weak = topics.slice(0, 4);
+  var useTopics = custom ? reqTopics : weak;
 
-  function levelFor(t){ var a = agg[t]; if (!a) return 1; return a.last < 60 ? 1 : (a.last < 85 ? 2 : 3); }
+  // ---- רמה: ?level=1|2|3 (קבועה) או auto (לפי הציון האחרון בנושא) ----
+  var fixedLevel = params.get('level');
+  function levelFor(t){
+    if (fixedLevel === '1' || fixedLevel === '2' || fixedLevel === '3') return +fixedLevel;
+    var a = agg[t]; if (!a) return 1; return a.last < 60 ? 1 : (a.last < 85 ? 2 : 3);
+  }
   function makeQ(t){
     var q = GEN.has(t) ? GEN.make(t) : (BANK.has(t) ? BANK.pick(t, levelFor(t)) : null);
     if (!q) q = GEN.make('systems');   // fallback בטוח
     return q;
   }
 
-  var PTS = [13,13,12,13,12,13,12,12];   // סכום 100
+  // ---- מספר שאלות: ?n=4..12 (ברירת מחדל 8); ניקוד מתחלק ל-100 ----
+  var n = parseInt(params.get('n'), 10);
+  if (!(n >= 4 && n <= 12)) n = 8;
+  function distribute(total, k){
+    var base = Math.floor(total / k), arr = [], rem = total - base * k;
+    for (var i = 0; i < k; i++) arr.push(base + (i < rem ? 1 : 0));
+    return arr;
+  }
+  var PTS = distribute(100, n);
+
   var EXAM = [];
-  for (var i = 0; i < 8; i++) {
-    var q = makeQ(weak[i % weak.length]);
+  for (var i = 0; i < n; i++) {
+    var q = makeQ(useTopics[i % useTopics.length]);
     q.id = 'q' + (i + 1);
     q.parts.forEach(function(p, j){ p.id = String.fromCharCode(97 + j); p.points = PTS[i]; });
+    q.points = q.parts.reduce(function(s, p){ return s + p.points; }, 0);  // ניקוד השאלה = סכום הסעיפים
     EXAM.push(q);
   }
 
   MQExam.run({
-    examId: 'focus_' + subject,
-    title: 'תרגול ממוקד',
-    kicker: 'תרגול ממוקד לפי הצפי · ' + (subject === 'science' ? 'מדעים' : 'מתמטיקה'),
+    examId: 'focus_' + subject,   // נשמר בקטלוג → subject/רישום per-נושא נכונים
+    title: custom ? 'תרגול לפי בחירה' : 'תרגול ממוקד',
+    kicker: (custom ? 'תרגול לפי בחירת נושאים · ' : 'תרגול ממוקד לפי הצפי · ') + (subject === 'science' ? 'מדעים' : 'מתמטיקה'),
     EXAM: EXAM
   });
 })();

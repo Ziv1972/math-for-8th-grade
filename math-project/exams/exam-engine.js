@@ -29,6 +29,18 @@
     EXAM.forEach(function (q) { (q.parts || []).forEach(function (p) { totalPoints += p.points || 0; }); });
     var start = Date.now();
 
+    // ---- מעקב per-שאלה (מזין את MQ.predict / questionStats) ----
+    var log = {};
+    function L(q, p) {
+      var k = q.id + p.id;
+      if (!log[k]) log[k] = { qid: q.id, pid: p.id, topic: q.topic, points: p.points || 0,
+        attempts: 0, wrong: 0, hintUsed: false, peeked: false, solved: false, firstTryCorrect: false, timeMs: 0 };
+      return log[k];
+    }
+    var activeKey = null, activeTs = 0;
+    function flushTime() { if (activeKey && log[activeKey]) log[activeKey].timeMs += Date.now() - activeTs; activeKey = null; }
+    function focusPart(k) { flushTime(); activeKey = k; activeTs = Date.now(); }
+
     var bar = document.createElement("div"); bar.className = "scorebar";
     fill(bar, `<span class="label">ציון</span><div class="track"><div class="fill" id="scoreFill"></div></div><span class="pct" id="scorePct">0 / ${totalPoints}</span><span class="timer" id="globalTimer">0:00</span><a class="home" href="index.html">⌂ בית</a>`);
     document.body.appendChild(bar);
@@ -60,7 +72,8 @@
       if (answered >= totalParts && !finished) { finished = true; showFinish(sum, pct); }
     }
     function showFinish(sum, pct) {
-      if (global.MQ) global.MQ.record(examId, title, EXAM, earned, { durationMs: Date.now() - start });
+      flushTime();
+      if (global.MQ) global.MQ.record(examId, title, EXAM, earned, { durationMs: Date.now() - start, log: log });
       var box = document.getElementById("finishBox"); box.classList.add("show");
       document.getElementById("finalScore").textContent = sum + " / " + totalPoints;
       var msg;
@@ -81,8 +94,9 @@
           var b = document.createElement("button"); b.className = "opt"; b.appendChild(frag(o));
           b.onclick = function () {
             if (answered) return; answered = true;
-            if (i === p.correct) { b.classList.add("ok"); verdict.className = "verdict ok"; verdict.textContent = "✓ נכון"; earned[key] = p.points; }
-            else { b.classList.add("bad"); verdict.className = "verdict bad"; verdict.textContent = "✗ לא נכון"; opts.children[p.correct].classList.add("reveal"); earned[key] = 0; }
+            var lg = L(q, p); lg.attempts = 1; flushTime();
+            if (i === p.correct) { b.classList.add("ok"); verdict.className = "verdict ok"; verdict.textContent = "✓ נכון"; earned[key] = p.points; lg.solved = true; lg.firstTryCorrect = true; }
+            else { b.classList.add("bad"); verdict.className = "verdict bad"; verdict.textContent = "✗ לא נכון"; opts.children[p.correct].classList.add("reveal"); earned[key] = 0; lg.wrong = 1; }
             if (solBtn) { solBtn.disabled = false; solBtn.textContent = "פתרון"; }
             updateScore();
           };
@@ -93,21 +107,26 @@
         fill(div, `<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק</span></div><div class="part-row"><input class="ans" placeholder="תשובה" inputmode="decimal"><button class="btn-check">בדיקה</button><span class="verdict"></span></div><div class="tools">${p.hint ? `<button class="btn-hint">💡 רמז</button>` : ""}${p.solution ? `<button class="btn-sol" disabled>🔒 פתרון</button>` : ""}</div>${p.hint ? `<div class="hint-box">${p.hint}</div>` : ""}${p.solution ? `<div class="sol-box">${p.solution}</div>` : ""}`);
         var input = div.querySelector(".ans"), verdict2 = div.querySelector(".verdict"), solBtn2 = div.querySelector(".btn-sol");
         var check = function () {
+          var lg = L(q, p);
+          if (lg.solved) return;            // כבר נפתר — אל תספור ניסיון נוסף
           var u = parseNum(input.value);
           if (solBtn2 && solBtn2.disabled) { solBtn2.disabled = false; solBtn2.textContent = "פתרון"; }
           if (isNaN(u)) { input.className = "ans bad"; verdict2.className = "verdict bad"; verdict2.textContent = "הזן מספר"; return; }
+          lg.attempts++;
           var good = answers.some(function (a) { return approxEq(u, a, p.tolerance || (Math.abs(a) < 1 ? 0.01 : 0.05)); });
-          if (good) { input.className = "ans ok"; verdict2.className = "verdict ok"; verdict2.textContent = "✓ נכון"; earned[key] = p.points; }
-          else { input.className = "ans bad"; verdict2.className = "verdict bad"; verdict2.textContent = "✗ נסה שוב"; if (earned[key] === undefined) earned[key] = 0; }
+          if (good) { input.className = "ans ok"; verdict2.className = "verdict ok"; verdict2.textContent = "✓ נכון"; earned[key] = p.points; lg.solved = true; if (lg.attempts === 1 && lg.wrong === 0) lg.firstTryCorrect = true; flushTime(); }
+          else { input.className = "ans bad"; verdict2.className = "verdict bad"; verdict2.textContent = "✗ נסה שוב"; if (earned[key] === undefined) earned[key] = 0; lg.wrong++; }
           updateScore();
         };
         div.querySelector(".btn-check").onclick = check;
+        input.addEventListener("focus", function () { focusPart(key); });
+        input.addEventListener("blur", flushTime);
         input.addEventListener("keydown", function (e) { if (e.key === "Enter") check(); });
       }
       var hintBtn = div.querySelector(".btn-hint");
-      if (hintBtn) { var hb = div.querySelector(".hint-box"); hintBtn.onclick = function () { hb.classList.toggle("show"); }; }
+      if (hintBtn) { var hb = div.querySelector(".hint-box"); hintBtn.onclick = function () { hb.classList.toggle("show"); L(q, p).hintUsed = true; }; }
       var sBtn = div.querySelector(".btn-sol");
-      if (sBtn) { var sb = div.querySelector(".sol-box"); sBtn.onclick = function () { if (sBtn.disabled) return; sb.classList.toggle("show"); }; }
+      if (sBtn) { var sb = div.querySelector(".sol-box"); sBtn.onclick = function () { if (sBtn.disabled) return; sb.classList.toggle("show"); L(q, p).peeked = true; }; }
       return div;
     }
 

@@ -156,6 +156,7 @@
       durationMs: (meta && meta.durationMs) || Math.max(0, Date.now() - loadTime),
       level: cat ? cat.level : null,
       subject: cat ? cat.subject : ((meta && meta.subject) || "math"),
+      log: (meta && meta.log) || null,   // מעקב per-שאלה (אם המנוע אסף): {key:{topic,wrong,hintUsed,peeked,solved,timeMs,firstTryCorrect}}
       user: activeUser()
     };
 
@@ -173,28 +174,50 @@
     return all.filter(function (a) { return (a.subject || "math") === subject; });
   }
 
-  // ---- צבירה לפי נושא: last/best/avg/attempts + אומדן קצב ----
+  // ---- צבירה לפי נושא: last/best/avg/attempts + עקביות (std), מגמה (trend), ומאמץ (struggle) ----
+  // std       — סטיית תקן של ציוני הנושא בין מבחנים (אות עקביות; נמוך=יציב).
+  // trend     — שינוי בין המבחן האחרון לקודם (חיובי=שיפור).
+  // struggle  — אינדקס מאמץ ממוצע per-שאלה מתוך ה-log (טעויות + רמז + 2·הצצה). 0 כשאין נתוני log.
   function aggregate(subject) {
     var attempts = getAll(subject);
     var acc = {};
+    function ensure(t) {
+      if (!acc[t]) acc[t] = { samples: [], last: null, lastTs: 0, struggleSum: 0, struggleParts: 0 };
+      return acc[t];
+    }
     attempts.forEach(function (a) {
       Object.keys(a.byTopic || {}).forEach(function (t) {
         var bt = a.byTopic[t];
         if (!bt.pts) return;
         var p = Math.round(bt.got / bt.pts * 100);
-        if (!acc[t]) acc[t] = { samples: [], last: null, lastTs: 0 };
-        acc[t].samples.push(p);
-        if (a.ts >= acc[t].lastTs) { acc[t].lastTs = a.ts; acc[t].last = p; }
+        var e = ensure(t);
+        e.samples.push({ p: p, ts: a.ts });
+        if (a.ts >= e.lastTs) { e.lastTs = a.ts; e.last = p; }
+      });
+      // אות מאמץ per-שאלה (קיים רק במבחנים שאוספים log; ישנים → אין)
+      var lg = a.log;
+      if (lg) Object.keys(lg).forEach(function (k) {
+        var L = lg[k]; var t = L.topic; if (!t) return;
+        var e = ensure(t);
+        e.struggleSum += (L.wrong || 0) + (L.hintUsed ? 1 : 0) + (L.peeked ? 2 : 0);
+        e.struggleParts += 1;
       });
     });
     var out = {};
     Object.keys(acc).forEach(function (t) {
-      var s = acc[t].samples;
+      var arr = acc[t].samples.slice().sort(function (x, y) { return x.ts - y.ts; });
+      var s = arr.map(function (o) { return o.p; });
+      if (!s.length) return;
       var sum = s.reduce(function (x, y) { return x + y; }, 0);
+      var mean = sum / s.length;
+      var variance = s.reduce(function (x, y) { return x + (y - mean) * (y - mean); }, 0) / s.length;
       out[t] = {
         topic: t, name: TOPIC_NAMES[t] || t,
-        attempts: s.length, avg: Math.round(sum / s.length),
-        best: Math.max.apply(null, s), last: acc[t].last
+        attempts: s.length, avg: Math.round(mean),
+        best: Math.max.apply(null, s), last: acc[t].last,
+        std: Math.round(Math.sqrt(variance)),
+        trend: s.length >= 2 ? s[s.length - 1] - s[s.length - 2] : 0,
+        struggle: acc[t].struggleParts ? acc[t].struggleSum / acc[t].struggleParts : 0
       };
     });
     return out;
@@ -225,25 +248,62 @@
   }
 
   // ---- חיזוי ציון במבחן: ממוצע משוקלל של שליטה לפי נושא ----
+  // שליטה per-נושא = 0.6·אחרון + 0.25·ממוצע + 0.15·שיא, פחות קנס מאמץ (struggleAdj).
+  // הביטחון דורש *כמה מבחנים* (לא אחד) ועקביות (std נמוך) — צפי אמין נבנה לאורך כמה מבחנים.
   function predict(subject) {
     var agg = aggregate(subject);
     var weights = EXAM_WEIGHTS[subject] || {};
     var keys = Object.keys(weights);
-    var coveredW = 0, sum = 0, per = [];
+    var coveredW = 0, sum = 0, per = [], stds = [];
     keys.forEach(function (t) {
       var a = agg[t]; if (!a) return;                 // אין נתונים → לא נכלל, מוריד ביטחון
-      var m = Math.round(0.7 * a.last + 0.3 * a.best); // שליטה: נוטה לאחרון, מתגמל שיא
+      var base = 0.6 * a.last + 0.25 * a.avg + 0.15 * a.best;
+      var struggleAdj = Math.min(8, (a.struggle || 0) * 3); // 0–8 נק' — מאמץ מוריד מהשליטה הנתפסת
+      var m = Math.max(0, Math.min(100, Math.round(base - struggleAdj)));
       coveredW += weights[t]; sum += weights[t] * m;
-      per.push({ topic: t, name: a.name, mastery: m, weight: weights[t] });
+      stds.push(a.std || 0);
+      per.push({ topic: t, name: a.name, mastery: m, weight: weights[t], struggle: a.struggle || 0 });
     });
     if (!per.length) return null;
     var grade = Math.round(sum / coveredW);            // נרמול מעל הנושאים שנבדקו
     var attemptsCount = getAll(subject).length;
-    var conf = (coveredW >= 0.8 && attemptsCount >= 4) ? "high"
-             : ((coveredW >= 0.5 && attemptsCount >= 2) ? "medium" : "low");
+    var avgStd = stds.length ? stds.reduce(function (x, y) { return x + y; }, 0) / stds.length : 0;
+    var conf = (attemptsCount >= 4 && coveredW >= 0.8 && avgStd <= 12) ? "high"
+             : ((attemptsCount >= 2 && coveredW >= 0.5) ? "medium" : "low");
     per.sort(function (a, b) { return a.mastery - b.mastery; });
     return { grade: grade, confidence: conf, weakest: per.slice(0, 3),
-             covered: per.length, total: keys.length, coverageW: Math.round(coveredW * 100) };
+             covered: per.length, total: keys.length, coverageW: Math.round(coveredW * 100),
+             attempts: attemptsCount, avgStd: Math.round(avgStd) };
+  }
+
+  // ---- צבירת ביצועים per-שאלה (מתוך ה-log): אחוז הצלחה, פגיעה-ראשונה, זמן ----
+  // משמש לתצוגת "שאלות לחיזוק" ולהשוואה מול הערכת הקושי של מומחה התכנית.
+  function questionStats(subject) {
+    var attempts = getAll(subject);
+    var byQ = {};
+    attempts.forEach(function (a) {
+      var lg = a.log; if (!lg) return;
+      Object.keys(lg).forEach(function (k) {
+        var L = lg[k];
+        if (!byQ[k]) byQ[k] = { key: k, qid: L.qid, topic: L.topic, name: TOPIC_NAMES[L.topic] || L.topic, n: 0, firstTry: 0, solved: 0, timeSum: 0, wrongSum: 0 };
+        var b = byQ[k];
+        b.n++;
+        if (L.firstTryCorrect) b.firstTry++;
+        if (L.solved) b.solved++;
+        b.timeSum += (L.timeMs || 0);
+        b.wrongSum += (L.wrong || 0);
+      });
+    });
+    return Object.keys(byQ).map(function (k) {
+      var b = byQ[k];
+      return {
+        key: b.key, qid: b.qid, topic: b.topic, name: b.name, n: b.n,
+        firstTryRate: Math.round(b.firstTry / b.n * 100),
+        solveRate: Math.round(b.solved / b.n * 100),
+        avgTimeMs: Math.round(b.timeSum / b.n),
+        avgWrong: Math.round(b.wrongSum / b.n * 10) / 10
+      };
+    });
   }
 
   function readGameState() { return readJSON(GAME_KEY, null); }
@@ -257,6 +317,7 @@
     aggregate: aggregate,
     recommend: recommend,
     predict: predict,
+    questionStats: questionStats,
     EXAM_WEIGHTS: EXAM_WEIGHTS,
     readGameState: readGameState,
     clearAll: clearAll,
