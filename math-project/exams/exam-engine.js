@@ -51,7 +51,7 @@
     sheet.appendChild(head);
     var body = document.createElement("div"); body.id = "examBody"; sheet.appendChild(body);
     var finish = document.createElement("div"); finish.className = "finish"; finish.id = "finishBox";
-    fill(finish, `<h2>סיימת את התרגול! 🎓</h2><div class="final-score" id="finalScore">0</div><div class="msg" id="finalMsg"></div><div class="actions"><a class="btn primary" href="index.html">חזרה לדף הבית</a><button class="btn ghost" onclick="location.reload()">התחל מחדש</button></div>`);
+    fill(finish, `<h2>סיימת את התרגול! 🎓</h2><div class="final-score" id="finalScore">0</div><div class="msg" id="finalMsg"></div><div class="next-loop" id="nextLoop"></div><div class="actions"><a class="btn primary" href="index.html">חזרה לדף הבית</a><button class="btn ghost" onclick="location.reload()">התחל מחדש</button></div>`);
     sheet.appendChild(finish);
     document.body.appendChild(sheet);
 
@@ -73,7 +73,7 @@
     }
     function showFinish(sum, pct) {
       flushTime();
-      if (global.MQ) global.MQ.record(examId, title, EXAM, earned, { durationMs: Date.now() - start, log: log });
+      var attempt = global.MQ ? global.MQ.record(examId, title, EXAM, earned, { durationMs: Date.now() - start, log: log }) : null;
       var box = document.getElementById("finishBox"); box.classList.add("show");
       document.getElementById("finalScore").textContent = sum + " / " + totalPoints;
       var msg;
@@ -82,7 +82,34 @@
       else if (pct >= 55) msg = "לא רע — יש מה לחזק";
       else msg = "שווה לחזור על החומר ולתרגל שוב";
       document.getElementById("finalMsg").textContent = msg;
+      if (attempt) renderNextLoop(attempt.subject);   // סגירת הלולאה: צפי מעודכן + תרגול טרי על החולשות
       box.scrollIntoView({ behavior: "smooth" });
+    }
+
+    // אוטופיילוט: בכל סיום — מציג צפי מעודכן ומציע תרגול ממוקד טרי (מחולל אינסופי) על הנושאים החלשים
+    function renderNextLoop(subject) {
+      var host = document.getElementById("nextLoop"); if (!host || !global.MQ) return;
+      while (host.firstChild) host.removeChild(host.firstChild);
+      var pred = global.MQ.predict(subject);
+      var card = document.createElement("div"); card.className = "nl-card";
+      var lbl = document.createElement("div"); lbl.className = "nl-lbl";
+      if (pred) {
+        lbl.textContent = "🎯 צפי מעודכן למבחן: " + pred.grade + (pred.confidence === "low" ? " (הערכה ראשונית)" : "");
+        card.appendChild(lbl);
+        if (pred.weakest && pred.weakest.length) {
+          var w = document.createElement("div"); w.className = "nl-weak";
+          w.textContent = "לחיזוק עכשיו: " + pred.weakest.map(function (x) { return x.name; }).join(" · ");
+          card.appendChild(w);
+        }
+      } else {
+        lbl.textContent = "🎯 פתרו עוד מבחנים כדי שאחשב צפי אמין.";
+        card.appendChild(lbl);
+      }
+      var a = document.createElement("a"); a.className = "nl-btn";
+      a.href = "focus.html?subject=" + subject;
+      a.textContent = "⚡ תרגול ממוקד טרי על החולשות";
+      card.appendChild(a);
+      host.appendChild(card);
     }
 
     function makePart(q, p) {

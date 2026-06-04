@@ -73,4 +73,10 @@ input.ans.bad{border-color:var(--bad);background:#fdf2f1;}
 .finish .btn.primary:hover{background:var(--accent2);}
 .finish .btn.ghost{background:#fff;color:var(--ink);border:1px solid var(--rule);}
 .finish .btn.ghost:hover{border-color:var(--accent);color:var(--accent);}
+.next-loop{margin:18px 0 4px;}
+.nl-card{display:flex;flex-direction:column;align-items:center;gap:8px;background:#f3f6f4;border:1.5px dashed var(--accent);border-radius:8px;padding:16px 18px;}
+.nl-lbl{font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;color:var(--ink);}
+.nl-weak{font-size:0.9rem;color:var(--accent2);}
+.nl-btn{margin-top:4px;background:var(--accent);color:#fff;text-decoration:none;font-weight:700;font-size:0.95rem;padding:11px 22px;border-radius:6px;}
+.nl-btn:hover{background:var(--accent2);}
 @media (max-width:600px){.exam-head h1{font-size:1.5rem;}.q{padding:18px;}}
