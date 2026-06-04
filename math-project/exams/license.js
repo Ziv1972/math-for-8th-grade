@@ -119,7 +119,16 @@
     var card = el("div", "background:#fbfaf6;color:#23201a;max-width:380px;width:100%;border-radius:14px;padding:30px 26px;text-align:center;box-shadow:0 20px 60px rgba(0,0,0,0.5);");
     card.appendChild(el("div", "font-size:2.4rem;margin-bottom:6px;", "🔒"));
     card.appendChild(el("h2", "font-size:1.3rem;margin-bottom:4px;", LICENSE.brand));
-    card.appendChild(el("p", "color:#6d675a;font-size:0.92rem;margin-bottom:18px;", userpass ? "הזן/הזיני שם משתמש וסיסמה." : "הזן/הזיני את קוד הגישה האישי שקיבלת."));
+    card.appendChild(el("p", "color:#6d675a;font-size:0.92rem;margin-bottom:14px;", userpass ? "הזן/הזיני שם משתמש וסיסמה." : "הזן/הזיני את קוד הגישה האישי שקיבלת."));
+    // הבהרה — חובת קריאה וסימון לפני הכניסה
+    var disc = el("div", "text-align:right;background:#fbf7ee;border:1px solid #e6dfce;border-radius:8px;padding:12px 14px;font-size:0.78rem;line-height:1.65;color:#6d675a;margin-bottom:12px;max-height:170px;overflow:auto;");
+    disc.appendChild(el("strong", "color:#23201a;", "הבהרה — נא לקרוא לפני הכניסה: "));
+    disc.appendChild(document.createTextNode("כלי זה נבנה באופן פרטי עבור ילד/ה לצורך תרגול אישי, ומשותף בהתנדבות וללא מטרת רווח כתרומה לקהילה. אין לראות בו כלי לימודי רשמי בשום צורה — אין לו קשר, חסות או אישור ממשרד החינוך או מכל גוף רשמי, והתכנים והציונים בו אינם מהווים הערכה רשמית. ייתכנו טעויות — יש להצליב מול מקורות רשמיים. השימוש באחריות המשתמש בלבד."));
+    card.appendChild(disc);
+    var ackRow = el("label", "display:flex;align-items:center;gap:8px;justify-content:center;font-size:0.86rem;color:#23201a;cursor:pointer;margin-bottom:14px;font-weight:700;");
+    var ack = document.createElement("input"); ack.type = "checkbox"; ack.style.cssText = "width:18px;height:18px;cursor:pointer;accent-color:#0f6e5c;flex-shrink:0;";
+    ackRow.appendChild(ack); ackRow.appendChild(document.createTextNode("קראתי והבנתי את ההבהרה"));
+    card.appendChild(ackRow);
     var inStyle = "width:100%;font-size:1.05rem;text-align:center;padding:12px;border:2px solid #d9d4c5;border-radius:8px;margin-bottom:10px;";
     var userIn = null, passIn = null, codeIn = null;
     if (userpass) {
@@ -131,11 +140,19 @@
     var msg = el("div", "min-height:20px;color:#c4453a;font-size:0.86rem;font-weight:700;margin:2px 0 10px;"); card.appendChild(msg);
     var btn = el("button", "width:100%;background:#0f6e5c;color:#fff;border:none;padding:13px;border-radius:8px;font-family:inherit;font-weight:700;font-size:1rem;cursor:pointer;", "כניסה"); card.appendChild(btn);
     card.appendChild(el("p", "color:#a8a294;font-size:0.74rem;margin-top:14px;", userpass ? "אין לך פרטי כניסה? פנה/י למי ששלח/ה לך את התרגול." : "אין לך קוד? פנה/י למי ששלח/ה לך את התרגול."));
-    card.appendChild(el("p", "color:#a8a294;font-size:0.68rem;line-height:1.5;margin-top:10px;border-top:1px solid #ece8dd;padding-top:10px;", "כלי תרגול פרטי, בהתנדבות וללא מטרת רווח. אינו כלי לימודי רשמי ואין לו קשר או אישור ממשרד החינוך. השימוש באחריות המשתמש."));
-    ov.appendChild(card); document.body.appendChild(ov); (userpass ? userIn : codeIn).focus();
+    // נעילה עד סימון "קראתי": אי אפשר להקליד/להיכנס לפני אישור ההבהרה
+    var fields = [userIn, passIn, codeIn].filter(Boolean);
+    function setLocked(locked) {
+      fields.forEach(function (i) { i.disabled = locked; });
+      btn.disabled = locked; btn.style.opacity = locked ? "0.5" : "1"; btn.style.cursor = locked ? "not-allowed" : "pointer";
+    }
+    setLocked(true);
+    ack.onchange = function () { setLocked(!ack.checked); if (ack.checked) fields[0].focus(); };
+    ov.appendChild(card); document.body.appendChild(ov); ack.focus();
 
     var submit = function () {
       var p;
+      if (!ack.checked) { msg.style.color = "#c4453a"; msg.textContent = "יש לאשר קריאת ההבהרה"; return; }
       if (userpass) {
         if (!userIn.value || !passIn.value) { msg.style.color = "#c4453a"; msg.textContent = "נא למלא שם משתמש וסיסמה"; return; }
         msg.style.color = "#6d675a"; msg.textContent = "בודק…"; btn.disabled = true;
