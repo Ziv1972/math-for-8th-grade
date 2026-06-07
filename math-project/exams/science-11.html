@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 11 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=4517a76c"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_voltage",points:12,title:"יחידת המתח",
+   stem:'מקור המתח (סוללה) מספק מתח למעגל.',
+   parts:[{id:"a",label:"",text:'מהי יחידת המתח החשמלי?',type:"mcq",options:['אמפר','וולט','ואט'],correct:1,points:12,solution:'המתח החשמלי נמדד ב<b>וולט</b>.'}]},
+  {id:"q2",topic:"elec_resistance",points:13,title:"חוק אוהם — זרם",
+   stem:'על נגד מופעל מתח של 24 וולט, והתנגדותו 8 אוהם.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם דרך הנגד (באמפר)?',type:"number",answer:3,points:13,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 24 ÷ 8 = <b>3 אמפר</b>.'}]},
+  {id:"q3",topic:"elec_power",points:13,title:"הספק מכשיר",
+   stem:'במכשיר מתח 12 וולט וזרם 2 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו ההספק (בוואט)?',type:"number",answer:24,points:13,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 12 × 2 = <b>24 ואט</b>.'}]},
+  {id:"q4",topic:"elec_series_parallel",points:12,title:"שלושה נגדים בטור",
+   stem:'שלושה נגדים מחוברים בטור: 2 אוהם, 4 אוהם ו-6 אוהם.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות הכוללת (באוהם)?',type:"number",answer:12,points:12,hint:"בטור מחברים את כל ההתנגדויות",solution:'2 + 4 + 6 = <b>12 אוהם</b>.'}]},
+  {id:"q5",topic:"elec_series_parallel",points:13,title:"חיבור במקביל בבית",
+   stem:'מערכת החשמל הביתית בנויה בחיבור מקביל.',svg:SCI.parallel2,
+   parts:[{id:"a",label:"",text:'מדוע מחברים את מכשירי החשמל בבית במקביל?',type:"mcq",options:['כדי שכל מכשיר יקבל מתח מלא ויפעל בנפרד','כדי לחסוך בחוטים','אין סיבה מיוחדת'],correct:0,points:13,solution:'במקביל כל מכשיר מקבל את <b>המתח המלא</b> ופועל <b>בנפרד</b> — ניתוק אחד אינו משבית את האחרים.'}]},
+  {id:"q6",topic:"elec_safety",points:12,title:"סכנת קצר",
+   stem:'במעגל מתרחש קצר חשמלי.',
+   parts:[{id:"a",label:"",text:'מדוע קצר חשמלי מסוכן?',type:"mcq",options:['הזרם עולה מאוד והתילים מתחממים — סכנת שריפה','הזרם קטן מאוד','אין בכך סכנה'],correct:0,points:12,solution:'בקצר ההתנגדות יורדת והזרם <b>עולה מאוד</b> → התחממות → סכנת שריפה.'}]},
+  {id:"q7",topic:"elec_circuit",points:13,title:"תנאי לזרימת זרם",
+   stem:'בודקים מתי יזרום זרם במעגל.',svg:SCI.circuitClosed,
+   parts:[{id:"a",label:"",text:'מהו תנאי הכרחי לזרימת זרם?',type:"mcq",options:['מעגל סגור המחובר למקור מתח','מתג פתוח','נורה שרופה'],correct:0,points:13,solution:'דרוש <b>מעגל סגור</b> המחובר למקור מתח (סוללה).'}]},
+  {id:"q8",topic:"forces_distance",points:12,title:"כוח בין מגנטים",
+   stem:'שני מגנטים נמשכים זה לזה מבלי לגעת.',
+   parts:[{id:"a",label:"",text:'מאיזה סוג הכוח ביניהם?',type:"mcq",options:['כוח הפועל ממרחק (ללא מגע)','כוח מגע','כוח חיכוך'],correct:0,points:12,solution:'הכוח המגנטי פועל <b>ממרחק</b>, ללא מגע.'}]}
+];
+MQExam.run({examId:"sci11", title:"תרגול מדעים · 11", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל", EXAM});
+</script>
+</html>

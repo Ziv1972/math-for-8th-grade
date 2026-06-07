@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 10 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=4517a76c"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_power",points:13,title:"חישוב הספק",
+   stem:'במכשיר חשמלי המתח הוא 9 וולט ועוצמת הזרם 2 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו ההספק (בוואט)?',type:"number",answer:18,points:13,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 9 × 2 = <b>18 ואט</b>.'}]},
+  {id:"q2",topic:"elec_power",points:12,title:"המרת הספק",
+   stem:'מכשיר חשמלי בהספק 1500 ואט.',
+   parts:[{id:"a",label:"",text:'כמה קילוואט זה?',type:"number",answer:1.5,tolerance:0.01,points:12,hint:"מחלקים ב-1000",solution:'1500 ÷ 1000 = <b>1.5 קילוואט</b>.'}]},
+  {id:"q3",topic:"elec_power",points:13,title:"אנרגיה נצרכת",
+   stem:'מכשיר בהספק 1.5 קילוואט פעל 4 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש צרך?',type:"number",answer:6,points:13,hint:"הספק (kW) × זמן (שעות)",solution:'1.5 × 4 = <b>6 קוט"ש</b>.'}]},
+  {id:"q4",topic:"elec_power",points:12,title:"עלות החשמל",
+   stem:'מכשיר צרך 6 קוט"ש, ומחיר קוט"ש הוא 0.6 ש"ח.',
+   parts:[{id:"a",label:"",text:'כמה ישולם עבור הצריכה (בש"ח)?',type:"number",answer:3.6,tolerance:0.01,points:12,hint:"עלות = קוט\"ש × מחיר ליחידה",solution:'6 × 0.6 = <b>3.6 ש"ח</b>.'}]},
+  {id:"q5",topic:"elec_resistance",points:13,title:"חוק אוהם — התנגדות",
+   stem:'על נגד מופעל מתח של 15 וולט, וזורם בו זרם 3 אמפר.',
+   parts:[{id:"a",label:"",text:'מהי התנגדות הנגד (באוהם)?',type:"number",answer:5,points:13,hint:"התנגדות = מתח ÷ זרם",solution:'<span class="formula" dir="ltr">R = V ÷ I</span> = 15 ÷ 3 = <b>5 אוהם</b>.'}]},
+  {id:"q6",topic:"forces_contact",points:12,title:"כיוון החיכוך",
+   stem:'גוף נע ימינה על פני שולחן.',
+   parts:[{id:"a",label:"",text:'לאיזה כיוון פועל כוח החיכוך?',type:"mcq",options:['ימינה, בכיוון התנועה','שמאלה, נגד כיוון התנועה','כלפי מטה'],correct:1,points:12,solution:'כוח החיכוך פועל תמיד <b>נגד כיוון התנועה</b> — כלומר שמאלה.'}]},
+  {id:"q7",topic:"forces_distance",points:13,title:"כוח ממרחק",
+   stem:'מבחינים בין כוחות מגע לכוחות הפועלים ממרחק.',
+   parts:[{id:"a",label:"",text:'איזה כוח פועל ממרחק (ללא מגע)?',type:"mcq",options:['כוח הכובד (כבידה)','כוח חיכוך','כוח דחיפה ביד'],correct:0,points:13,solution:'<b>כוח הכובד</b> פועל ממרחק; חיכוך ודחיפה הם כוחות מגע.'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"שיגור טיל",
+   stem:'טיל פולט גזים בעוצמה כלפי מטה ומתרומם כלפי מעלה.',svg:SCI.forcePair('דחיפת גזים','תגובה'),
+   parts:[{id:"a",label:"",text:'מדוע הטיל עולה?',type:"mcq",options:['הגזים דוחפים את הטיל כלפי מעלה (תגובה לפעולה)','כוח הכובד נעלם','אין לכך הסבר'],correct:0,points:12,solution:'הטיל דוחף גזים מטה, והגזים דוחפים את הטיל <b>מעלה</b> — תגובה (חוק ניוטון השלישי).'}]}
+];
+MQExam.run({examId:"sci10", title:"תרגול מדעים · 10", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>

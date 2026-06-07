@@ -63,6 +63,11 @@
     { id: "sci6", file: "science-6.html", subject: "science", title: "תרגול מדעים · 6", level: 2, kind: "exam", topics: ["elec_voltage","elec_power","elec_series_parallel","elec_resistance","elec_safety","forces_contact","forces_distance","forces_newton3"] },
     { id: "sci7", file: "science-7.html", subject: "science", title: "תרגול מדעים · 7", level: 3, kind: "exam", topics: ["elec_power","elec_current","elec_voltage","elec_wire","elec_series_parallel","elec_safety"] },
     { id: "sci8", file: "science-8.html", subject: "science", title: "תרגול מדעים · 8", level: 3, kind: "exam", topics: ["elec_power","elec_safety","elec_series_parallel","elec_resistance","forces_contact","forces_distance","forces_newton3"] },
+    // ---- מבחני מדעים מתקדמים (רמה גבוהה — level 3): חוק אוהם, הספק/אנרגיה, טור/מקביל, כוחות ----
+    { id: "sci9",  file: "science-9.html",  subject: "science", title: "תרגול מדעים · 9",  level: 3, kind: "exam", topics: ["elec_resistance","elec_power","elec_current","elec_series_parallel","elec_wire","forces_newton3"] },
+    { id: "sci10", file: "science-10.html", subject: "science", title: "תרגול מדעים · 10", level: 3, kind: "exam", topics: ["elec_power","elec_resistance","forces_contact","forces_distance","forces_newton3"] },
+    { id: "sci11", file: "science-11.html", subject: "science", title: "תרגול מדעים · 11", level: 3, kind: "exam", topics: ["elec_voltage","elec_resistance","elec_power","elec_series_parallel","elec_safety","elec_circuit","forces_distance"] },
+    { id: "sci12", file: "science-12.html", subject: "science", title: "תרגול מדעים · 12", level: 3, kind: "exam", topics: ["elec_resistance","elec_power","elec_current","forces_contact","forces_distance","forces_newton3"] },
     // ---- תרגול ממוקד דינמי (focus.html) — מתייג מקצוע בלבד; topics ריק כדי שלא ישמש כיעד המלצה ----
     { id: "focus_math",    file: "focus.html", subject: "math",    title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] },
     { id: "focus_science", file: "focus.html", subject: "science", title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] }

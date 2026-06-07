@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 9 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=4517a76c"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"חוק אוהם — מתח",
+   stem:'בנגד זורם זרם בעוצמה 2 אמפר, וההתנגדות שלו 6 אוהם.',
+   parts:[{id:"a",label:"",text:'מהו המתח על הנגד (בוולט)?',type:"number",answer:12,points:13,hint:"חוק אוהם: מתח = זרם × התנגדות",solution:'לפי חוק אוהם <span class="formula" dir="ltr">V = I · R</span>: 2 × 6 = <b>12 וולט</b>.'}]},
+  {id:"q2",topic:"elec_resistance",points:13,title:"חוק אוהם — זרם",
+   stem:'על נגד מופעל מתח של 12 וולט, והתנגדותו 4 אוהם.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם דרך הנגד (באמפר)?',type:"number",answer:3,points:13,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 12 ÷ 4 = <b>3 אמפר</b>.'}]},
+  {id:"q3",topic:"elec_power",points:12,title:"הספק חשמלי",
+   stem:'במכשיר חשמלי המתח הוא 10 וולט ועוצמת הזרם 3 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו ההספק של המכשיר (בוואט)?',type:"number",answer:30,points:12,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 10 × 3 = <b>30 ואט</b>.'}]},
+  {id:"q4",topic:"elec_power",points:13,title:"אנרגיה חשמלית",
+   stem:'תנור חימום בהספק 2 קילוואט פעל 4 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש (קילוואט-שעה) צרך?',type:"number",answer:8,points:13,hint:"הספק (kW) × זמן (שעות)",solution:'2 × 4 = <b>8 קוט"ש</b>.'}]},
+  {id:"q5",topic:"elec_current",points:12,title:"יחידת הזרם",
+   stem:'מודדים את עוצמת הזרם במעגל באמצעות מד-זרם.',
+   parts:[{id:"a",label:"",text:'באיזו יחידה נמדדת עוצמת הזרם?',type:"mcq",options:['וולט','אמפר','אוהם'],correct:1,points:12,solution:'עוצמת הזרם נמדדת ב<b>אמפר</b> (וולט = מתח, אוהם = התנגדות).'}]},
+  {id:"q6",topic:"elec_series_parallel",points:13,title:"התנגדות בטור",
+   stem:'שני נגדים מחוברים בטור: 3 אוהם ו-5 אוהם.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות הכוללת של החיבור (באוהם)?',type:"number",answer:8,points:13,hint:"בחיבור בטור מחברים את ההתנגדויות",solution:'בטור ההתנגדויות מתחברות: 3 + 5 = <b>8 אוהם</b>.'}]},
+  {id:"q7",topic:"elec_wire",points:12,title:"עובי המוליך",
+   stem:'שני תילים מאותו חומר ובאותו אורך, אך בעובי שונה.',
+   parts:[{id:"a",label:"",text:'לתיל הדק יותר (שטח חתך קטן)…',type:"mcq",options:['התנגדות גדולה יותר','התנגדות קטנה יותר','אותה התנגדות'],correct:0,points:12,solution:'תיל דק יותר מקשה על מעבר הזרם → התנגדות <b>גדולה</b> יותר.'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"החוק השלישי של ניוטון",
+   stem:'אדם דוחף קיר בכוח.',svg:SCI.forcePair('פעולה','תגובה'),
+   parts:[{id:"a",label:"",text:'לפי החוק השלישי של ניוטון, מה קורה?',type:"mcq",options:['הקיר דוחף את האדם בכוח שווה בגודלו ומנוגד בכיוונו','הקיר אינו מפעיל כוח','האדם דוחף בכוח גדול יותר'],correct:0,points:12,solution:'לכל פעולה יש תגובה <b>שווה בגודלה ומנוגדת בכיוונה</b> — הקיר דוחף בחזרה.'}]}
+];
+MQExam.run({examId:"sci9", title:"תרגול מדעים · 9", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל", EXAM});
+</script>
+</html>

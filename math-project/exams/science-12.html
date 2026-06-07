@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 12 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=4517a76c"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"חוק אוהם — מתח",
+   stem:'בנגד זורם זרם בעוצמה 4 אמפר, והתנגדותו 5 אוהם.',
+   parts:[{id:"a",label:"",text:'מהו המתח על הנגד (בוולט)?',type:"number",answer:20,points:13,hint:"מתח = זרם × התנגדות",solution:'<span class="formula" dir="ltr">V = I · R</span> = 4 × 5 = <b>20 וולט</b>.'}]},
+  {id:"q2",topic:"elec_power",points:13,title:"מציאת הזרם מההספק",
+   stem:'מכשיר בהספק 60 ואט מחובר למתח 12 וולט.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:5,points:13,hint:"זרם = הספק ÷ מתח",solution:'<span class="formula" dir="ltr">I = P ÷ V</span> = 60 ÷ 12 = <b>5 אמפר</b>.'}]},
+  {id:"q3",topic:"elec_power",points:12,title:"אנרגיית נורה",
+   stem:'נורה בהספק 100 ואט דלקה 10 שעות.',
+   parts:[{id:"a",label:"",text:'כמה קוט"ש צרכה?',type:"number",answer:1,tolerance:0.01,points:12,hint:"100 ואט = 0.1 קילוואט; הכפל בשעות",solution:'0.1 קילוואט × 10 שעות = <b>1 קוט"ש</b> (100 × 10 = 1000 ואט-שעה).'}]},
+  {id:"q4",topic:"elec_current",points:13,title:"מה גורם לזרם",
+   stem:'במוליך מתכתי זורם זרם חשמלי.',
+   parts:[{id:"a",label:"",text:'מה נע ויוצר את הזרם במוליך מתכתי?',type:"mcq",options:['אלקטרונים חופשיים','חלקיקי אבק','הגרעינים של האטומים'],correct:0,points:13,solution:'הזרם במתכת נוצר מתנועת <b>אלקטרונים חופשיים</b>.'}]},
+  {id:"q5",topic:"forces_contact",points:12,title:"חיבור כוחות",
+   stem:'שני ילדים דוחפים עגלה לאותו כיוון: אחד בכוח 25 ניוטון והשני בכוח 15 ניוטון.',
+   parts:[{id:"a",label:"",text:'מהו הכוח השקול על העגלה (בניוטון)?',type:"number",answer:40,points:12,hint:"כוחות באותו כיוון — מחברים",solution:'אותו כיוון → מחברים: 25 + 15 = <b>40 ניוטון</b>.'}]},
+  {id:"q6",topic:"forces_contact",points:13,title:"כיוון החיכוך",
+   stem:'גוף מחליק על משטח.',
+   parts:[{id:"a",label:"",text:'כוח החיכוך תמיד פועל…',type:"mcq",options:['נגד כיוון התנועה','בכיוון התנועה','כלפי מעלה'],correct:0,points:13,solution:'כוח החיכוך פועל <b>נגד כיוון התנועה</b> ומאט את הגוף.'}]},
+  {id:"q7",topic:"forces_distance",points:12,title:"כוח הכובד",
+   stem:'תפוח נופל מהעץ אל הקרקע.',
+   parts:[{id:"a",label:"",text:'כוח הכובד הוא כוח…',type:"mcq",options:['הפועל ממרחק','מגע','חיכוך'],correct:0,points:12,solution:'כוח הכובד פועל <b>ממרחק</b> (כדור הארץ מושך את הגוף ללא מגע).'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"פעולה ותגובה",
+   stem:'שוחה דוחף את המים לאחור ומתקדם קדימה.',svg:SCI.forcePair('פעולה','תגובה'),
+   parts:[{id:"a",label:"",text:'לפי החוק השלישי של ניוטון, לכל פעולה יש…',type:"mcq",options:['תגובה שווה בגודלה ומנוגדת בכיוונה','תגובה גדולה יותר','אין תגובה'],correct:0,points:12,solution:'לכל פעולה <b>תגובה שווה בגודלה ומנוגדת בכיוונה</b> — המים דוחפים את השוחה קדימה.'}]}
+];
+MQExam.run({examId:"sci12", title:"תרגול מדעים · 12", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>
