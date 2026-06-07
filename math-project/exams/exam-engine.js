@@ -23,6 +23,10 @@
   }
   function approxEq(a, b, tol) { return Math.abs(a - b) <= (tol || 0.01); }
 
+  // רמזים מושבתים — לעודד חקירה עצמאית של הפתרון (במקום שימוש-יתר ברמז).
+  // לשחזור: שנה ל-true. הפתרון עדיין נפתח אחרי ניסיון מענה.
+  var SHOW_HINTS = false;
+
   function run(cfg) {
     var EXAM = cfg.EXAM, examId = cfg.examId, title = cfg.title;
     var earned = {}, totalPoints = 0;
@@ -131,7 +135,7 @@
         });
       } else {
         var answers = Array.isArray(p.answer) ? p.answer : [p.answer];
-        fill(div, `<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק</span></div><div class="part-row"><input class="ans" placeholder="תשובה" inputmode="decimal"><button class="btn-check">בדיקה</button><span class="verdict"></span></div><div class="tools">${p.hint ? `<button class="btn-hint">💡 רמז</button>` : ""}${p.solution ? `<button class="btn-sol" disabled>🔒 פתרון</button>` : ""}</div>${p.hint ? `<div class="hint-box">${p.hint}</div>` : ""}${p.solution ? `<div class="sol-box">${p.solution}</div>` : ""}`);
+        fill(div, `<div class="part-q"><span class="part-label">${p.label}</span><span>${p.text}</span><span class="part-pts">${p.points} נק</span></div><div class="part-row"><input class="ans" placeholder="תשובה" inputmode="decimal"><button class="btn-check">בדיקה</button><span class="verdict"></span></div><div class="tools">${(p.hint && SHOW_HINTS) ? `<button class="btn-hint">💡 רמז</button>` : ""}${p.solution ? `<button class="btn-sol" disabled>🔒 פתרון</button>` : ""}</div>${(p.hint && SHOW_HINTS) ? `<div class="hint-box">${p.hint}</div>` : ""}${p.solution ? `<div class="sol-box">${p.solution}</div>` : ""}`);
         var input = div.querySelector(".ans"), verdict2 = div.querySelector(".verdict"), solBtn2 = div.querySelector(".btn-sol");
         var check = function () {
           var lg = L(q, p);
