@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 14 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=8f90e888"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"אוהם והספק",
+   stem:'על נגד מופעל מתח של 20 וולט, והתנגדותו 5 אוהם.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:4,points:6,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 20 ÷ 5 = <b>4 אמפר</b>.'},
+     {id:"b",label:"(ב)",text:'מהו ההספק (בוואט)?',type:"number",answer:80,points:7,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 20 × 4 = <b>80 ואט</b>.'}]},
+  {id:"q2",topic:"elec_power",points:12,title:"אנרגיה ועלות",
+   stem:'מכשיר בהספק 1.5 קילוואט פעל 4 שעות. מחיר קוט"ש 0.6 ש"ח.',
+   parts:[
+     {id:"a",label:"(א)",text:'כמה קוט"ש צרך?',type:"number",answer:6,points:6,hint:"הספק × זמן",solution:'1.5 × 4 = <b>6 קוט"ש</b>.'},
+     {id:"b",label:"(ב)",text:'כמה ישולם (בש"ח)?',type:"number",answer:3.6,tolerance:0.01,points:6,hint:"קוט\"ש × מחיר",solution:'6 × 0.6 = <b>3.6 ש"ח</b>.'}]},
+  {id:"q3",topic:"elec_series_parallel",points:13,title:"שלושה נגדים בטור",
+   stem:'שלושה נגדים מחוברים בטור: 5 אוהם, 5 אוהם ו-10 אוהם.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות הכוללת (באוהם)?',type:"number",answer:20,points:13,hint:"בטור מחברים את כל ההתנגדויות",solution:'5 + 5 + 10 = <b>20 אוהם</b>.'}]},
+  {id:"q4",topic:"elec_power",points:12,title:"חישוב הספק",
+   stem:'במכשיר מתח 15 וולט וזרם 4 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו ההספק (בוואט)?',type:"number",answer:60,points:12,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 15 × 4 = <b>60 ואט</b>.'}]},
+  {id:"q5",topic:"elec_resistance",points:13,title:"חישוב זרם",
+   stem:'על נגד מופעל מתח של 36 וולט, והתנגדותו 9 אוהם.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:4,points:13,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 36 ÷ 9 = <b>4 אמפר</b>.'}]},
+  {id:"q6",topic:"elec_series_parallel",points:12,title:"נורה נשרפת בטור",
+   stem:'בחדר מחוברות שלוש נורות בטור.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'אם נורה אחת נשרפת, מה קורה לשאר?',type:"mcq",options:['כל הנורות כבות (המעגל נפתח)','האחרות ממשיכות לדלוק','האחרות מאירות חזק יותר'],correct:0,points:12,solution:'בטור יש מסלול אחד — נורה שרופה פותחת את המעגל ו<b>כל הנורות כבות</b>.'}]},
+  {id:"q7",topic:"forces_contact",points:13,title:"כוח שקול",
+   stem:'שני ילדים דוחפים ארגז לאותו כיוון: 40 ניוטון ו-35 ניוטון.',
+   parts:[{id:"a",label:"",text:'מהו הכוח השקול (בניוטון)?',type:"number",answer:75,points:13,hint:"אותו כיוון — מחברים",solution:'40 + 35 = <b>75 ניוטון</b>.'}]},
+  {id:"q8",topic:"forces_distance",points:12,title:"כוח הכובד",
+   stem:'משווים את כוח הכובד הפועל על גופים שונים.',
+   parts:[{id:"a",label:"",text:'מה מגדיל את כוח הכובד הפועל על גוף?',type:"mcq",options:['מסה גדולה יותר','צבע הגוף','מהירות הגוף'],correct:0,points:12,solution:'ככל שה<b>מסה</b> גדולה יותר, כוח הכובד גדול יותר.'}]}
+];
+MQExam.run({examId:"sci14", title:"תרגול מדעים · 14", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>

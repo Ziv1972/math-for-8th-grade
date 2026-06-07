@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 15 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=8f90e888"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_power",points:13,title:"זרם ואנרגיה",
+   stem:'מכשיר בהספק 120 ואט מחובר למתח 12 וולט.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:10,points:6,hint:"זרם = הספק ÷ מתח",solution:'<span class="formula" dir="ltr">I = P ÷ V</span> = 120 ÷ 12 = <b>10 אמפר</b>.'},
+     {id:"b",label:"(ב)",text:'כמה קוט"ש יצרוך ב-5 שעות?',type:"number",answer:0.6,tolerance:0.01,points:7,hint:"120 ואט = 0.12 קילוואט; × שעות",solution:'0.12 × 5 = <b>0.6 קוט"ש</b>.'}]},
+  {id:"q2",topic:"elec_series_parallel",points:13,title:"מעגל טורי",
+   stem:'שני נגדים מחוברים בטור: 6 אוהם ו-6 אוהם, למתח 24 וולט.',svg:SCI.series2,
+   parts:[
+     {id:"a",label:"(א)",text:'מהי ההתנגדות הכוללת (באוהם)?',type:"number",answer:12,points:6,hint:"בטור מחברים",solution:'6 + 6 = <b>12 אוהם</b>.'},
+     {id:"b",label:"(ב)",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:2,points:7,hint:"I = מתח ÷ התנגדות כוללת",solution:'24 ÷ 12 = <b>2 אמפר</b>.'}]},
+  {id:"q3",topic:"elec_resistance",points:12,title:"חישוב מתח",
+   stem:'דרך נגד של 7 אוהם זורם זרם של 3 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו המתח על הנגד (בוולט)?',type:"number",answer:21,points:12,hint:"מתח = זרם × התנגדות",solution:'<span class="formula" dir="ltr">V = I · R</span> = 3 × 7 = <b>21 וולט</b>.'}]},
+  {id:"q4",topic:"elec_resistance",points:12,title:"חישוב התנגדות",
+   stem:'על נגד מתח 30 וולט וזרם 6 אמפר.',
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות (באוהם)?',type:"number",answer:5,points:12,hint:"התנגדות = מתח ÷ זרם",solution:'<span class="formula" dir="ltr">R = V ÷ I</span> = 30 ÷ 6 = <b>5 אוהם</b>.'}]},
+  {id:"q5",topic:"elec_voltage",points:12,title:"מהו מתח",
+   stem:'מקור המתח מניע את הזרם במעגל.',
+   parts:[{id:"a",label:"",text:'מהו מתח חשמלי?',type:"mcq",options:['ההפרש שדוחף את הזרם לזרום במעגל','עוצמת הזרם','התנגדות המוליך'],correct:0,points:12,solution:'מתח הוא <b>ההפרש שדוחף את הזרם</b> לזרום (נמדד בוולט).'}]},
+  {id:"q6",topic:"elec_circuit",points:13,title:"מתי אין זרם",
+   stem:'בודקים מתי לא יזרום זרם במעגל.',svg:SCI.circuitOpen,
+   parts:[{id:"a",label:"",text:'מתי לא יזרום זרם?',type:"mcq",options:['כשהמתג פתוח (מעגל פתוח)','כשהמתג סגור','כשהסוללה מלאה'],correct:0,points:13,solution:'מתג פתוח = <b>מעגל פתוח</b> → אין מסלול סגור → אין זרם.'}]},
+  {id:"q7",topic:"forces_contact",points:12,title:"כוח שקול",
+   stem:'על גוף פועלים שני כוחות מנוגדים: 50 ניוטון ו-20 ניוטון.',
+   parts:[{id:"a",label:"",text:'מהו גודל הכוח השקול (בניוטון)?',type:"number",answer:30,points:12,hint:"מנוגדים — מחסירים",solution:'50 − 20 = <b>30 ניוטון</b>.'}]},
+  {id:"q8",topic:"forces_newton3",points:13,title:"קפיצה מסירה",
+   stem:'אדם קופץ מסירה לכיוון המזח, והסירה נדחפת לכיוון ההפוך.',svg:SCI.forcePair('קפיצה','תגובה'),
+   parts:[{id:"a",label:"",text:'מדוע הסירה זזה אחורה?',type:"mcq",options:['פעולה ותגובה — האדם דוחף את הסירה אחורה והסירה דוחפת אותו קדימה','בגלל הרוח','ללא סיבה'],correct:0,points:13,solution:'חוק ניוטון השלישי: לכל פעולה <b>תגובה שווה ומנוגדת</b>.'}]}
+];
+MQExam.run({examId:"sci15", title:"תרגול מדעים · 15", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>

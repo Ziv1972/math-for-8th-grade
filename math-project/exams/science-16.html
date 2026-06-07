@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 16 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=8f90e888"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"אוהם והספק",
+   stem:'על נגד מופעל מתח של 24 וולט, והתנגדותו 6 אוהם.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:4,points:6,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 24 ÷ 6 = <b>4 אמפר</b>.'},
+     {id:"b",label:"(ב)",text:'מהו ההספק (בוואט)?',type:"number",answer:96,points:7,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 24 × 4 = <b>96 ואט</b>.'}]},
+  {id:"q2",topic:"elec_power",points:12,title:"אנרגיה ועלות",
+   stem:'מזגן בהספק 3 קילוואט פעל 2 שעות. מחיר קוט"ש 0.7 ש"ח.',
+   parts:[
+     {id:"a",label:"(א)",text:'כמה קוט"ש צרך?',type:"number",answer:6,points:6,hint:"הספק × זמן",solution:'3 × 2 = <b>6 קוט"ש</b>.'},
+     {id:"b",label:"(ב)",text:'כמה ישולם (בש"ח)?',type:"number",answer:4.2,tolerance:0.01,points:6,hint:"קוט\"ש × מחיר",solution:'6 × 0.7 = <b>4.2 ש"ח</b>.'}]},
+  {id:"q3",topic:"elec_power",points:13,title:"חישוב הספק",
+   stem:'במכשיר מתח 9 וולט וזרם 5 אמפר.',
+   parts:[{id:"a",label:"",text:'מהו ההספק (בוואט)?',type:"number",answer:45,points:13,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 9 × 5 = <b>45 ואט</b>.'}]},
+  {id:"q4",topic:"elec_series_parallel",points:12,title:"שלושה נגדים בטור",
+   stem:'שלושה נגדים מחוברים בטור: 3 אוהם, 4 אוהם ו-5 אוהם.',svg:SCI.series2,
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות הכוללת (באוהם)?',type:"number",answer:12,points:12,hint:"בטור מחברים",solution:'3 + 4 + 5 = <b>12 אוהם</b>.'}]},
+  {id:"q5",topic:"elec_resistance",points:13,title:"חישוב זרם",
+   stem:'על נגד מופעל מתח של 40 וולט, והתנגדותו 8 אוהם.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:5,points:13,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 40 ÷ 8 = <b>5 אמפר</b>.'}]},
+  {id:"q6",topic:"elec_wire",points:12,title:"אורך המוליך",
+   stem:'שני תילים מאותו חומר ובאותו עובי, אך באורך שונה.',
+   parts:[{id:"a",label:"",text:'לתיל הארוך יותר…',type:"mcq",options:['התנגדות גדולה יותר','התנגדות קטנה יותר','אותה התנגדות'],correct:0,points:12,solution:'ככל שהתיל ארוך יותר → ההתנגדות <b>גדולה</b> יותר.'}]},
+  {id:"q7",topic:"forces_contact",points:13,title:"כוח שקול",
+   stem:'שני כוחות פועלים על גוף באותו כיוון: 28 ניוטון ו-22 ניוטון.',
+   parts:[{id:"a",label:"",text:'מהו הכוח השקול (בניוטון)?',type:"number",answer:50,points:13,hint:"אותו כיוון — מחברים",solution:'28 + 22 = <b>50 ניוטון</b>.'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"בלון מעופף",
+   stem:'בלון מנופח משוחרר, האוויר יוצא ממנו והבלון טס.',svg:SCI.forcePair('אוויר יוצא','תגובה'),
+   parts:[{id:"a",label:"",text:'מדוע הבלון טס?',type:"mcq",options:['האוויר נפלט לאחור והבלון נדחף קדימה (תגובה)','בגלל כוח הכובד','ללא סיבה'],correct:0,points:12,solution:'פעולה-תגובה: האוויר יוצא לאחור → הבלון נדחף <b>קדימה</b>.'}]}
+];
+MQExam.run({examId:"sci16", title:"תרגול מדעים · 16", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>

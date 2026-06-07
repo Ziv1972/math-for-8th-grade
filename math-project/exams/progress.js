@@ -68,6 +68,11 @@
     { id: "sci10", file: "science-10.html", subject: "science", title: "תרגול מדעים · 10", level: 3, kind: "exam", topics: ["elec_power","elec_resistance","forces_contact","forces_distance","forces_newton3"] },
     { id: "sci11", file: "science-11.html", subject: "science", title: "תרגול מדעים · 11", level: 3, kind: "exam", topics: ["elec_voltage","elec_resistance","elec_power","elec_series_parallel","elec_safety","elec_circuit","forces_distance"] },
     { id: "sci12", file: "science-12.html", subject: "science", title: "תרגול מדעים · 12", level: 3, kind: "exam", topics: ["elec_resistance","elec_power","elec_current","forces_contact","forces_distance","forces_newton3"] },
+    // ---- מבחני מדעים מאתגרים (רמה גבוהה מאוד — level 4): רב-שלביים, שילוב חוק אוהם+הספק, כוח שקול ----
+    { id: "sci13", file: "science-13.html", subject: "science", title: "תרגול מדעים · 13", level: 4, kind: "exam", topics: ["elec_resistance","elec_power","elec_series_parallel","elec_safety","forces_contact","forces_newton3"] },
+    { id: "sci14", file: "science-14.html", subject: "science", title: "תרגול מדעים · 14", level: 4, kind: "exam", topics: ["elec_resistance","elec_power","elec_series_parallel","forces_contact","forces_distance"] },
+    { id: "sci15", file: "science-15.html", subject: "science", title: "תרגול מדעים · 15", level: 4, kind: "exam", topics: ["elec_power","elec_series_parallel","elec_resistance","elec_voltage","elec_circuit","forces_contact","forces_newton3"] },
+    { id: "sci16", file: "science-16.html", subject: "science", title: "תרגול מדעים · 16", level: 4, kind: "exam", topics: ["elec_resistance","elec_power","elec_series_parallel","elec_wire","forces_contact","forces_newton3"] },
     // ---- תרגול ממוקד דינמי (focus.html) — מתייג מקצוע בלבד; topics ריק כדי שלא ישמש כיעד המלצה ----
     { id: "focus_math",    file: "focus.html", subject: "math",    title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] },
     { id: "focus_science", file: "focus.html", subject: "science", title: "תרגול ממוקד", level: 0, kind: "focus", topics: [] }

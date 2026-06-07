@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>תרגול מדעים · 13 — כיתה ח'</title>
+<link rel="stylesheet" href="exam-engine.css?v=1df1dbb7">
+</head>
+<body></body>
+<script src="progress.js?v=8f90e888"></script>
+<script src="license.js?v=9f160333"></script>
+<script src="science-svg.js?v=f7d887d6"></script>
+<script src="exam-engine.js?v=96f682a0"></script>
+<script>
+const EXAM = [
+  {id:"q1",topic:"elec_resistance",points:13,title:"אוהם והספק",
+   stem:'על נגד מופעל מתח של 12 וולט, והתנגדותו 3 אוהם.',
+   parts:[
+     {id:"a",label:"(א)",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:4,points:6,hint:"זרם = מתח ÷ התנגדות",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 12 ÷ 3 = <b>4 אמפר</b>.'},
+     {id:"b",label:"(ב)",text:'מהו ההספק (בוואט)?',type:"number",answer:48,points:7,hint:"הספק = מתח × זרם",solution:'<span class="formula" dir="ltr">P = V · I</span> = 12 × 4 = <b>48 ואט</b>.'}]},
+  {id:"q2",topic:"elec_power",points:12,title:"אנרגיה ועלות",
+   stem:'תנור בהספק 2 קילוואט פעל 3 שעות. מחיר קוט"ש הוא 0.5 ש"ח.',
+   parts:[
+     {id:"a",label:"(א)",text:'כמה קוט"ש צרך?',type:"number",answer:6,points:6,hint:"הספק (kW) × זמן",solution:'2 × 3 = <b>6 קוט"ש</b>.'},
+     {id:"b",label:"(ב)",text:'כמה ישולם (בש"ח)?',type:"number",answer:3,tolerance:0.01,points:6,hint:"קוט\"ש × מחיר",solution:'6 × 0.5 = <b>3 ש"ח</b>.'}]},
+  {id:"q3",topic:"elec_series_parallel",points:13,title:"מעגל טורי",
+   stem:'שני נגדים מחוברים בטור: 4 אוהם ו-8 אוהם, ומחוברים למקור מתח של 24 וולט.',svg:SCI.series2,
+   parts:[
+     {id:"a",label:"(א)",text:'מהי ההתנגדות הכוללת (באוהם)?',type:"number",answer:12,points:6,hint:"בטור מחברים את ההתנגדויות",solution:'4 + 8 = <b>12 אוהם</b>.'},
+     {id:"b",label:"(ב)",text:'מהי עוצמת הזרם במעגל (באמפר)?',type:"number",answer:2,points:7,hint:"I = מתח ÷ התנגדות כוללת",solution:'<span class="formula" dir="ltr">I = V ÷ R</span> = 24 ÷ 12 = <b>2 אמפר</b>.'}]},
+  {id:"q4",topic:"elec_power",points:12,title:"זרם מהספק",
+   stem:'מכשיר בהספק 100 ואט מחובר למתח 20 וולט.',
+   parts:[{id:"a",label:"",text:'מהי עוצמת הזרם (באמפר)?',type:"number",answer:5,points:12,hint:"זרם = הספק ÷ מתח",solution:'<span class="formula" dir="ltr">I = P ÷ V</span> = 100 ÷ 20 = <b>5 אמפר</b>.'}]},
+  {id:"q5",topic:"elec_resistance",points:13,title:"חישוב התנגדות",
+   stem:'על נגד מופעל מתח של 18 וולט, וזורם בו זרם של 2 אמפר.',
+   parts:[{id:"a",label:"",text:'מהי ההתנגדות (באוהם)?',type:"number",answer:9,points:13,hint:"התנגדות = מתח ÷ זרם",solution:'<span class="formula" dir="ltr">R = V ÷ I</span> = 18 ÷ 2 = <b>9 אוהם</b>.'}]},
+  {id:"q6",topic:"elec_safety",points:12,title:"הארקה",
+   stem:'מכשירי חשמל רבים מחוברים להארקה (חיבור לאדמה).',
+   parts:[{id:"a",label:"",text:'מה תפקיד ההארקה?',type:"mcq",options:['להגן מפני התחשמלות אם יש תקלה','להגביר את הזרם','לחסוך בחשמל'],correct:0,points:12,solution:'ההארקה מנקזת זרם תקלה לאדמה ו<b>מגינה מפני התחשמלות</b>.'}]},
+  {id:"q7",topic:"forces_contact",points:13,title:"כוח שקול",
+   stem:'על גוף פועלים שני כוחות מנוגדים: 30 ניוטון ימינה ו-12 ניוטון שמאלה.',
+   parts:[{id:"a",label:"",text:'מהו גודל הכוח השקול (בניוטון)?',type:"number",answer:18,points:13,hint:"כוחות מנוגדים — מחסירים",solution:'מנוגדים → 30 − 12 = <b>18 ניוטון</b> (לכיוון הכוח הגדול).'}]},
+  {id:"q8",topic:"forces_newton3",points:12,title:"רתיעת רובה",
+   stem:'בעת ירייה, הרובה נבעט לאחור.',svg:SCI.forcePair('כדור קדימה','רתיעה'),
+   parts:[{id:"a",label:"",text:'מדוע הרובה נבעט לאחור?',type:"mcq",options:['הרובה דוחף את הכדור קדימה, והכדור דוחף את הרובה לאחור (תגובה)','בגלל כוח הכובד','ללא סיבה'],correct:0,points:12,solution:'פעולה ותגובה: הרובה דוחף את הכדור קדימה → הכדור דוחף את הרובה <b>לאחור</b>.'}]}
+];
+MQExam.run({examId:"sci13", title:"תרגול מדעים · 13", kicker:"מדע וטכנולוגיה · כיתה ח' · חשמל וכוחות", EXAM});
+</script>
+</html>
